@@ -1,27 +1,31 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import ReactDatePicker from 'react-datepicker'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, ControllerRenderProps } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { SignInUpFormValues } from '~/shared/types'
+import { AxiosResponseError, SignInUpFormValues } from '~/shared/types'
 import { Spinner } from '~/shared/icons/SpinnerIcon'
 import { SignInFormSchema, SignUpFormSchema } from '~/shared/validation'
 import { clxs } from '~/helpers/classNames'
+import useAxiosError from '~/hooks/axiosError'
 
 type Props = {
   isLogin: boolean
   actions: {
     handleAuthSubmit: (data: SignInUpFormValues) => Promise<void>
   }
+  axiosErrors: {
+    error: AxiosResponseError
+    isError: boolean
+  }
 }
 
 const AuthForm: FC<Props> = (props): JSX.Element => {
   const {
     isLogin,
-    actions: { handleAuthSubmit }
+    actions: { handleAuthSubmit },
+    axiosErrors: { isError, error }
   } = props
-
-  const [startDate, setStartDate] = useState(new Date())
 
   const {
     register,
@@ -33,6 +37,8 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
     mode: 'onTouched',
     resolver: yupResolver(isLogin ? SignInFormSchema : SignUpFormSchema)
   })
+
+  useAxiosError(isError, error, setError)
 
   return (
     <form onSubmit={handleSubmit(handleAuthSubmit)}>
@@ -138,9 +144,9 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
                   disabled:cursor-not-allowed disabled:bg-opacity-50 disabled:hover:bg-opacity-50 sm:text-sm
                 `}
               >
-                <option>Unemployed</option>
-                <option>Employed</option>
-                <option>Self-Employed</option>
+                <option value={1}>Unemployed</option>
+                <option value={2}>Employed</option>
+                <option value={3}>Self-Employed</option>
               </select>
               {errors?.employment_status && (
                 <span className="error">{`${errors?.employment_status?.message}`}</span>

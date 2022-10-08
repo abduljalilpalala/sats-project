@@ -41,11 +41,4 @@ class User extends Authenticatable
     'email_verified_at' => 'datetime',
   ];
 
-  protected function birthDate(): Attribute
-  {
-    return new Attribute(
-      get: fn ($value) => Carbon::parse($value)->format('m/d/Y'),
-      set: fn ($value) => Carbon::createFromFormat('m/d/Y', $value)->format('Y-m-d')
-    );
-  }
 }

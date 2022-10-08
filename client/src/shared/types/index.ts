@@ -8,3 +8,17 @@ export type SignInUpFormValues = {
   password: string
   password_confirmation: string
 }
+
+export type AxiosResponseError = {
+  status: number | undefined
+  content: any
+}
+
+export type SignInUpFormFields =
+  | 'name'
+  | 'email'
+  | 'birth_date'
+  | 'contact_number'
+  | 'employment_status'
+  | 'password'
+  | 'password_confirmation'

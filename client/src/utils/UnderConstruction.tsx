@@ -15,7 +15,7 @@ const UnderConstruction: FC = (): JSX.Element => {
             alt="Cry Emoji Image"
             width={400}
             height={302}
-            blurDataURL="/images/emoji.png"
+            blurDataURL="/images/404.png"
             placeholder="blur"
             layout="intrinsic"
           />

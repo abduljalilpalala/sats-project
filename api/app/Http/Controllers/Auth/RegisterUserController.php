@@ -24,7 +24,7 @@ class RegisterUserController extends Controller
       'password' => bcrypt($request->password),
       'birth_date' => $request->birth_date,
       'contact_number' => $request->contact_number,
-      'employee_status_id' => $request->employee_status_id,
+      'employee_status_id' => $request->employment_status,
     ]);
 
     return response()->noContent();
