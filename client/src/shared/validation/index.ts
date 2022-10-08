@@ -1,0 +1,27 @@
+import * as Yup from 'yup'
+
+export const SignInFormSchema = Yup.object().shape({
+  email: Yup.string().email().required().label('Email'),
+  password: Yup.string().required('Password is required')
+})
+
+export const SignUpFormSchema = Yup.object().shape({
+  id_number: Yup.string(),
+  name: Yup.string()
+    .required('Name is required')
+    .min(2, 'Should have atleast 2 characters')
+    .max(30, 'Should have max length of 30 characters'),
+  email: Yup.string().email().required().label('Email'),
+  birth_date: Yup.string().required().label('Birth Date'),
+  contact_number: Yup.string().label('Contact Number').required('Contact Number is required'),
+  employment_status: Yup.string().required().label('Employment Status'),
+  password: Yup.string()
+    .required('Password is required')
+    .min(4, 'Password length should be at least 4 characters')
+    .max(12, 'Password cannot exceed more than 12 characters'),
+  password_confirmation: Yup.string()
+    .label('Password Confirmation')
+    .required('Confirm Password is required')
+    .max(12, 'Password cannot exceed more than 12 characters')
+    .oneOf([Yup.ref('password')], 'Passwords do not match')
+})
