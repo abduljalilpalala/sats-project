@@ -10,7 +10,7 @@ const Register: NextPage = (): JSX.Element => {
   const { register, isError, error } = useAuth()
 
   const handleAuthSubmit = async (data: SignInUpFormValues): Promise<void> => {
-    data.birth_date = moment(data.birth_date).format('YYYY-MM-DD')
+    data.birth_date = moment(new Date(data.birth_date)).format('YYYY-MM-DD')
     await register(data)
   }
 

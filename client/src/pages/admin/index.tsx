@@ -6,18 +6,14 @@ import { useRouter } from 'next/router'
 import useAuth from '~/hooks/auth'
 import { SignInUpFormValues } from '~/shared/types'
 import AuthForm from '~/components/molecules/AuthForm'
+import { Roles } from '~/shared/data/roleConstant'
 
 const Admin: NextPage = (): JSX.Element => {
-  const router = useRouter()
-  const { register, isError, error } = useAuth()
+  const { login, isError, error } = useAuth()
 
   const handleAuthSubmit = async (data: SignInUpFormValues): Promise<void> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve()
-        router.push('/admin/dashboard')
-      }, 3000)
-    })
+    data.role_id = Roles.ADMIN
+    await login(data)
   }
 
   return (
