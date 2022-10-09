@@ -30,7 +30,7 @@ class RegisterUserRequest extends FormRequest
       'password' => ['required', 'confirmed', Rules\Password::defaults()],
       'birth_date' => ['required'],
       'contact_number' => ['required'],
-      'employee_status_id' => ['required'],
+      'employment_status' => ['required'],
     ];
   }
 }
