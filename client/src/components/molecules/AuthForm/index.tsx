@@ -104,6 +104,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
                 render={({ field }: any) => (
                   <ReactDatePicker
                     selected={field.value}
+                    maxDate={new Date()}
                     onChange={(date: Date) => field.onChange(date)}
                     className={`
                       mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 

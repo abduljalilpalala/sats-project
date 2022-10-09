@@ -5,6 +5,7 @@ export type SignInUpFormValues = {
   birth_date: string
   contact_number?: string
   employment_status: string
+  role_id?: number
   password: string
   password_confirmation: string
 }
@@ -22,3 +23,8 @@ export type SignInUpFormFields =
   | 'employment_status'
   | 'password'
   | 'password_confirmation'
+
+export type Roles = {
+  ADMIN: number
+  USER: number
+}
