@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import ReactDatePicker from 'react-datepicker'
-import { useForm, Controller, ControllerRenderProps } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { AxiosResponseError, SignInUpFormValues } from '~/shared/types'

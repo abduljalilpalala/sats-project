@@ -31,9 +31,25 @@ const useAuth = () => {
     }
   }
 
+  const login = async (data: SignInUpFormValues) => {
+    try {
+      setIsError(false)
+      await csrf()
+      const response = await axios.post('login', data)
+      if (response.status === 204) {
+        toast.error('Account currently not yet verified', { position: 'top-right' })
+        router.push('/')
+      }
+    } catch (err: any) {
+      setIsError(true)
+      setError(catchError(err))
+    }
+  }
+
   return {
     isError,
     register,
+    login,
     error
   }
 }
