@@ -1,13 +1,15 @@
 import React from 'react'
 import Head from 'next/head'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 
+import useAuth from '~/hooks/auth'
 import { SignInUpFormValues } from '~/shared/types'
 import AuthForm from '~/components/molecules/AuthForm'
-import { useRouter } from 'next/router'
 
 const Admin: NextPage = (): JSX.Element => {
   const router = useRouter()
+  const { register, isError, error } = useAuth()
 
   const handleAuthSubmit = async (data: SignInUpFormValues): Promise<void> => {
     return new Promise((resolve) => {
@@ -43,9 +45,8 @@ const Admin: NextPage = (): JSX.Element => {
               <h2 className="text-center text-4xl font-bold text-gray-700">Administrator</h2>
               <p className="mt-3 text-gray-500">only authorized personnel are allowed</p>
             </div>
-
             <div className="mt-8">
-              <AuthForm isLogin actions={{ handleAuthSubmit }} />
+              <AuthForm isLogin actions={{ handleAuthSubmit }} axiosErrors={{ isError, error }} />
             </div>
           </div>
         </div>
