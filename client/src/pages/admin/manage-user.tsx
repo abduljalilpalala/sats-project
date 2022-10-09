@@ -1,15 +1,15 @@
+import React from 'react'
 import { NextPage } from 'next'
-import React, { FC } from 'react'
 
 import UnderConstruction from '~/utils/UnderConstruction'
 import AdminLayout from '~/components/templates/AdminLayout'
 
-const Dashboard: NextPage = (): JSX.Element => {
+const ManageUser: NextPage = (): JSX.Element => {
   return (
-    <AdminLayout metaTitle="Administrator | Dashboard">
+    <AdminLayout metaTitle="Administrator | Manage User">
       <UnderConstruction />
     </AdminLayout>
   )
 }
 
-export default Dashboard
+export default ManageUser

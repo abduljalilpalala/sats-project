@@ -21,7 +21,7 @@ const AuthLayout: FC<Props> = (props): JSX.Element => {
         <title key="auth">{`Alumni Tracking System | ${props.metaTitle}`}</title>
       </Head>
       <AuthHeader />
-      <main className="flex min-h-screen items-center justify-center text-slate-900 md:bg-slate-50">
+      <main className="flex min-h-screen items-center justify-center text-slate-900 md:bg-slate-100">
         <section className="mt-20 mb-8 w-full max-w-lg rounded-lg bg-white px-8 py-10 md:border md:shadow-md">
           <div className="flex flex-col items-center justify-center">
             <h1 className="py-6 text-2xl font-bold text-indigo-900">
