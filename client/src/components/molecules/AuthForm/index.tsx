@@ -11,6 +11,7 @@ import { SignInFormSchema, SignUpFormSchema } from '~/shared/validation'
 import { AxiosResponseError, SignInUpFormValues } from '~/shared/types'
 
 type Props = {
+  type?: string | 'alumni'
   isLogin?: boolean | false
   actions: {
     handleAuthSubmit: (data: SignInUpFormValues) => Promise<void>
@@ -25,6 +26,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
   const [showPass, setShowPass] = useState(false)
 
   const {
+    type,
     isLogin,
     actions: { handleAuthSubmit },
     axiosErrors: { isError, error }
@@ -48,7 +50,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
   return (
     <form onSubmit={handleSubmit(handleAuthSubmit)}>
       <div className="grid gap-x-6 gap-y-2.5">
-        {!isLogin && (
+        {!isLogin && type && (
           <>
             <div className="col-span-12">
               <label htmlFor="id-number" className="block text-sm font-medium">
@@ -104,7 +106,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
           </>
         )}
         <div className="col-span-12">
-          <label htmlFor="email-address" className="block text-sm font-medium">
+          <label htmlFor="email-address" className="block text-sm font-medium text-white">
             <small className="text-rose-600">*</small> Email address
           </label>
           <input
@@ -123,7 +125,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
           />
           {errors?.email && <span className="error">{`${errors?.email?.message}`}</span>}
         </div>
-        {!isLogin && (
+        {!isLogin && type && (
           <>
             <div className="col-span-12">
               <label className="block text-sm font-medium">
@@ -198,7 +200,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
           </>
         )}
         <div className="col-span-12">
-          <label htmlFor="password" className="block text-sm font-medium">
+          <label htmlFor="password" className="block text-sm font-medium text-white">
             <small className="text-rose-600">*</small> Password
           </label>
           <div className="relative">
@@ -242,7 +244,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
           </div>
           {errors?.password && <span className="error">{`${errors?.password?.message}`}</span>}
         </div>
-        {!isLogin && (
+        {!isLogin && type && (
           <div className="col-span-12">
             <label htmlFor="confirm-password" className="block text-sm font-medium">
               <small className="text-rose-600">*</small> Confirm Password
@@ -266,7 +268,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
             )}
           </div>
         )}
-        {isLogin && (
+        {isLogin && !type && (
           <div className="col-span-12 flex w-full items-center">
             <div className="mt-2 flex items-center">
               <div className="flex h-5 items-center">
@@ -284,7 +286,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
           </div>
         )}
       </div>
-      <div className={`text-right ${isLogin ? 'mt-16' : 'mt-8'}`}>
+      <div className={`text-right ${isLogin && type === 'alumni' ? 'mt-16' : 'mt-8'}`}>
         <button
           type="submit"
           disabled={isSubmitting}

@@ -16,7 +16,7 @@ const Register: NextPage = (): JSX.Element => {
 
   return (
     <AuthLayout metaTitle="Registration">
-      <AuthForm actions={{ handleAuthSubmit }} axiosErrors={{ isError, error }} />
+      <AuthForm actions={{ handleAuthSubmit }} type="alumni" axiosErrors={{ isError, error }} />
     </AuthLayout>
   )
 }
