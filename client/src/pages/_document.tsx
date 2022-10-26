@@ -21,7 +21,7 @@ class Document extends NextDocument {
             rel="stylesheet"
           />
         </Head>
-        <body className="font-inter antialiased">
+        <body className="bg-[#cbd5e1] font-inter antialiased">
           <Main />
           <NextScript />
         </body>

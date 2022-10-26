@@ -5,3 +5,9 @@ export interface ISidebar {
   name: string
   href: string
 }
+
+export interface Alumni {
+  id: string
+  name: string
+  batch: string
+}

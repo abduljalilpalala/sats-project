@@ -19,7 +19,7 @@ const AdminLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Admin | {metaTitle}</title>
+        <title>{`Admin | ${metaTitle}`}</title>
       </Head>
       {/* Admin Header */}
       <Header actions={{ handleOpen }} />
