@@ -1,7 +1,5 @@
-import { IconType } from 'react-icons'
-
 export interface ISidebar {
-  Icon: IconType
+  Icon: any
   name: string
   href: string
 }

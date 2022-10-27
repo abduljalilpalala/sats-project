@@ -7,13 +7,15 @@ module.exports = {
         inter: 'Inter, sans-serif'
       },
       colors: {
-        success: '#0ede6e'
+        success: '#0ede6e',
+        'sats-30': '#083c76',
+        'sats-10': '#4497ee'
       }
     }
   },
   plugins: [
-    require('tailwind-scrollbar'),
     require('@tailwindcss/forms'),
-    require('@tailwindcss/line-clamp')
+    require('@tailwindcss/line-clamp'),
+    require('tailwind-scrollbar')({ nocompatible: true })
   ]
 }
