@@ -1,10 +1,10 @@
 import moment from 'moment'
 import { NextPage } from 'next'
 
-import AuthForm from '~/components/molecules/AuthForm'
-import AuthLayout from '~/components/templates/AuthLayout'
 import useAuth from '~/hooks/auth'
 import { SignInUpFormValues } from '~/shared/types'
+import AuthForm from '~/components/molecules/AuthForm'
+import AuthLayout from '~/components/templates/AuthLayout'
 
 const Register: NextPage = (): JSX.Element => {
   const { register, isError, error } = useAuth()
@@ -16,7 +16,7 @@ const Register: NextPage = (): JSX.Element => {
 
   return (
     <AuthLayout metaTitle="Registration">
-      <AuthForm isLogin={false} actions={{ handleAuthSubmit }} axiosErrors={{ isError, error }} />
+      <AuthForm actions={{ handleAuthSubmit }} axiosErrors={{ isError, error }} />
     </AuthLayout>
   )
 }

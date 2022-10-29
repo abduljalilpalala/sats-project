@@ -14,7 +14,7 @@ const Login: NextPage = (): JSX.Element => {
   }
 
   return (
-    <AuthLayout metaTitle="Registration">
+    <AuthLayout metaTitle="Login">
       <AuthForm isLogin actions={{ handleAuthSubmit }} axiosErrors={{ isError, error }} />
     </AuthLayout>
   )

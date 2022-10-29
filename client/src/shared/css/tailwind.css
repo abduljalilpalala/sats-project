@@ -4,6 +4,6 @@
 
 @layer components {
   .error {
-    @apply mt-1 ml-0.5 block text-left text-xs text-red-500;
+    @apply mt-0.5 ml-0.5 block text-left text-[0.65rem] text-red-500;
   }
 }

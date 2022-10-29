@@ -1,9 +1,10 @@
 export type SignInUpFormValues = {
   id_number?: string
+  batch: string
   name: string
   email: string
   birth_date: string
-  contact_number?: string
+  contact_number: string
   employment_status: string
   role_id?: number
   password: string
@@ -16,6 +17,7 @@ export type AxiosResponseError = {
 }
 
 export type SignInUpFormFields =
+  | 'batch'
   | 'name'
   | 'email'
   | 'birth_date'

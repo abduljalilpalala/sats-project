@@ -13,7 +13,11 @@ export const SignUpFormSchema = Yup.object().shape({
     .max(30, 'Should have max length of 30 characters'),
   email: Yup.string().email().required().label('Email'),
   birth_date: Yup.string().required().label('Birth Date'),
-  contact_number: Yup.string().label('Contact Number').required('Contact Number is required'),
+  contact_number: Yup.string()
+    .label('Contact Number')
+    .required('Contact Number is required')
+    .min(11)
+    .max(11),
   employment_status: Yup.string().required().label('Employment Status'),
   password: Yup.string()
     .required('Password is required')
