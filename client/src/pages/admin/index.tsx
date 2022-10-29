@@ -19,34 +19,28 @@ const Admin: NextPage = (): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Alumni Tracking System | Admin</title>
+        <title>Admin Login</title>
+        <meta name="description" content="404 Page Not Found" />
       </Head>
-      <section className="flex h-screen justify-center bg-white">
-        <div className="relative hidden w-2/3 bg-[url('/images/bg-slsu3.jpg')] bg-cover lg:block">
-          <div className="absolute inset-0 bg-black/10"></div>
-          <div className="flex h-screen items-center px-20">
-            <div className="space-y-2">
-              <h2 className="rounded border bg-white/30 p-0.5 text-5xl font-bold text-white drop-shadow-lg">
-                Alumni Tracking System
-              </h2>
-              <p className="mt-3 max-w-xl text-xl text-white drop-shadow-md">
-                Warning: Unauthorized Personnel are Strictly Prohibited
-              </p>
-            </div>
+      <main
+        className="flex h-screen min-h-screen items-center justify-center px-4"
+        style={{
+          background: `linear-gradient(180deg, #083C76 17.22%, rgba(8, 60, 118, 0) 99.97%), #4497EE`
+        }}
+      >
+        <div className="w-full max-w-sm space-y-10">
+          <div className="flex flex-shrink-0 flex-col items-center space-y-6">
+            <img src="/images/logo.png" className="h-24 w-24" alt="" />
+            <h1 className="text-3xl font-bold text-white">Admin Login</h1>
           </div>
+          <AuthForm
+            isLogin
+            type="admin"
+            actions={{ handleAuthSubmit }}
+            axiosErrors={{ isError, error }}
+          />
         </div>
-        <div className="mx-auto flex w-full max-w-md items-center px-6 lg:w-2/6">
-          <div className="flex-1">
-            <div className="text-center">
-              <h2 className="text-center text-4xl font-bold text-gray-700">Administrator</h2>
-              <p className="mt-3 text-gray-500">only authorized personnel are allowed</p>
-            </div>
-            <div className="mt-8">
-              <AuthForm isLogin actions={{ handleAuthSubmit }} axiosErrors={{ isError, error }} />
-            </div>
-          </div>
-        </div>
-      </section>
+      </main>
     </>
   )
 }
