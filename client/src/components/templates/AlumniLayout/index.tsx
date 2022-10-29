@@ -51,7 +51,7 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
           <header className="sticky top-0 mx-4 border-b border-slate-300 bg-white py-2">
             <h1 className="text-md font-medium text-[#083c76]">Alumni list</h1>
           </header>
-          <nav className="-mt-4 h-full min-h-full w-full overflow-y-auto px-5 py-6">
+          <nav className="-mt-4 h-full min-h-full w-full overflow-y-auto px-5 py-6 scrollbar-thin scrollbar-thumb-slate-400 scrollbar-thumb-rounded-md">
             <ul className="divide-y divide-slate-200">
               {alumniData.map((alumni) => (
                 <li key={alumni.id} className="flex items-center space-x-3 py-2.5">

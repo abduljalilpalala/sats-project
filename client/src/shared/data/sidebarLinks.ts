@@ -1,21 +1,20 @@
-import { ImUsers } from 'react-icons/im'
-import { MdDashboard, MdPostAdd } from 'react-icons/md'
+import { Grid, FilePlus, Users } from 'react-feather'
 
 import { ISidebar } from './../interfaces'
 
 export const sidebarLinks: ISidebar[] = [
   {
-    Icon: MdDashboard,
+    Icon: Grid,
     name: 'Dashboard',
     href: '/admin/dashboard'
   },
   {
-    Icon: MdPostAdd,
+    Icon: FilePlus,
     name: 'Manage Post',
     href: '/admin/manage-post'
   },
   {
-    Icon: ImUsers,
+    Icon: Users,
     name: 'Manage User',
     href: '/admin/manage-user'
   }
