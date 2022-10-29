@@ -1,11 +1,17 @@
 import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
 import { NextPage } from 'next'
-
-import { clxs } from '~/helpers/classNames'
+import { useEffect, useState } from 'react'
+import { NextRouter, useRouter } from 'next/router'
 
 const NotFound: NextPage = (): JSX.Element => {
+  const router: NextRouter = useRouter()
+  const [counter, setCounter] = useState<number>(5)
+
+  useEffect(() => {
+    counter > 0 && setTimeout(() => setCounter(counter - 1), 1000)
+    if (!counter) router.push('/')
+  }, [counter])
+
   return (
     <>
       <Head>
@@ -13,45 +19,20 @@ const NotFound: NextPage = (): JSX.Element => {
         <meta name="description" content="404 Page Not Found" />
       </Head>
       <main
-        className={clxs(
-          'flex h-screen min-h-screen items-center justify-center px-4',
-          'bg-white text-gray-800 transition duration-700 ease-in-out'
-        )}
+        className="flex h-screen min-h-screen items-center justify-center px-4"
+        style={{
+          background: `linear-gradient(180deg, #083C76 17.22%, rgba(8, 60, 118, 0) 99.97%), #4497EE`
+        }}
       >
-        <div className="flex max-w-md flex-col items-center space-y-4">
-          <header className=" flex items-center">
-            <span className="-mr-6 text-9xl font-extrabold">4</span>
-            <div>
-              <Image
-                src="/images/404.png"
-                alt="Cry Emoji Image"
-                width={192}
-                height={192}
-                blurDataURL="/images/emoji.png"
-                placeholder="blur"
-                layout="intrinsic"
-              />
-            </div>
-            <span className="-ml-8 text-9xl font-extrabold">4</span>
-          </header>
-          <section className="flex flex-col items-center">
-            <h2 className="text-xl font-bold uppercase">Oops! Page not be found</h2>
-            <p className="text-center text-sm text-gray-500">
-              Sorry but the page you are looking for does not exist, have been removed. name changed
-              or is temporarily unavailable
-            </p>
-          </section>
-          <Link href="/">
-            <a
-              className={clxs(
-                'rounded-full bg-yellow-300 px-6 py-3 text-white hover:bg-yellow-400',
-                'duration-15 font-semibold transition ease-in-out hover:shadow-xl',
-                'cursor-pointer transition duration-150 ease-in-out focus:outline-none'
-              )}
-            >
-              Back to Homepage
-            </a>
-          </Link>
+        <div className="flex flex-col items-center">
+          <div className="flex-shrink-0 scale-75">
+            <img src="/images/not-found.png" className="w-full" alt="" />
+          </div>
+          <div className="-mt-8 lg:-mt-16">
+            <h1 className="flex-wrap px-12 text-justify text-white sm:text-base md:text-xl lg:text-2xl">
+              Page not found, you will be redirected to home page in {counter}s
+            </h1>
+          </div>
         </div>
       </main>
     </>
