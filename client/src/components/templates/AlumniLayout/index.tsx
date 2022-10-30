@@ -1,22 +1,30 @@
 import Head from 'next/head'
-import React, { FC } from 'react'
+import React, { FC, useState, ReactNode } from 'react'
 
 import { alumniData } from '~/shared/data/alumniData'
 import AlumniHeader from '~/components/organisms/AlumniHeader'
+import SettingsModal from '~/components/organisms/SettingsDialog'
 
 type Props = {
-  children: React.ReactNode
+  children: ReactNode
   metaTitle: string | 'Welcome'
 }
 
 const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+
+  const toggle = (): void => setIsOpen(!isOpen)
+
   return (
     <>
       <Head>
         <title>{`SATS | ${metaTitle}`}</title>
       </Head>
-      <AlumniHeader />
-      <main className="mx-auto flex h-[4000px] max-w-[90rem] md:space-x-10 md:px-4">
+
+      {/* Alumni Header */}
+      <AlumniHeader actions={{ toggle }} />
+
+      <main className="mx-auto flex max-w-[90rem] pt-[60px] md:space-x-10 md:px-4">
         {/* The Profile Side */}
         <aside className="sticky top-[86px] hidden h-[330px] w-full max-w-[280px] overflow-hidden rounded-lg bg-white shadow md:block">
           <section className="h-[130px] overflow-hidden">
@@ -37,9 +45,15 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
               <p className="text-xs">joshua.galit@sun-asterisk.com</p>
             </main>
           </section>
-          <section className="mt-8 flex flex-col px-4 ">
+          <section className="relative mt-8 flex flex-col px-4 ">
             <hr />
-            <h1 className="pt-2 text-center text-sm text-[#083c76]">My Profile</h1>
+            <button
+              onClick={toggle}
+              className="pt-2 text-center text-sm text-[#083c76] active:scale-95"
+            >
+              My Profile
+            </button>
+            <SettingsModal isOpen={isOpen} toggle={toggle} />
           </section>
         </aside>
 
