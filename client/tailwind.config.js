@@ -7,9 +7,14 @@ module.exports = {
         inter: 'Inter, sans-serif'
       },
       colors: {
-        success: '#0ede6e',
-        'sats-30': '#083c76',
-        'sats-10': '#4497ee'
+        success: '#0EDE6E',
+        failed: '#DC2626',
+        sats: {
+          10: "#4497EE",
+          30: "#083C76",
+          60: "#F9F9F9",
+        }
+
       }
     }
   },
