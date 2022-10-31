@@ -2,12 +2,12 @@ import { useEffect } from 'react'
 import { UseFormSetError } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import { AxiosResponseError, SignInUpFormFields, SignInUpFormValues } from '~/shared/types'
+import { AxiosResponseError, SignInUpFormFields, User } from '~/shared/types'
 
 const useAxiosError = (
   isError: boolean,
   error: AxiosResponseError,
-  setError: UseFormSetError<SignInUpFormValues>
+  setError: UseFormSetError<User>
 ) => {
   useEffect(() => {
     if (isError) {

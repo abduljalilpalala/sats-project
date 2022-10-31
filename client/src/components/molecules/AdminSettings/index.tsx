@@ -10,8 +10,8 @@ const AdminSettings = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: () =
   const isError = false;
   const { currentPassword, newConfirmedPassword, newPassword } = { currentPassword: [""], newConfirmedPassword: [""], newPassword: [""] };
 
-  const onClick = (e: { target: { innerText: string } }): void => {
-    const value = e.target.innerText;
+  const onClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    const value = e.currentTarget.innerText;
     setActive(value);
   }
 

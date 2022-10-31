@@ -8,13 +8,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import useAxiosError from '~/hooks/axiosError'
 import { Spinner } from '~/shared/icons/SpinnerIcon'
 import { SignInFormSchema, SignUpFormSchema } from '~/shared/validation'
-import { AxiosResponseError, SignInUpFormValues } from '~/shared/types'
+import { AxiosResponseError, User } from '~/shared/types'
 
 type Props = {
   type?: string | 'alumni'
   isLogin?: boolean | false
   actions: {
-    handleAuthSubmit: (data: SignInUpFormValues) => Promise<void>
+    handleAuthSubmit: (data: User) => Promise<void>
   }
   axiosErrors: {
     error: AxiosResponseError
@@ -38,7 +38,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
     setError,
     control,
     formState: { errors, isSubmitting }
-  } = useForm<SignInUpFormValues>({
+  } = useForm<User>({
     mode: 'onTouched',
     resolver: yupResolver(isLogin ? SignInFormSchema : SignUpFormSchema)
   })
@@ -72,7 +72,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
               </label>
               <select
                 disabled={isSubmitting}
-                {...register('employment_status')}
+                {...register('batch')}
                 className={`
                   block w-full rounded-sm border-[3px] border-[#4497ee] py-0.5 text-slate-900 outline-none 
                   focus:border-[#3b83d1] focus:ring-0
@@ -81,7 +81,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
                 <option value={1}>2018-2019</option>
                 <option value={2}>2019-2020</option>
                 <option value={3}>2020-2021</option>
-                <option value={3}>2021-2022</option>
+                <option value={4}>2021-2022</option>
               </select>
             </div>
             <div className="col-span-12">

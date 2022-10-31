@@ -19,6 +19,7 @@ export const SignUpFormSchema = Yup.object().shape({
     .min(11)
     .max(11),
   employment_status: Yup.string().required().label('Employment Status'),
+  batch: Yup.string().required().label('Batch'),
   password: Yup.string()
     .required('Password is required')
     .min(4, 'Password length should be at least 4 characters')

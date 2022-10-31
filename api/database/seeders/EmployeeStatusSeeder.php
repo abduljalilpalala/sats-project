@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Enums\EmployeeStatusEnum;
-use App\Models\EmployeeStatus;
+use App\Enums\EmploymentStatusEnum;
+use App\Models\EmploymentStatus;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,19 +18,19 @@ class EmployeeStatusSeeder extends Seeder
   {
     $statuses = [
       [
-        'id' => EmployeeStatusEnum::EMPLOYED->value,
-        'status' => EmployeeStatusEnum::tryFrom(EmployeeStatusEnum::EMPLOYED->value)->toString()
+        'id' => EmploymentStatusEnum::EMPLOYED->value,
+        'status' => EmploymentStatusEnum::tryFrom(EmploymentStatusEnum::EMPLOYED->value)->toString()
       ],
       [
-        'id' => EmployeeStatusEnum::UNEMPLOYED->value,
-        'status' => EmployeeStatusEnum::tryFrom(EmployeeStatusEnum::UNEMPLOYED->value)->toString()
+        'id' => EmploymentStatusEnum::UNEMPLOYED->value,
+        'status' => EmploymentStatusEnum::tryFrom(EmploymentStatusEnum::UNEMPLOYED->value)->toString()
       ],
       [
-        'id' => EmployeeStatusEnum::SELF_EMPLOYED->value,
-        'status' => EmployeeStatusEnum::tryFrom(EmployeeStatusEnum::SELF_EMPLOYED->value)->toString()
+        'id' => EmploymentStatusEnum::SELF_EMPLOYED->value,
+        'status' => EmploymentStatusEnum::tryFrom(EmploymentStatusEnum::SELF_EMPLOYED->value)->toString()
       ],
     ];
 
-    EmployeeStatus::upsert($statuses, ['id'], ['status']);
+    EmploymentStatus::upsert($statuses, ['id'], ['status']);
   }
 }

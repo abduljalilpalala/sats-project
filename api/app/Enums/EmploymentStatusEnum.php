@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum EmployeeStatusEnum: int
+enum EmploymentStatusEnum: int
 {
   case UNEMPLOYED = 1;
   case EMPLOYED = 2;

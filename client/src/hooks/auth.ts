@@ -3,7 +3,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import axios from '~/shared/lib/axios'
-import { AxiosResponseError, SignInUpFormValues } from '~/shared/types'
+import { AxiosResponseError, User } from '~/shared/types'
 import { catchError } from '~/utils/handleAxiosError'
 import { Roles } from '~/shared/data/roleConstant'
 
@@ -17,14 +17,13 @@ const useAuth = () => {
 
   const csrf = () => axios.get('/sanctum/csrf-cookie')
 
-  const register = async (data: SignInUpFormValues) => {
+  const register = async (data: User) => {
     try {
       setIsError(false)
       await csrf()
       const response = await axios.post('register', data)
       if (response.status === 204) {
         toast.error('Account currently not yet verified', { position: 'top-right' })
-        router.push('/')
       }
     } catch (err: any) {
       setIsError(true)
@@ -32,17 +31,21 @@ const useAuth = () => {
     }
   }
 
-  const login = async (data: SignInUpFormValues) => {
+  const login = async (data: User) => {
     try {
       setIsError(false)
       await csrf()
       const response = await axios.post('login', data)
-      if (response.status === 204) {
-        if (data.role_id === Roles.ADMIN) {
+      if (response.statusText === 'OK') {
+        if (data.role === Roles.ADMIN) {
           toast.success('You have successfully logged in!', { position: 'top-right' })
           router.push('/admin/dashboard')
-        } else {
+          return
+        }
+
+        if (!data.is_verified) {
           toast.error('Account currently not yet verified', { position: 'top-right' })
+        } else {
           router.push('/')
         }
       }

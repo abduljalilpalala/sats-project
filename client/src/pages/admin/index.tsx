@@ -1,18 +1,17 @@
 import React from 'react'
 import Head from 'next/head'
 import { NextPage } from 'next'
-import { useRouter } from 'next/router'
 
 import useAuth from '~/hooks/auth'
-import { SignInUpFormValues } from '~/shared/types'
+import { User } from '~/shared/types'
 import AuthForm from '~/components/molecules/AuthForm'
 import { Roles } from '~/shared/data/roleConstant'
 
 const Admin: NextPage = (): JSX.Element => {
   const { login, isError, error } = useAuth()
 
-  const handleAuthSubmit = async (data: SignInUpFormValues): Promise<void> => {
-    data.role_id = Roles.ADMIN
+  const handleAuthSubmit = async (data: User): Promise<void> => {
+    data.role = Roles.ADMIN
     await login(data)
   }
 

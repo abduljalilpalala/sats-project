@@ -5,27 +5,24 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterUserController extends Controller
 {
-  /**
-   * Handle an incoming registration request.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   *
-   * @throws \Illuminate\Validation\ValidationException
-   */
   public function store(RegisterUserRequest $request)
   {
-    User::create([
+    $user = User::create([
+      'id_number' => $request->id_number,
       'name' => $request->name,
       'email' => $request->email,
       'password' => bcrypt($request->password),
       'birth_date' => $request->birth_date,
       'contact_number' => $request->contact_number,
-      'employee_status_id' => $request->employment_status,
+      'batch_id' => $request->batch,
+      'employment_status_id' => $request->employment_status,
     ]);
+
+    Auth::login($user);
 
     return response()->noContent();
   }
