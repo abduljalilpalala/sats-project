@@ -28,13 +28,13 @@ const AdminLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
       </Head>
       {/* Admin Header */}
       <AdminHeader actions={{ handleOpen }} />
-      <div className="flex overflow-hidden pt-16">
+      <div className="pt-16 w-screen">
         {/* Admin Sidebar */}
         <AdminSidebar isOpen={isOpen} />
         {/* Main Content */}
         <div
           className={clxs(
-            'relative h-full min-h-screen w-full overflow-y-auto bg-white',
+            'relative h-full min-h-screen overflow-y-auto bg-white',
             isOpen ? `ml-64` : `ml-16`
           )}
         >
