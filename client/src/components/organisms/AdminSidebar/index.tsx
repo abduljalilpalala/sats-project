@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { LogOut, Settings } from 'react-feather'
@@ -6,6 +6,7 @@ import { LogOut, Settings } from 'react-feather'
 import { clxs } from '~/helpers/classNames'
 import { ISidebar } from '~/shared/interfaces'
 import { sidebarLinks } from '~/shared/data/sidebarLinks'
+import AdminSettings from '~/components/molecules/AdminSettings'
 
 type Props = {
   isOpen: boolean
@@ -14,6 +15,7 @@ type Props = {
 const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
   const { isOpen } = props
   const router = useRouter()
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
 
   return (
     <aside
@@ -22,6 +24,7 @@ const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
         isOpen ? 'w-64' : 'w-[70px]'
       )}
     >
+      <AdminSettings isOpen={isSettingsOpen} setIsOpen={() => { setIsSettingsOpen(!isSettingsOpen) }} />
       <section className="relative flex flex-1 flex-col">
         <nav className="flex flex-1 flex-col justify-between">
           <ul>
@@ -33,10 +36,9 @@ const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
                       flex h-12 w-full items-center space-x-4 px-6 py-3 text-base font-semibold
                       outline-none transition duration-150 ease-in-out
                       hover:cursor-pointer active:scale-95
-                      ${
-                        router.pathname.includes(href)
-                          ? 'bg-sats-10 text-white'
-                          : 'focus:bg-gray-100 hover:bg-gray-100 hover:text-sats-30'
+                      ${router.pathname.includes(href)
+                        ? 'bg-sats-10 text-white'
+                        : 'focus:bg-gray-100 hover:bg-gray-100 hover:text-sats-30'
                       }
                     `}
                   >
@@ -49,6 +51,7 @@ const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
           </ul>
           <div className="border-t border-slate-400">
             <button
+              onClick={() => setIsSettingsOpen(!isSettingsOpen)}
               type="button"
               className={`
                 flex h-12 w-full items-center space-x-4 px-6 py-3 text-base font-semibold

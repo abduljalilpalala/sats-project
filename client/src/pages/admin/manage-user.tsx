@@ -6,6 +6,7 @@ import { ChevronUpIcon } from '@heroicons/react/20/solid'
 
 import AdminLayout from '~/components/templates/AdminLayout'
 import getApplicationStatus from '~/utils/getApplicationStatus'
+import truncate from '~/utils/truncate'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -24,7 +25,7 @@ const ManageUser: NextPage = (): JSX.Element => {
       name: "John Doe 2",
       avatar: "/images/avatar.png",
       isPending: false,
-      email: "johndoe@gmail.com",
+      email: "johndasassdasdoe@gmail.com",
       number: "09123847373",
       id_number: "2313123123",
       batch: "2021-2022",
@@ -40,7 +41,7 @@ const ManageUser: NextPage = (): JSX.Element => {
       name: "John Doe 4",
       avatar: "/images/avatar.png",
       isPending: false,
-      email: "johndoe@gmail.com",
+      email: "johnasdasddasdasdasdaoe@gmail.com",
       number: "09123847373",
       id_number: "2313123123",
       batch: "2021-2022",
@@ -150,48 +151,46 @@ const ManageUser: NextPage = (): JSX.Element => {
                                 </div>
                               </Disclosure.Button>
                               <Disclosure.Panel className="px-5 mobile:px-0 pt-4 pb-2 text-sm text-slate-900 flex flex-row justify-between mobile:flex-col mobile:gap-5">
-                                <table>
-                                  <tbody>
+                                <div className="w-full"> 
                                     {
                                       [
                                         { header: "ID Number", value: id_number },
                                         { header: "Batch", value: batch }
-                                      ].map((data:any,index:number)=>{
+                                      ].map((data: any, index: number) => {
                                         const { header, value } = data;
                                         return (
-                                          <tr key={index}>
-                                            <td className='w-[50%] flex flex-row justify-between'>
+                                          <div key={index} className="flex flex-row justify-between">
+                                            <div className='w-[150px] mobile:w-[100px] flex flex-row justify-between'>
                                               <span>{header}</span>
-                                              <span>:</span>
-                                            </td>
-                                            <td className='w-[50%]'>
-                                              <span>{value}</span>
-                                            </td>
-                                          </tr>
+                                              <span className="ml-5">:</span>
+                                            </div>
+                                            <div className='text-right'>
+                                              <span className="truncate">{value}</span>
+                                            </div>
+                                          </div>
                                         )
                                       })
-                                    } 
-                                    {isPending || ( 
-                                        [
-                                          { header: "Email", value: email },
-                                          { header: "Number", value: number }
-                                        ].map((data: any, index: number) => {
-                                          const { header, value } = data;
-                                          return (
-                                            <tr key={index}>
-                                              <td className='w-[50%] flex flex-row justify-between'>
-                                                <span>{header}</span>
-                                                <span>:</span>
-                                              </td> 
-                                              <td className='w-[50%]'>
-                                                <span>{value}</span>
-                                              </td>
-                                            </tr>
-                                          )
-                                        }) 
-                                    )}
-                                  </tbody>
-                                </table>
+                                    }
+                                    {isPending || (
+                                      [
+                                        { header: "Email", value: email },
+                                        { header: "Number", value: number }
+                                      ].map((data: any, index: number) => {
+                                        const { header, value } = data;
+                                        return (
+                                          <div key={index} className="flex flex-row justify-between">
+                                            <div className='w-[150px] mobile:w-[100px] flex flex-row justify-between'>
+                                              <span>{header}</span>
+                                              <span className="ml-5">:</span>
+                                            </div>
+                                            <div className='mobile:max-w-[150px] text-right mobile:truncate'>
+                                              <span>{value}</span>
+                                            </div>
+                                          </div>
+                                        )
+                                      })
+                                    )} 
+                                </div>
                                 {isPending && (
                                   <div className="flex flex-col gap-2 mobile:flex-row">
                                     <button onClick={() => approve(name)} className={`w-15 mobile:w-full flex items-center justify-center bg-success py-1 hover:bg-opacity-60 transition ease-in-out px-10 rounded-md text-white`}>
