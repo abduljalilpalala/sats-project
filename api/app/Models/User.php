@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\ApplicationStatusEnum;
+use App\Enums\RoleEnum;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,6 +66,21 @@ class User extends Authenticatable implements HasMedia
   public function role()
   {
     return $this->belongsTo(Role::class);
+  }
+
+  public function scopeApplicants($query)
+  {
+    return $query->where('role_id', RoleEnum::USER);
+  }
+
+  public function scopeApproved($query)
+  {
+    return $query->where('is_verified', ApplicationStatusEnum::APPROVED);
+  }
+
+  public function scopePending($query)
+  {
+    return $query->where('is_verified', ApplicationStatusEnum::PENDING);
   }
 
   public static function boot()

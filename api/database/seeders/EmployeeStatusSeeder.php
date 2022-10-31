@@ -19,15 +19,15 @@ class EmployeeStatusSeeder extends Seeder
     $statuses = [
       [
         'id' => EmploymentStatusEnum::EMPLOYED->value,
-        'status' => EmploymentStatusEnum::tryFrom(EmploymentStatusEnum::EMPLOYED->value)->toString()
+        'status' => EmploymentStatusEnum::EMPLOYED->label()
       ],
       [
         'id' => EmploymentStatusEnum::UNEMPLOYED->value,
-        'status' => EmploymentStatusEnum::tryFrom(EmploymentStatusEnum::UNEMPLOYED->value)->toString()
+        'status' => EmploymentStatusEnum::UNEMPLOYED->label()
       ],
       [
         'id' => EmploymentStatusEnum::SELF_EMPLOYED->value,
-        'status' => EmploymentStatusEnum::tryFrom(EmploymentStatusEnum::SELF_EMPLOYED->value)->toString()
+        'status' => EmploymentStatusEnum::SELF_EMPLOYED->label()
       ],
     ];
 

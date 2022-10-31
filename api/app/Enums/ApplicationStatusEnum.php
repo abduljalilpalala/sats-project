@@ -2,16 +2,16 @@
 
 namespace App\Enums;
 
-enum RoleEnum: int
+enum ApplicationStatusEnum: int
 {
-  case ADMIN = 1;
-  case USER = 2;
+  case APPROVED = 1;
+  case PENDING = 0;
 
   private static function getLabel(self $value): string
   {
     return match ($value) {
-      RoleEnum::ADMIN => 'Admin',
-      RoleEnum::USER => 'User',
+      ApplicationStatusEnum::APPROVED => 'approved',
+      ApplicationStatusEnum::PENDING => 'pending',
     };
   }
 
