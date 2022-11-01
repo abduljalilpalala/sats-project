@@ -8,12 +8,18 @@ enum EmploymentStatusEnum: int
   case EMPLOYED = 2;
   case SELF_EMPLOYED = 3;
 
-  public function toString()
+
+  private static function getLabel(self $value): string
   {
-    return match ($this) {
-      self::UNEMPLOYED => 'Unemployed',
-      self::EMPLOYED => 'Employed',
-      self::SELF_EMPLOYED => 'Self-Employed',
+    return match ($value) {
+      EmploymentStatusEnum::UNEMPLOYED => 'Unemployed',
+      EmploymentStatusEnum::EMPLOYED => 'Employed',
+      EmploymentStatusEnum::SELF_EMPLOYED => 'Self-Employed',
     };
+  }
+
+  public function label(): string
+  {
+    return static::getLabel($this);
   }
 }

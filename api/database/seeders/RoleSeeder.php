@@ -19,11 +19,11 @@ class RoleSeeder extends Seeder
     $roles = [
       [
         'id' => RoleEnum::ADMIN->value,
-        'name' => RoleEnum::tryFrom(RoleEnum::ADMIN->value)->toString()
+        'name' => RoleEnum::ADMIN->label()
       ],
       [
         'id' => RoleEnum::USER->value,
-        'name' => RoleEnum::tryFrom(RoleEnum::USER->value)->toString()
+        'name' => RoleEnum::USER->label()
       ],
     ];
 
