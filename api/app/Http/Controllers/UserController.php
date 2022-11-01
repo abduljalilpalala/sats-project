@@ -32,4 +32,10 @@ class UserController extends Controller
     $user->update(['is_verified' => 1]);
     return response()->json($user);
   }
+
+  public function destroy(User $user)
+  {
+    $user->deleteOrFail();
+    return response()->noContent();
+  }
 }
