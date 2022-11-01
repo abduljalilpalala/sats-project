@@ -19,5 +19,5 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'auth:sanctum'], function () {
   Route::get('auth', [AuthController::class, 'index']);
 
-  Route::apiResource('user', UserController::class)->only(['index', 'store']);
+  Route::apiResource('user', UserController::class)->only(['index', 'store', 'destroy']);
 });
