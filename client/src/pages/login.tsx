@@ -1,7 +1,7 @@
 import React from 'react'
 import { NextPage } from 'next'
 
-import { SignInUpFormValues } from '~/shared/types'
+import { User } from '~/shared/types'
 import AuthForm from '~/components/molecules/AuthForm'
 import AuthLayout from '~/components/templates/AuthLayout'
 import useAuth from '~/hooks/auth'
@@ -9,7 +9,7 @@ import useAuth from '~/hooks/auth'
 const Login: NextPage = (): JSX.Element => {
   const { login, isError, error } = useAuth()
 
-  const handleAuthSubmit = async (data: SignInUpFormValues): Promise<void> => {
+  const handleAuthSubmit = async (data: User): Promise<void> => {
     await login(data)
   }
 

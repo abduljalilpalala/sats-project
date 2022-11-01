@@ -1,4 +1,4 @@
-export type SignInUpFormValues = {
+export type User = {
   id_number?: string
   batch: string
   name: string
@@ -6,7 +6,8 @@ export type SignInUpFormValues = {
   birth_date: string
   contact_number: string
   employment_status: string
-  role_id?: number
+  role?: number
+  is_verified?: boolean
   password: string
   password_confirmation: string
 }

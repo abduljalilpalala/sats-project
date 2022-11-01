@@ -2,14 +2,14 @@ import moment from 'moment'
 import { NextPage } from 'next'
 
 import useAuth from '~/hooks/auth'
-import { SignInUpFormValues } from '~/shared/types'
+import { User } from '~/shared/types'
 import AuthForm from '~/components/molecules/AuthForm'
 import AuthLayout from '~/components/templates/AuthLayout'
 
 const Register: NextPage = (): JSX.Element => {
   const { register, isError, error } = useAuth()
 
-  const handleAuthSubmit = async (data: SignInUpFormValues): Promise<void> => {
+  const handleAuthSubmit = async (data: User): Promise<void> => {
     data.birth_date = moment(new Date(data.birth_date)).format('YYYY-MM-DD')
     await register(data)
   }

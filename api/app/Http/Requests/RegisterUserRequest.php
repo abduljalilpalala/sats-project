@@ -29,7 +29,8 @@ class RegisterUserRequest extends FormRequest
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
       'password' => ['required', 'confirmed', Rules\Password::defaults()],
       'birth_date' => ['required'],
-      'contact_number' => ['required'],
+      'batch' => ['required'],
+      'contact_number' => ['required', 'min:11', 'max:11'],
       'employment_status' => ['required'],
     ];
   }
