@@ -29,7 +29,7 @@ class UserController extends Controller
   public function store(Request $request)
   {
     $user = User::findOrFail($request->id);
-    $user->update(['is_verified' => 1]);
+    $user->update(['is_verified' => ApplicationStatusEnum::APPROVED->value]);
     return response()->json($user);
   }
 
