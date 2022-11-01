@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UpdatePasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'auth:sanctum'], function () {
   Route::get('auth', [AuthController::class, 'index']);
 
+  Route::put('user/change-password', [UpdatePasswordController::class, 'update']);
   Route::apiResource('user', UserController::class)->only(['index', 'store', 'destroy']);
   Route::apiResource('post', PostController::class)->except(['show']);
 });
