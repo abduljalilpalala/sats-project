@@ -25,4 +25,11 @@ class UserController extends Controller
     
     return UserResource::collection($user->get());
   }
+
+  public function store(Request $request)
+  {
+    $user = User::findOrFail($request->id);
+    $user->update(['is_verified' => 1]);
+    return response()->json($user);
+  }
 }
