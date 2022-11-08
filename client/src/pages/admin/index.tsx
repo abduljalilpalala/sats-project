@@ -1,20 +1,21 @@
-import React from 'react'
-import Head from 'next/head'
-import { NextPage } from 'next'
+import React, { useEffect } from 'react';
+import Head from 'next/head';
+import { NextPage } from 'next';
 
-import useAuth from '~/hooks/auth'
-import { User } from '~/shared/types'
-import AuthForm from '~/components/molecules/AuthForm'
-import { Roles } from '~/shared/data/roleConstant'
+import useAuth from '~/hooks/auth';
+import { User } from '~/shared/types';
+import AuthForm from '~/components/molecules/AuthForm';
+import { Roles } from '~/shared/data/roleConstant'; 
+import axios from '~/shared/lib/axios';
 
 const Admin: NextPage = (): JSX.Element => {
-  const { login, isError, error } = useAuth()
+  const { login, isError, error } = useAuth();
 
   const handleAuthSubmit = async (data: User): Promise<void> => {
-    data.role = Roles.ADMIN
-    await login(data)
-  }
-
+    data.role = Roles.ADMIN;
+    await login(data);
+  };
+  
   return (
     <>
       <Head>
@@ -41,7 +42,7 @@ const Admin: NextPage = (): JSX.Element => {
         </div>
       </main>
     </>
-  )
-}
+  );
+};
 
-export default Admin
+export default Admin;

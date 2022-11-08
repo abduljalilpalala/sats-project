@@ -1,20 +1,38 @@
 import React, { useState } from "react";
 
-import ModalCard from '~/components/templates/ModalCard'
-import SubmitButton from '~/components/atoms/SubmitButton'
-import TaskIcon from '~/shared/icons/TaskIcon'
-import SwitchToggle from '~/components/atoms/SwitchToggle'
+import ModalCard from '~/components/templates/ModalCard';
+import SubmitButton from '~/components/atoms/SubmitButton';
+import TaskIcon from '~/shared/icons/TaskIcon';
+import SwitchToggle from '~/components/atoms/SwitchToggle';
+import adminHooks from "~/hooks/admin/adminHooks";
 
-const AdminSettings = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: () => void }) => {
+type AdminSettings = {
+  isOpen: boolean,
+  setIsOpen: () => void;
+};
+
+type Password = {
+  currentPassword: string;
+  newPassword: string;
+  newConfirmedPassword: string;
+};
+
+const AdminSettings = ({ isOpen, setIsOpen }: AdminSettings) => {
+  const { changeAdminPassword, error } = adminHooks();
+  const { content } = error;
   const [active, setActive] = useState<string>("Post");
-  const isError = false;
-  const { currentPassword, newConfirmedPassword, newPassword } = { currentPassword: [""], newConfirmedPassword: [""], newPassword: [""] };
+  const { currentPassword, newConfirmedPassword, newPassword } =
+  {
+    currentPassword: content?.currentPassword,
+    newConfirmedPassword: content?.newConfirmedPassword,
+    newPassword: content?.newPassword
+  };
 
   const onClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     const value = e.currentTarget.innerText;
     setActive(value);
-  }
-
+  };
+  
   const menuList = ["Post", "Security"];
   const modalMenu = menuList.map((menu: string, index: number) => {
     return (
@@ -25,27 +43,32 @@ const AdminSettings = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: () =
       >
         {menu}
       </button>
-    )
+    );
   });
 
-  const [passwordData, setPasswordData] = useState<{
-    currentPassword: string
-    newPassword: string
-    newConfirmedPassword: string
-  }>({
+  const [passwordData, setPasswordData] = useState<Password>({
     currentPassword: "",
     newPassword: "",
     newConfirmedPassword: ""
   });
-  const onPasswordChange = (e: { target: { value: string, name: string } }): void => {
+  const onPasswordChange = (e: { target: { value: string, name: string; }; }): void => {
     const value = e.target.value;
     const name = e.target.name;
-    setPasswordData((prev: any) => ({ ...prev, [name]: value }))
-  }
+    setPasswordData((prev: any) => ({ ...prev, [name]: value }));
+  };
 
   const onSubmit = (component: string, value?: boolean): void => {
     switch (component) {
       case "security":
+        changeAdminPassword(passwordData).then(({ status }) => {
+          if (status === 204) {
+            setPasswordData({
+              currentPassword: "",
+              newPassword: "",
+              newConfirmedPassword: ""
+            });
+          }
+        });
         break;
 
       case "post":
@@ -54,7 +77,7 @@ const AdminSettings = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: () =
       default:
         alert("No component selected");
     }
-  }
+  };
 
   const activeComponent = (component: string) => {
     switch (component) {
@@ -72,11 +95,12 @@ const AdminSettings = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: () =
                   className="disabled:hover:ring-2 hover:ring-blue-600 focus:ring-2 focus:ring-blue-600 disabled:opacity-50 ring-1 ring-slate_300 transition duration-150 ease-in-out hover:ring-2 block w-full rounded border-none px-3 py-2 text-sm placeholder:text-slate_400 text-slate_900"
                   disabled={false}
                   placeholder="********"
+                  value={passwordData.currentPassword || ""}
                   onChange={onPasswordChange}
                 />
-                {isError && <div className="flex flex-col justify-start w-full text-left">
+                {error && <div className="flex flex-col justify-start w-full text-left">
                   {currentPassword?.map((error: string, index: number) => {
-                    return <span key={index} className="text-sm text-red-600 float-left mt-[3px]">{currentPassword.length >= 2 && "*"} {error}</span>
+                    return <span key={index} className="text-sm text-red-600 float-left mt-[3px]">{currentPassword.length >= 2 && "*"} {error}</span>;
                   })}
                 </div>}
               </div>
@@ -90,9 +114,10 @@ const AdminSettings = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: () =
                   className="disabled:hover:ring-2 hover:ring-blue-600 focus:ring-2 focus:ring-blue-600 disabled:opacity-50 ring-1 ring-slate_300 transition duration-150 ease-in-out hover:ring-2 block w-full rounded border-none px-3 py-2 text-sm placeholder:text-slate_400 text-slate_900"
                   disabled={false}
                   placeholder="***********"
+                  value={passwordData.newPassword || ""}
                   onChange={onPasswordChange}
                 />
-                {isError && <span className="text-sm text-red-600 float-left text-left">{newPassword}</span>}
+                {error && <span className="text-sm text-red-600 float-left text-left">{newPassword}</span>}
               </div>
               <div >
                 <label htmlFor="newConfirmedPassword" className="float-left mb-1 block text-xs font-normal text-[#64748b]">
@@ -104,9 +129,10 @@ const AdminSettings = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: () =
                   className="disabled:hover:ring-2 hover:ring-blue-600 focus:ring-2 focus:ring-blue-600 disabled:opacity-50 ring-1 ring-slate_300 transition duration-150 ease-in-out hover:ring-2 block w-full rounded border-none px-3 py-2 text-sm placeholder:text-slate_400 text-slate_900"
                   disabled={false}
                   placeholder="***********"
+                  value={passwordData.newConfirmedPassword || ""}
                   onChange={onPasswordChange}
                 />
-                {isError && <span className="text-sm text-red-600 float-left text-left">{newConfirmedPassword}</span>}
+                {error && <span className="text-sm text-red-600 float-left text-left">{newConfirmedPassword}</span>}
               </div>
             </div>
             <SubmitButton isSubmitting={false} submitted={() => onSubmit("security")} text="Save changes" />
@@ -117,7 +143,7 @@ const AdminSettings = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: () =
       case "Post": {
         const switchState = (value: boolean) => {
           onSubmit("post", value);
-        }
+        };
 
         return (
           <div className="mx-5 mobile:mx-0">
@@ -141,7 +167,7 @@ const AdminSettings = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: () =
         );
       }
     }
-  }
+  };
 
   return (
     <ModalCard
@@ -150,7 +176,7 @@ const AdminSettings = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: () =
       headerTitle="My Settings"
       className="flex flex-col"
       menu={modalMenu}
-      closeModal={() => { setIsOpen() }}
+      closeModal={() => { setIsOpen(); }}
     >
       {activeComponent(active)}
     </ModalCard>
