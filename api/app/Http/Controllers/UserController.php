@@ -11,19 +11,16 @@ class UserController extends Controller
 {
   public function index()
   {
-    $user = User::with(['avatar', 'batch'])->applicants();
+    $users = User::with(['avatar', 'batch'])->applicants();
+    $all = $users->get();
+    $approved = $users->approved()->get();
+    $pending = $users->pending()->get();
 
-    if (request('filter')) {
-      if (request('filter') === ApplicationStatusEnum::APPROVED->label()) {
-        return UserResource::collection($user->approved()->get());
-      }
-
-      if (request('filter') === ApplicationStatusEnum::PENDING->label()) {
-        return UserResource::collection($user->pending()->get());
-      }
-    }
-    
-    return UserResource::collection($user->get());
+    return response()->json([
+      'all' => UserResource::collection($all),
+      'pending' => UserResource::collection($pending),
+      'approved' => UserResource::collection($approved)
+    ]);
   }
 
   public function store(Request $request)
