@@ -49,7 +49,7 @@ const useAuth = () => {
           router.push('/')
         }
       }
-    } catch (err: any) {
+    } catch (err: any) { 
       setIsError(true)
       setError(catchError(err))
     }
