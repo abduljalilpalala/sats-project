@@ -10,7 +10,7 @@ export const useFetch = (url: string | null) => {
     revalidateOnFocus: false,
     revalidateOnReconnect: true,
     revalidateOnMount: true,
-  }
+  } 
 
   const { data, error, isValidating } = useSWR(url, fetcher, options)
 

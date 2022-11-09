@@ -5,17 +5,12 @@ import SubmitButton from '~/components/atoms/SubmitButton';
 import TaskIcon from '~/shared/icons/TaskIcon';
 import SwitchToggle from '~/components/atoms/SwitchToggle';
 import adminHooks from "~/hooks/admin/adminHooks";
+import { Password } from "~/shared/types";
 
 type AdminSettings = {
   isOpen: boolean,
   setIsOpen: () => void;
-};
-
-type Password = {
-  currentPassword: string;
-  newPassword: string;
-  newConfirmedPassword: string;
-};
+}; 
 
 const AdminSettings = ({ isOpen, setIsOpen }: AdminSettings) => {
   const {

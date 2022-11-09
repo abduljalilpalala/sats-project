@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import axios from '~/shared/lib/axios'
 import { setData } from '~/utils/setData'
 import { catchError } from '~/utils/handleAxiosError'
+import { Password } from '~/shared/types';
 
 const adminHooks = () => {
   const router = useRouter()
@@ -19,7 +20,7 @@ const adminHooks = () => {
   })
   const { isError, isSuccess, isLoading, error } = fetchStatus
 
-  const changeAdminPassword = async (data: any) => {
+  const changeAdminPassword = async (data: Password | null) => {
     try {
       const response = await axios.put('/api/user/change-password', data)
       setFetchStatus(setData(fetchStatus, { isLoading: true }))
@@ -34,7 +35,7 @@ const adminHooks = () => {
         })
       )
       return response
-    } catch (err: any) { 
+    } catch (err: any) {
       return setErrorMessage(err)
     }
   }
@@ -49,7 +50,7 @@ const adminHooks = () => {
     }
   }
 
-  const setSmsSetting = async (status: boolean | undefined) => { 
+  const setSmsSetting = async (status: boolean | undefined) => {
     try {
       const response = await axios.post('/api/admin/change-sms-setting')
 
@@ -62,7 +63,17 @@ const adminHooks = () => {
     }
   }
 
-  const setErrorMessage = (err: any) => {
+  const getAllApplicants = async () => {
+    try {
+      const response = await axios.get('/api/user') 
+
+      return response.data
+    } catch (err: any) {
+      return setErrorMessage(err)
+    }
+  }
+
+  const setErrorMessage = (err: { response: any }) => {
     toast.error('Something went wrong, please try again later.')
 
     setFetchStatus(setData(fetchStatus, { isError: true }))
@@ -79,6 +90,7 @@ const adminHooks = () => {
     fetchStatus,
     getSmsStatus,
     setSmsSetting,
+    getAllApplicants,
     changeAdminPassword
   }
 }

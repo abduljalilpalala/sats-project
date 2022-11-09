@@ -1,7 +1,8 @@
+import { ApplicationStatus } from "~/shared/data/roleConstant";
 
-const getApplicationStatus = (status: boolean) => {
+const getApplicationStatus = (status: boolean | number) => {
   switch (status) {
-    case true:
+    case ApplicationStatus.PENDING:
       return (
         <div className="flex items-center gap-3">
           <span className="mobile:hidden">Pending</span>
@@ -9,8 +10,8 @@ const getApplicationStatus = (status: boolean) => {
             <rect width="14" height="13" rx="6.5" fill="#64748B" />
           </svg>
         </div>
-      )
-    case false:
+      );
+    case ApplicationStatus.APPROVED:
       return (
         <div className="flex items-center gap-3">
           <span className="mobile:hidden">Approved</span>
@@ -19,9 +20,9 @@ const getApplicationStatus = (status: boolean) => {
             <path d="M3.875 6.875L5.375 8.375L9.125 4.625" stroke="#F9F9F9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
-      )
+      );
     default:
-      return <span>Error</span>
+      return <span>Error</span>;
   }
 };
 
