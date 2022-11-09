@@ -5,10 +5,12 @@ import { useRouter } from 'next/router'
 import axios from '~/shared/lib/axios'
 import { setData } from '~/utils/setData'
 import { catchError } from '~/utils/handleAxiosError'
-import { Password } from '~/shared/types';
+import { Password } from '~/shared/types'
+import { useFetch } from '../useFetch'
 
 const adminHooks = () => {
   const router = useRouter()
+
   const [fetchStatus, setFetchStatus] = useState<any>({
     isError: false,
     isSuccess: false,
@@ -43,7 +45,7 @@ const adminHooks = () => {
   const getSmsStatus = async () => {
     try {
       const response = await axios.get('/api/admin/sms-status')
-      
+
       return response?.data
     } catch (err: any) {
       return setErrorMessage(err)
@@ -65,7 +67,30 @@ const adminHooks = () => {
 
   const getAllApplicants = async () => {
     try {
-      const response = await axios.get('/api/user') 
+      const response = await axios.get('/api/user')
+      setFetchStatus(setData(fetchStatus, { isLoading: false })) 
+
+      return response.data
+    } catch (err: any) {
+      return setErrorMessage(err)
+    }
+  }
+
+  const approveApplicants = async (id: number) => {
+    try {
+      const response = await axios.post('/api/user', { id })
+      setFetchStatus(setData(fetchStatus, { isLoading: true })) 
+
+      return response.data
+    } catch (err: any) {
+      return setErrorMessage(err)
+    } 
+  }
+
+  const rejectApplicants = async (id: number) => {
+    try {
+      const response = await axios.delete(`/api/user/${id}`)
+      setFetchStatus(setData(fetchStatus, { isLoading: true })) 
 
       return response.data
     } catch (err: any) {
@@ -90,7 +115,9 @@ const adminHooks = () => {
     fetchStatus,
     getSmsStatus,
     setSmsSetting,
+    rejectApplicants,
     getAllApplicants,
+    approveApplicants,
     changeAdminPassword
   }
 }

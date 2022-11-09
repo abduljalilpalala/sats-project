@@ -1,15 +1,14 @@
 import Swal from 'sweetalert2';
 import { NextPage } from 'next';
-import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
 import { Disclosure, Tab } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
-import AdminLayout from '~/components/templates/AdminLayout';
 import adminHooks from "~/hooks/admin/adminHooks";
-import getApplicationStatus from '~/utils/getApplicationStatus';
 import handleImageError from '~/utils/handleImageError';
+import AdminLayout from '~/components/templates/AdminLayout';
 import { ApplicationStatus } from '~/shared/data/roleConstant';
+import getApplicationStatus from '~/utils/getApplicationStatus';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -17,28 +16,26 @@ function classNames(...classes: string[]) {
 
 const ManageUser: NextPage = (): JSX.Element => {
   const {
-    error,
-    isSuccess,
+    isLoading,
     getAllApplicants,
+    rejectApplicants,
+    approveApplicants,
   } = adminHooks();
 
-  const [alumniList, setAlumniList] = useState({}); 
+  const [alumniList, setAlumniList] = useState<any>({});
 
   useEffect(() => {
     getAllApplicants().then((res) => {
+      
       setAlumniList({
-        All: [...res],
-        Approved: [...res.filter((application: { is_verified: number; }) => { 
-          return application.is_verified === ApplicationStatus.APPROVED; 
-        })],
-        Pending: [...res.filter((application: { is_verified: number; }) => { 
-          return application.is_verified === ApplicationStatus.PENDING; 
-        })],
+        All: res.all,
+        Approved: res.approved,
+        Pending: res.pending,
       });
     });
-  }, []);
+  }, [isLoading]);
 
-  const approve = (name: string) => {
+  const approve = (name: string, id: number) => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -49,6 +46,7 @@ const ManageUser: NextPage = (): JSX.Element => {
       confirmButtonText: 'Approve'
     }).then((result) => {
       if (result.isConfirmed) {
+        approveApplicants(id);
         Swal.fire(
           'Approved!',
           `You approved ${name}.`,
@@ -58,7 +56,7 @@ const ManageUser: NextPage = (): JSX.Element => {
     });
   };
 
-  const reject = (name: string) => {
+  const reject = (name: string, id: number) => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -69,6 +67,7 @@ const ManageUser: NextPage = (): JSX.Element => {
       confirmButtonText: 'Reject'
     }).then((result) => {
       if (result.isConfirmed) {
+        rejectApplicants(id);
         Swal.fire(
           'Rejected!',
           `You rejected ${name}.`,
@@ -102,17 +101,19 @@ const ManageUser: NextPage = (): JSX.Element => {
               ))}
             </Tab.List>
             <Tab.Panels className="mt-2">
-              {Object.values(alumniList)?.map((posts: any, idx: number) => (
+              {Object.values(alumniList)?.map((users: any, categoryID: number) => (
                 <Tab.Panel
-                  key={idx}
+                  key={categoryID}
                   className={classNames(
                     'rounded-xl bg-slate-200 p-3',
                     'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'
                   )}
                 >
-                  <ul className="flex flex-col gap-2">
-                    {posts?.map((post: any, index: number) => {
-                      const { name, avatar, is_verified, id, batch, email, number } = post;  
+                  {users?.length === 0 
+                  ? <h1 className="text-center text-slate-400">No available data</h1>
+                  :<ul className="flex flex-col gap-2">
+                    {users?.map((user: any, index: number) => {
+                      const { name, avatar, is_verified, id, batch, email, number } = user;
 
                       return (
                         <Disclosure key={index}>
@@ -140,21 +141,22 @@ const ManageUser: NextPage = (): JSX.Element => {
                                 <div className="w-full">
                                   {[
                                     { header: "ID Number", value: id },
-                                    { header: "Batch", value: batch?.name }].map((data: any, index: number) => {
-                                      const { header, value } = data;
-                                      
-                                      return (
-                                        <div key={index} className="flex flex-row justify-between">
-                                          <div className='w-[150px] mobile:w-[100px] flex flex-row justify-between'>
-                                            <span>{header}</span>
-                                            <span className="ml-5">:</span>
-                                          </div>
-                                          <div className='text-right'>
-                                            <span className="truncate">{value}</span>
-                                          </div>
+                                    { header: "Batch", value: batch?.name }
+                                  ].map((data: any, index: number) => {
+                                    const { header, value } = data;
+
+                                    return (
+                                      <div key={index} className="flex flex-row justify-between">
+                                        <div className='w-[150px] mobile:w-[100px] flex flex-row justify-between'>
+                                          <span>{header}</span>
+                                          <span className="ml-5">:</span>
                                         </div>
-                                      );
-                                    })}
+                                        <div className='text-right'>
+                                          <span className="truncate">{value}</span>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
                                   {!is_verified ? null : (
                                     [
                                       { header: "Email", value: email },
@@ -177,10 +179,10 @@ const ManageUser: NextPage = (): JSX.Element => {
                                 </div>
                                 {is_verified ? null : (
                                   <div className="flex flex-col gap-2 mobile:flex-row pl-10 mobile:!p-0">
-                                    <button onClick={() => approve(name)} className={`w-15 mobile:w-full flex items-center justify-center bg-success py-1 hover:bg-opacity-60 transition ease-in-out px-10 rounded-md text-white`}>
+                                    <button onClick={() => approve(name, id)} className={`w-15 mobile:w-full flex items-center justify-center bg-success py-1 hover:bg-opacity-60 transition ease-in-out px-10 rounded-md text-white`}>
                                       Approved
                                     </button>
-                                    <button onClick={() => reject(name)} className={`w-15 mobile:w-full flex items-center justify-center bg-failed py-1 hover:bg-opacity-60 transition ease-in-out px-10 rounded-md text-white`}>
+                                    <button onClick={() => reject(name, id)} className={`w-15 mobile:w-full flex items-center justify-center bg-failed py-1 hover:bg-opacity-60 transition ease-in-out px-10 rounded-md text-white`}>
                                       Reject
                                     </button>
                                   </div>
@@ -192,6 +194,7 @@ const ManageUser: NextPage = (): JSX.Element => {
                       );
                     })}
                   </ul>
+                  }
                 </Tab.Panel>
               ))}
             </Tab.Panels>
