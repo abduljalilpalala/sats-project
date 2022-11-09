@@ -17,6 +17,12 @@ export type AxiosResponseError = {
   content: any
 }
 
+export type Password = {
+  currentPassword: string
+  newPassword: string
+  newConfirmedPassword: string
+}
+
 export type SignInUpFormFields =
   | 'batch'
   | 'name'
