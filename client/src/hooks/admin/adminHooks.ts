@@ -18,12 +18,11 @@ const adminHooks = () => {
     }
   })
   const { isError, isSuccess, isLoading, error } = fetchStatus
-  const csrf = () => axios.get('/sanctum/csrf-cookie')
 
   const changeAdminPassword = async (data: any) => {
     try {
-      await csrf()
       const response = await axios.put('/api/user/change-password', data)
+      setFetchStatus(setData(fetchStatus, { isLoading: true }))
 
       toast.success('Password reset successfully!')
       setFetchStatus(
@@ -34,11 +33,42 @@ const adminHooks = () => {
           }
         })
       )
-      return response;
-    } catch (err: any) {
-      setFetchStatus(setData(fetchStatus, { error: catchError(err) }))
-      return err?.response
+      return response
+    } catch (err: any) { 
+      return setErrorMessage(err)
     }
+  }
+
+  const getSmsStatus = async () => {
+    try {
+      const response = await axios.get('/api/admin/sms-status')
+      
+      return response?.data
+    } catch (err: any) {
+      return setErrorMessage(err)
+    }
+  }
+
+  const setSmsSetting = async (status: boolean | undefined) => { 
+    try {
+      const response = await axios.post('/api/admin/change-sms-setting')
+
+      toast.success(`Automatic post to SMS turned ${status ? 'on' : 'off'}!`)
+      setFetchStatus(setData(fetchStatus, { isSuccess: true }))
+
+      return response
+    } catch (err: any) {
+      return setErrorMessage(err)
+    }
+  }
+
+  const setErrorMessage = (err: any) => {
+    toast.error('Something went wrong, please try again later.')
+
+    setFetchStatus(setData(fetchStatus, { isError: true }))
+    setFetchStatus(setData(fetchStatus, { error: catchError(err) }))
+
+    return err?.response
   }
 
   return {
@@ -47,6 +77,8 @@ const adminHooks = () => {
     isSuccess,
     isLoading,
     fetchStatus,
+    getSmsStatus,
+    setSmsSetting,
     changeAdminPassword
   }
 }
