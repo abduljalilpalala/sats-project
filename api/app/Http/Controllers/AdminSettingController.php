@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class AdminSettingController extends Controller
 {
+  public function index()
+  {
+    $setting = AdminSetting::firstOrFail();
+    return response()->json($setting->status);
+  }
+
   public function store(Request $request)
   {
     $setting = AdminSetting::firstOrFail();

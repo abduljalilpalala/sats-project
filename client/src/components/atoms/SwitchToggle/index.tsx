@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { Switch } from '@headlessui/react'
+import { useState } from 'react';
+import { Switch } from '@headlessui/react';
 
 type Props = {
   value: (value: boolean) => void;
   className?: string;
   isDisabled?: boolean;
-  state: boolean
-}
+  state: any
+};
 
 const SwitchToggle: React.FC<Props> = ({ value, className, isDisabled, state }) => {
   const [enabled, setEnabled] = useState(state);
@@ -16,7 +16,7 @@ const SwitchToggle: React.FC<Props> = ({ value, className, isDisabled, state }) 
 
     setEnabled(!enabled);
     value(!enabled);
-  }
+  };
 
   return (
     <div className={className}>
@@ -33,6 +33,6 @@ const SwitchToggle: React.FC<Props> = ({ value, className, isDisabled, state }) 
         />
       </Switch>
     </div>
-  )
-}
+  );
+};
 export default SwitchToggle;
