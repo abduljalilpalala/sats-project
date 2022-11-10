@@ -1,20 +1,22 @@
-import Link from 'next/link'
-import React, { Fragment } from 'react'
-import { IoLogOut } from 'react-icons/io5'
-import { HiMenuAlt4 } from 'react-icons/hi'
-import { Menu as MenuIcon } from 'react-feather'
-import { Menu, Transition } from '@headlessui/react'
+import Link from 'next/link';
+import React, { Fragment } from 'react';
+import { IoLogOut } from 'react-icons/io5';
+import { HiMenuAlt4 } from 'react-icons/hi';
+import { Menu as MenuIcon } from 'react-feather';
+import { Menu, Transition } from '@headlessui/react';
 
-import { clxs } from '~/helpers/classNames'
+import { clxs } from '~/helpers/classNames';
+import adminHooks from '~/hooks/admin/adminHooks';
 
 type Props = {
   actions: {
-    handleOpen: () => void
-  }
-}
+    handleOpen: () => void;
+  };
+};
 
 const AdminHeader: React.FC<Props> = ({ actions }): JSX.Element => {
-  const { handleOpen } = actions
+  const { handleOpen } = actions;
+  const { logout } = adminHooks();
 
   return (
     <header className="fixed z-30 w-full bg-[#083c76] text-white">
@@ -68,6 +70,7 @@ const AdminHeader: React.FC<Props> = ({ actions }): JSX.Element => {
                       <Menu.Item>
                         {({ active }) => (
                           <button
+                            onClick={logout}
                             className={clxs(
                               'group flex w-full items-center rounded-md px-2 py-2 text-sm font-medium transition duration-150 ease-in-out',
                               active ? 'bg-blue-500 text-white' : 'text-gray-500'
@@ -87,7 +90,7 @@ const AdminHeader: React.FC<Props> = ({ actions }): JSX.Element => {
         </section>
       </main>
     </header>
-  )
-}
+  );
+};
 
-export default AdminHeader
+export default AdminHeader;
