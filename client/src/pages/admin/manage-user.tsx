@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { Disclosure, Tab } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/20/solid';
 
+import Loader from '~/components/atoms/Loader';
+import useIsLoading from '~/hooks/useIsLoading';
 import adminHooks from "~/hooks/admin/adminHooks";
 import handleImageError from '~/utils/handleImageError';
 import AdminLayout from '~/components/templates/AdminLayout';
-import { ApplicationStatus } from '~/shared/data/roleConstant';
 import getApplicationStatus from '~/utils/getApplicationStatus';
 
 function classNames(...classes: string[]) {
@@ -23,10 +24,11 @@ const ManageUser: NextPage = (): JSX.Element => {
   } = adminHooks();
 
   const [alumniList, setAlumniList] = useState<any>({});
+  const { isPageLoading, setIsPageLoading } = useIsLoading();
 
   useEffect(() => {
-    getAllApplicants().then((res) => {
-      
+    getAllApplicants().then((res) => { 
+      setIsPageLoading(false);
       setAlumniList({
         All: res.all,
         Approved: res.approved,
@@ -77,41 +79,40 @@ const ManageUser: NextPage = (): JSX.Element => {
     });
   };
 
-  return (
-    <AdminLayout metaTitle="Administrator | Manage User">
-      <div className="flex justify-center items-center">
-        <div className='w-[525px]'>
-          <Tab.Group>
-            <Tab.List className="flex space-x-1 rounded-xl bg-sats-10 p-1">
-              {Object.keys(alumniList).map((category) => (
-                <Tab
-                  key={category}
-                  className={({ selected }) =>
-                    classNames(
-                      'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-slate-50',
-                      'ring-white ring-opacity-60 ring-offset-2 ring-offset-sats-10 focus:outline-none focus:ring-2',
-                      selected
-                        ? 'bg-sats-30 shadow'
-                        : 'bg-sats-30 bg-opacity-30 text-white text-opacity-100 hover:bg-opacity-100'
-                    )
-                  }
-                >
-                  {category}
-                </Tab>
-              ))}
-            </Tab.List>
-            <Tab.Panels className="mt-2">
-              {Object.values(alumniList)?.map((users: any, categoryID: number) => (
-                <Tab.Panel
-                  key={categoryID}
-                  className={classNames(
-                    'rounded-xl bg-slate-200 p-3',
-                    'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'
-                  )}
-                >
-                  {users?.length === 0 
+  const ManageUserApplication = (
+    <div className="flex justify-center items-center">
+      <div className='w-[525px]'>
+        <Tab.Group>
+          <Tab.List className="flex space-x-1 rounded-xl bg-sats-10 p-1">
+            {Object.keys(alumniList).map((category) => (
+              <Tab
+                key={category}
+                className={({ selected }) =>
+                  classNames(
+                    'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-slate-50',
+                    'ring-white ring-opacity-60 ring-offset-2 ring-offset-sats-10 focus:outline-none focus:ring-2',
+                    selected
+                      ? 'bg-sats-30 shadow'
+                      : 'bg-sats-30 bg-opacity-30 text-white text-opacity-100 hover:bg-opacity-100'
+                  )
+                }
+              >
+                {category}
+              </Tab>
+            ))}
+          </Tab.List>
+          <Tab.Panels className="mt-2">
+            {Object.values(alumniList)?.map((users: any, categoryID: number) => (
+              <Tab.Panel
+                key={categoryID}
+                className={classNames(
+                  'rounded-xl bg-slate-200 p-3',
+                  'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'
+                )}
+              >
+                {users?.length === 0
                   ? <h1 className="text-center text-slate-400">No available data</h1>
-                  :<ul className="flex flex-col gap-2">
+                  : <ul className="flex flex-col gap-2">
                     {users?.map((user: any, index: number) => {
                       const { name, avatar, is_verified, id, batch, email, number } = user;
 
@@ -194,13 +195,18 @@ const ManageUser: NextPage = (): JSX.Element => {
                       );
                     })}
                   </ul>
-                  }
-                </Tab.Panel>
-              ))}
-            </Tab.Panels>
-          </Tab.Group>
-        </div>
+                }
+              </Tab.Panel>
+            ))}
+          </Tab.Panels>
+        </Tab.Group>
       </div>
+    </div>
+  );
+
+  return (
+    <AdminLayout metaTitle="Administrator | Manage User">
+      {isPageLoading ? <Loader /> : ManageUserApplication}
     </AdminLayout>
   );
 };
