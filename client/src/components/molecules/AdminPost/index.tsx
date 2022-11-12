@@ -2,9 +2,10 @@ import React, { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/20/solid";
 
+import Swal from "sweetalert2";
+import getDaysAgo from '~/utils/getDaysAgo';
 import MoreIcon from "~/shared/icons/MoreIcon";
 import useHydrationBypass from "~/hooks/useHydrationBypass";
-import Swal from "sweetalert2";
 
 type PostContent = {
   date: string
@@ -47,7 +48,7 @@ const AdminPost = (props: PostContent) => {
           </div>
           <div className="flex flex-col">
             <h1 className="text-sm font-bold">SLSU - Admin</h1>
-            <p className="text-xs">{date}</p>
+            <p className="text-xs">{getDaysAgo(date)}</p>
           </div>
         </div>
         {isAdmin && (

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ApplicationStatusEnum;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,10 +10,9 @@ class UserController extends Controller
 {
   public function index()
   {
-    $users = User::with(['avatar', 'batch'])->applicants();
-    $all = $users->get();
-    $approved = $users->approved()->get();
-    $pending = $users->pending()->get();
+    $all = User::with(['avatar', 'batch'])->applicants()->get();
+    $pending = User::with(['avatar', 'batch'])->applicants()->pending()->get();
+    $approved = User::with(['avatar', 'batch'])->applicants()->approved()->get();
 
     return response()->json([
       'all' => UserResource::collection($all),
@@ -26,13 +24,13 @@ class UserController extends Controller
   public function store(Request $request)
   {
     $user = User::findOrFail($request->id);
-    $user->update(['is_verified' => ApplicationStatusEnum::APPROVED->value]);
+    $user->approveApplication();
     return response()->json($user);
   }
 
   public function destroy(User $user)
   {
-    $user->deleteOrFail();
+    $user->rejectApplication();
     return response()->noContent();
   }
 }

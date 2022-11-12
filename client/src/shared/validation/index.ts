@@ -30,3 +30,30 @@ export const SignUpFormSchema = Yup.object().shape({
     .max(12, 'Password cannot exceed more than 12 characters')
     .oneOf([Yup.ref('password')], 'Passwords do not match')
 })
+
+export const ProfileFormSchema = Yup.object().shape({
+  name: Yup.string()
+    .required('Name is required')
+    .min(2, 'Should have atleast 2 characters')
+    .max(30, 'Should have max length of 30 characters'),
+  email: Yup.string().email().required().label('Email')
+})
+
+export const SecurityFormSchema = Yup.object().shape({
+  current_password: Yup.string().required('Current Password is required'),
+  new_password: Yup.string()
+    .required('Password is required')
+    .min(4, 'Password length should be at least 4 characters')
+    .max(12, 'Password cannot exceed more than 12 characters'),
+  password_confirmation: Yup.string()
+    .label('Password Confirmation')
+    .required('Confirm Password is required')
+    .max(12, 'Password cannot exceed more than 12 characters')
+    .oneOf([Yup.ref('new_password')], 'Passwords do not match')
+})
+
+export const AboutFormSchema = Yup.object().shape({
+  id_number: Yup.string(),
+  birth_date: Yup.string().required('Birth date is required'),
+  employment_status: Yup.string().required('Employment Status is required')
+})

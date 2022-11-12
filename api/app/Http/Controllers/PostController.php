@@ -8,26 +8,24 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-  public function index()
-  {
-    return PostResource::collection(Post::orderByDesc('created_at')->get());
-  }
+    public function index()
+    {
+        return PostResource::collection(Post::latest()->get());
+    }
 
-  public function store(PostRequest $request)
-  {
-    $post = Post::create($request->validated());
-    return response()->json($post);
-  }
+    public function store(PostRequest $request)
+    {
+        $post = new Post();
+        return $post->createPost($request);;
+    }
 
-  public function update(PostRequest $request, Post $post)
-  {
-    $post->update($request->validated());
-    return response()->json($post);
-  }
+    public function update(PostRequest $request, Post $post)
+    {
+        return $post->updatePost($request);
+    }
 
-  public function destroy(Post $post)
-  {
-    $post->deleteOrFail();
-    return response()->json($post);
-  }
+    public function destroy(Post $post)
+    {
+        return $post->deletePost();
+    }
 }

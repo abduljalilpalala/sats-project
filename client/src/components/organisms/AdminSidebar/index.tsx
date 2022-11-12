@@ -1,20 +1,23 @@
-import React, { useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { LogOut, Settings } from 'react-feather'
 
-import { clxs } from '~/helpers/classNames'
-import { ISidebar } from '~/shared/interfaces'
-import { sidebarLinks } from '~/shared/data/sidebarLinks'
-import AdminSettings from '~/components/molecules/AdminSettings'
+import Link from 'next/link'; 
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import { LogOut, Settings } from 'react-feather';
+
+import { clxs } from '~/helpers/classNames';
+import { ISidebar } from '~/shared/interfaces';
+import adminHooks from '~/hooks/admin/adminHooks';
+import { sidebarLinks } from '~/shared/data/sidebarLinks';
+import AdminSettings from '~/components/molecules/AdminSettings';
 
 type Props = {
-  isOpen: boolean
-}
+  isOpen: boolean;
+};
 
 const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
-  const { isOpen } = props
-  const router = useRouter()
+  const { isOpen } = props;
+  const router = useRouter();
+  const { logout } = adminHooks();
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
 
   return (
@@ -24,7 +27,7 @@ const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
         isOpen ? 'w-64' : 'w-[70px]'
       )}
     >
-      <AdminSettings isOpen={isSettingsOpen} setIsOpen={() => { setIsSettingsOpen(!isSettingsOpen) }} />
+      <AdminSettings isOpen={isSettingsOpen} setIsOpen={() => { setIsSettingsOpen(!isSettingsOpen); }} />
       <section className="relative flex flex-1 flex-col">
         <nav className="flex flex-1 flex-col justify-between">
           <ul>
@@ -64,6 +67,7 @@ const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
             </button>
             <button
               type="button"
+              onClick={logout}
               className={`
                 flex h-12 w-full items-center space-x-4 px-6 py-3 text-base font-semibold
                 outline-none transition duration-150 ease-in-out focus:bg-gray-100
@@ -77,7 +81,7 @@ const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
         </nav>
       </section>
     </aside>
-  )
-}
+  );
+};
 
-export default AdminSidebar
+export default AdminSidebar;
