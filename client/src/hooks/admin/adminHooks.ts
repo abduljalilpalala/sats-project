@@ -110,7 +110,7 @@ const adminHooks = () => {
   const createNewPost = async (post: string) => {
     try {
       const response = await axios.post('/api/post', { content: post })
-      setFetchStatus(setData(fetchStatus, { isLoading: true })) 
+      setFetchStatus(setData(fetchStatus, { isLoading: true }))
 
       return response.data
     } catch (err: any) {
@@ -123,7 +123,7 @@ const adminHooks = () => {
 
     try {
       const response = await axios.put(`/api/post/${id}`, { content: post })
-      setFetchStatus(setData(fetchStatus, { isLoading: true })) 
+      setFetchStatus(setData(fetchStatus, { isLoading: true }))
 
       return response.data
     } catch (err: any) {
@@ -131,10 +131,21 @@ const adminHooks = () => {
     }
   }
 
-  const deletePost = async (id: number) => {  
+  const deletePost = async (id: number) => {
     try {
       const response = await axios.delete(`/api/post/${id}`)
-      setFetchStatus(setData(fetchStatus, { isLoading: true })) 
+      setFetchStatus(setData(fetchStatus, { isLoading: true }))
+
+      return response.data
+    } catch (err: any) {
+      return setErrorMessage(err)
+    }
+  }
+
+  const getDashboardData = async (id: number) => {
+    try { 
+      const response = await axios.get(`/api/admin/dashboard?batch=${id}`)
+      setFetchStatus(setData(fetchStatus, { isLoading: false }))
 
       return response.data
     } catch (err: any) {
@@ -174,6 +185,8 @@ const adminHooks = () => {
     getSmsStatus,
     createNewPost,
     setSmsSetting,
+    setFetchStatus,
+    getDashboardData,
     getAllApplicants,
     rejectApplicants,
     approveApplicants,
