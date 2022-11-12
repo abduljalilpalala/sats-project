@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\BatchEnum;
 use App\Models\Batch;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,20 +18,20 @@ class BatchSeeder extends Seeder
   {
     $batches = [
       [
-        'id' => 1,
-        'batch' => '2018-2019'
+        'id' => BatchEnum::BATCH_2018_TO_2019,
+        'batch' => BatchEnum::BATCH_2018_TO_2019->label()
       ],
       [
-        'id' => 2,
-        'batch' => '2019-2020'
+        'id' => BatchEnum::BATCH_2019_TO_2020,
+        'batch' => BatchEnum::BATCH_2019_TO_2020->label()
       ],
       [
-        'id' => 3,
-        'batch' => '2020-2021'
+        'id' => BatchEnum::BATCH_2020_TO_2021,
+        'batch' => BatchEnum::BATCH_2020_TO_2021->label()
       ],
       [
-        'id' => 4,
-        'batch' => '2021-2022'
+        'id' => BatchEnum::BATCH_2021_TO_2022,
+        'batch' => BatchEnum::BATCH_2021_TO_2022->label()
       ]
     ];
 

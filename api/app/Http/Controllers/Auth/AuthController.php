@@ -20,7 +20,7 @@ class AuthController extends Controller
     $request->authenticate();
 
     $request->session()->regenerate();
-    $user = User::where('email', $request->email)->first();
+    $user = User::email($request->email)->first();
 
     return response()->json([
       'role' => $user->role_id,

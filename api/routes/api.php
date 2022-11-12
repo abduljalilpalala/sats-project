@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UpdatePasswordController;
 use App\Http\Controllers\UserController;
@@ -19,11 +20,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-  Route::get('auth', [AuthController::class, 'index']);
+    Route::get('auth', [AuthController::class, 'index']);
 
-  Route::put('user/change-password', [UpdatePasswordController::class, 'update']);
-  Route::get('admin/sms-status', [AdminSettingController::class, 'index']);
-  Route::post('admin/change-sms-setting', [AdminSettingController::class, 'store']);
-  Route::apiResource('user', UserController::class)->only(['index', 'store', 'destroy']);
-  Route::apiResource('post', PostController::class)->except(['show']);
+    Route::group(['prefix' => 'admin'], function () {
+        Route::get('sms-status', [AdminSettingController::class, 'index']);
+        Route::get('dashboard', [DashboardController::class, 'index']);
+        Route::post('change-sms-setting', [AdminSettingController::class, 'store']);
+    });
+
+    Route::put('user/change-password', [UpdatePasswordController::class, 'update']);
+    Route::apiResource('user', UserController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('post', PostController::class)->except(['show']);
 });
