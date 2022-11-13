@@ -1,11 +1,11 @@
-import { useRouter } from 'next/router'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useRouter } from 'next/router'
 
 import axios from '~/shared/lib/axios'
-import { AxiosResponseError, User } from '~/shared/types'
-import { catchError } from '~/utils/handleAxiosError'
 import { Roles } from '~/shared/data/roleConstant'
+import { catchError } from '~/utils/handleAxiosError'
+import { AxiosResponseError, User } from '~/shared/types'
 
 const useAuth = () => {
   const [isError, setIsError] = useState<boolean>(false)
@@ -23,7 +23,11 @@ const useAuth = () => {
       await csrf()
       const response = await axios.post('register', data)
       if (response.status === 204) {
-        toast.error('Account currently not yet verified', { position: 'top-right' })
+        toast.error('Account currently not yet verified please wait to the admin for approval.', {
+          position: 'top-right'
+        })
+        window.location.href = 'login'
+        return
       }
     } catch (err: any) {
       setIsError(true)
@@ -36,8 +40,7 @@ const useAuth = () => {
       setIsError(false)
       await csrf()
       const response = await axios.post('login', data)
-      console.log(response?.data?.is_verified ? true : false)
-      
+
       if (response.statusText === 'OK') {
         if (response?.data?.role === Roles.ADMIN) {
           toast.success('You have successfully logged in!', { position: 'top-right' })
@@ -48,10 +51,10 @@ const useAuth = () => {
         if (!response?.data?.is_verified) {
           toast.error('Account currently not yet verified', { position: 'top-right' })
         } else {
-          router.push('/')
+          window.location.href = '/'
         }
       }
-    } catch (err: any) { 
+    } catch (err: any) {
       setIsError(true)
       setError(catchError(err))
     }

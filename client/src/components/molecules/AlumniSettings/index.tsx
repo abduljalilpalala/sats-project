@@ -1,8 +1,12 @@
+import { X } from 'react-feather'
+import toast from 'react-hot-toast'
 import { useForm } from 'react-hook-form'
 import React, { FC, useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 
+import axios from '~/shared/lib/axios'
 import { About, Profile, Security } from './types'
+import { Spinner } from '~/shared/icons/SpinnerIcon'
 import DialogBox from '~/components/templates/DialogBox'
 import { AboutFormSchema, ProfileFormSchema, SecurityFormSchema } from '~/shared/validation'
 
@@ -11,18 +15,14 @@ type Props = {
   toggle: () => void
 }
 
-const SettingsModal: FC<Props> = (props): JSX.Element => {
+const AlumniSettings: FC<Props> = (props): JSX.Element => {
   const { isOpen, toggle } = props
+  const [formError, setFormError]: any = useState(null)
   const [active, setActive] = useState<string>('Profile')
 
   const handleUpdateProfile = async (data: Profile): Promise<void> => {
     const { name, email } = data
     alert(JSON.stringify({ name, email }, null, 2))
-  }
-
-  const handleUpdateSecurity = async (data: Security): Promise<void> => {
-    const { current_password, new_password, password_confirmation } = data
-    alert(JSON.stringify({ current_password, new_password, password_confirmation }, null, 2))
   }
 
   const handleUpdateAbout = async (data: About): Promise<void> => {
@@ -149,6 +149,7 @@ const SettingsModal: FC<Props> = (props): JSX.Element => {
 
       case 'Security': {
         const {
+          reset,
           register,
           handleSubmit,
           formState: { isSubmitting, errors }
@@ -157,8 +158,50 @@ const SettingsModal: FC<Props> = (props): JSX.Element => {
           resolver: yupResolver(SecurityFormSchema)
         })
 
+        // P.S.: This will handle Update the Security Password of the User
+        const handleUpdateSecurity = (data: Security): void => {
+          const { current_password, new_password, password_confirmation } = data
+          const payload = {
+            currentPassword: current_password,
+            newPassword: new_password,
+            newConfirmedPassword: password_confirmation
+          }
+          axios
+            .put('/api/user/change-password', payload)
+            .then(() => {
+              reset({
+                current_password: '',
+                new_password: '',
+                password_confirmation: ''
+              })
+              toast.success('Successfully Updated!')
+              setFormError(null)
+            })
+            .catch((error) => {
+              if (error?.response?.status !== 422) throw error
+              setFormError(Object.values(error?.response?.data?.message).flat())
+            })
+        }
+
         return (
           <form className="flex flex-col gap-9" onSubmit={handleSubmit(handleUpdateSecurity)}>
+            {formError && (
+              <div
+                className={`
+                  relative flex w-full items-center justify-center rounded border border-rose-200
+                bg-rose-50 py-2 text-center text-rose-800 hover:shadow hover:shadow-rose-100
+                `}
+              >
+                <span className="px-6 text-sm font-medium">{formError}</span>
+                <button
+                  type="button"
+                  className="absolute right-2 rounded hover:bg-rose-100"
+                  onClick={() => setFormError(null)}
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
             <div className="flex flex-col gap-6">
               <div>
                 <label htmlFor="current_password" className="form-label float-left">
@@ -209,8 +252,8 @@ const SettingsModal: FC<Props> = (props): JSX.Element => {
                 )}
               </div>
             </div>
-            <button type="submit" className="form-submit mt-8">
-              Save Changes
+            <button type="submit" className="form-submit mt-8" disabled={isSubmitting}>
+              {isSubmitting ? <Spinner className="h-5 w-5" /> : 'Save Changes'}
             </button>
           </form>
         )
@@ -305,4 +348,4 @@ const SettingsModal: FC<Props> = (props): JSX.Element => {
   )
 }
 
-export default SettingsModal
+export default AlumniSettings

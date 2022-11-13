@@ -7,7 +7,7 @@ export type User = {
   contact_number: string
   employment_status: string
   role?: number
-  is_verified?: boolean
+  is_verified?: boolean | number
   password: string
   password_confirmation: string
 }

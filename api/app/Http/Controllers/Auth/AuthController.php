@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
   public function index(Request $request)
   {
-    return $request->user();
+    return User::with('avatar')->findOrFail(Auth::user()->id);
   }
 
   public function store(LoginRequest $request)
