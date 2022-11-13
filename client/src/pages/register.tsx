@@ -21,4 +21,5 @@ const Register: NextPage = (): JSX.Element => {
   )
 }
 
+export { UserSignInOutAuthCheck as getServerSideProps } from '~/utils/getServerSideProps';
 export default Register

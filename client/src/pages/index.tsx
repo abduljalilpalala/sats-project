@@ -56,4 +56,5 @@ const Index: NextPage = (): JSX.Element => {
   )
 }
 
+export { UserSignInOutAuthCheck as getServerSideProps } from '~/utils/getServerSideProps';
 export default Index

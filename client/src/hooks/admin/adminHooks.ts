@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { useRouter } from 'next/router'
+import { deleteCookie } from 'cookies-next'
 
 import axios from '~/shared/lib/axios'
 import redirect from '~/utils/redirect'
@@ -143,7 +143,7 @@ const adminHooks = () => {
   }
 
   const getDashboardData = async (id: number) => {
-    try { 
+    try {
       const response = await axios.get(`/api/admin/dashboard?batch=${id}`)
       setFetchStatus(setData(fetchStatus, { isLoading: false }))
 
@@ -156,6 +156,9 @@ const adminHooks = () => {
   const logout = async () => {
     try {
       await axios.post('/logout')
+      
+      deleteCookie('XSRF-TOKEN')
+
       toast.success('Logout successfully!')
       redirect('/admin')
     } catch (err: any) {
