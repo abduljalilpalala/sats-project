@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminSettingController;
+use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
@@ -36,7 +37,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::delete('user-avatar', [UserAvatarController::class, 'destroy']);
         Route::put('/', UpdateUserController::class);
     });
-    
+
     Route::apiResource('user', UserController::class)->except(['show', 'update']);
     Route::apiResource('post', PostController::class)->except(['show']);
+    Route::get('alumni', AlumniController::class);
 });
