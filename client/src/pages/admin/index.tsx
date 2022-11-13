@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import { NextPage } from 'next';
 
 import useAuth from '~/hooks/auth';
 import { User } from '~/shared/types';
 import AuthForm from '~/components/molecules/AuthForm';
-import { Roles } from '~/shared/data/roleConstant'; 
-import axios from '~/shared/lib/axios';
+import { Roles } from '~/shared/data/roleConstant';
 
 const Admin: NextPage = (): JSX.Element => {
   const { login, isError, error } = useAuth();
@@ -15,7 +14,7 @@ const Admin: NextPage = (): JSX.Element => {
     data.role = Roles.ADMIN;
     await login(data);
   };
-  
+
   return (
     <>
       <Head>
@@ -45,4 +44,5 @@ const Admin: NextPage = (): JSX.Element => {
   );
 };
 
+export { AdminSignInOutAuthCheck as getServerSideProps } from '~/utils/getServerSideProps';
 export default Admin;

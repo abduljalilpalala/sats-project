@@ -25,4 +25,5 @@ const Login: NextPage = (): JSX.Element => {
   )
 }
 
+export { UserSignInOutAuthCheck as getServerSideProps } from '~/utils/getServerSideProps';
 export default Login

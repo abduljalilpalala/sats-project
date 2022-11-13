@@ -120,4 +120,5 @@ const ManagePost: NextPage = (): JSX.Element => {
   );
 };
 
+export { AdminSignInOutAuthCheck as getServerSideProps } from '~/utils/getServerSideProps';
 export default ManagePost;

@@ -36,14 +36,16 @@ const useAuth = () => {
       setIsError(false)
       await csrf()
       const response = await axios.post('login', data)
+      console.log(response?.data?.is_verified ? true : false)
+      
       if (response.statusText === 'OK') {
-        if (data.role === Roles.ADMIN) {
+        if (response?.data?.role === Roles.ADMIN) {
           toast.success('You have successfully logged in!', { position: 'top-right' })
           router.push('/admin/dashboard')
           return
         }
 
-        if (!data.is_verified) {
+        if (!response?.data?.is_verified) {
           toast.error('Account currently not yet verified', { position: 'top-right' })
         } else {
           router.push('/')

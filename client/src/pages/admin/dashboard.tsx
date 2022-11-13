@@ -1,7 +1,11 @@
+import React, {
+  Fragment,
+  useState,
+  useEffect
+} from 'react';
 import { NextPage } from 'next';
 import { Chart } from "react-google-charts";
 import { Listbox, Transition } from '@headlessui/react';
-import React, { Fragment, useState, useEffect } from 'react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
 import Card from '~/components/templates/Card';
@@ -31,7 +35,7 @@ const Dashboard: NextPage = (): JSX.Element => {
   const { getDashboardData } = adminHooks();
   const [dashboardData, setDashboardData] = useState<Dashboard | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(3);
-  const [selected, setSelected] = useState<string>(years[selectedIndex]); 
+  const [selected, setSelected] = useState<string>(years[selectedIndex]);
 
   const { innerWidth } = useWindowDimensions() || {};
   const mobileView = innerWidth <= 1000;
@@ -39,12 +43,12 @@ const Dashboard: NextPage = (): JSX.Element => {
   const { batch, total_posts, total_users } = dashboardData || {};
   const { employed, selfEmployed, unemployed } = batch || {};
 
-  useEffect(() => { 
+  useEffect(() => {
     getDashboardData(selectedIndex + 1).then((res) => {
       setDashboardData(res);
     });
   }, [selectedIndex]);
-  
+
   const data = [
     [
       "Employment Status",
@@ -113,9 +117,9 @@ const Dashboard: NextPage = (): JSX.Element => {
                     <Listbox.Options className="z-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                       {years.map((year, yearIdx) => (
                         <Listbox.Option
-                          key={yearIdx} 
+                          key={yearIdx}
                           onClick={() => {
-                            setSelectedIndex(yearIdx); 
+                            setSelectedIndex(yearIdx);
                           }}
                           className={({ active }) =>
                             `relative select-none py-2 pl-10 pr-4 ${active ? 'bg-sats-10 text-slate-50' : 'text-gray-900'
@@ -124,7 +128,7 @@ const Dashboard: NextPage = (): JSX.Element => {
                           value={year}
                         >
                           {({ selected }) => (
-                            <div> 
+                            <div>
                               <span
                                 className={`block text-left truncate ${selected ? 'font-medium' : 'font-normal'
                                   }`}
@@ -165,4 +169,5 @@ const Dashboard: NextPage = (): JSX.Element => {
   );
 };
 
+export { AdminSignInOutAuthCheck as getServerSideProps } from '~/utils/getServerSideProps';
 export default Dashboard;
