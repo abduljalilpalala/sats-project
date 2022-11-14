@@ -1,11 +1,11 @@
 import Head from 'next/head'
-import dynamic from 'next/dynamic'
 import React, { FC, useState } from 'react'
-import { clxs } from '~/helpers/classNames'
+import dynamic from 'next/dynamic'
 import createPersistedState from 'use-persisted-state'
 
 import Footer from '~/components/organisms/Footer'
 import AdminHeader from '~/components/organisms/AdminHeader'
+import AdminDrawer from '~/components/organisms/AdminDrawer'
 
 const AdminSidebar = dynamic(() => import('~/components/organisms/AdminSidebar'), { ssr: false })
 
@@ -17,9 +17,11 @@ type Props = {
 const useSidebarState = createPersistedState<boolean>('sidebarToggle')
 
 const AdminLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
-  const [isOpen, setIsOpen] = useSidebarState(true)
+  const [isOpenSidebar, setIsOpenSidebar] = useSidebarState(true)
+  const [isOpenDrawer, setIsOpenDrawer] = useState<boolean>(false)
 
-  const handleOpen = (): void => setIsOpen(!isOpen)
+  const handleToggleSidebar = (): void => setIsOpenSidebar(!isOpenSidebar)
+  const handleToggleDrawer = (): void => setIsOpenDrawer(!isOpenDrawer)
 
   return (
     <>
@@ -27,18 +29,23 @@ const AdminLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
         <title>{`Admin | ${metaTitle}`}</title>
       </Head>
       {/* Admin Header */}
-      <AdminHeader actions={{ handleOpen }} />
-      <div className="pt-16 w-screen">
+      <AdminHeader actions={{ handleToggleSidebar, handleToggleDrawer }} />
+      <div className="relative mx-auto w-full pt-16">
         {/* Admin Sidebar */}
-        <AdminSidebar isOpen={isOpen} />
+        <AdminSidebar isOpen={isOpenSidebar} />
+        {/* Admin Drawer */}
+        <div className="block md:hidden">
+          <AdminDrawer isOpenDrawer={isOpenDrawer} handleToggleDrawer={handleToggleDrawer} />
+        </div>
         {/* Main Content */}
-        <div
-          className={clxs(
-            'relative h-full min-h-screen overflow-y-auto bg-white',
-            isOpen ? `ml-64` : `ml-16`
-          )}
-        >
-          <main className="mx-auto min-h-[80vh] max-w-6xl p-5">{children}</main>
+        <div className="relative h-full min-h-screen overflow-y-auto bg-white">
+          <main
+            className={`mx-auto min-h-[80vh] max-w-6xl p-5 pl-4 ${
+              isOpenSidebar ? 'pl-0 md:pl-60' : ''
+            }`}
+          >
+            {children}
+          </main>
           <Footer />
         </div>
       </div>

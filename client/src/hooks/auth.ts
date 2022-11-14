@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
+import { deleteCookie } from 'cookies-next'
 
 import axios from '~/shared/lib/axios'
 import { Roles } from '~/shared/data/roleConstant'
@@ -26,6 +27,7 @@ const useAuth = () => {
         toast.error('Account currently not yet verified please wait to the admin for approval.', {
           position: 'top-right'
         })
+        deleteCookie('XSRF-TOKEN')
         window.location.href = 'login'
         return
       }
@@ -50,6 +52,7 @@ const useAuth = () => {
 
         if (!response?.data?.is_verified) {
           toast.error('Account currently not yet verified', { position: 'top-right' })
+          deleteCookie('XSRF-TOKEN')
         } else {
           window.location.href = '/'
         }

@@ -1,22 +1,23 @@
-import Link from 'next/link';
-import React, { Fragment } from 'react';
-import { IoLogOut } from 'react-icons/io5';
-import { HiMenuAlt4 } from 'react-icons/hi';
-import { Menu as MenuIcon } from 'react-feather';
-import { Menu, Transition } from '@headlessui/react';
+import Link from 'next/link'
+import React, { Fragment } from 'react'
+import { IoLogOut } from 'react-icons/io5'
+import { HiMenuAlt4 } from 'react-icons/hi'
+import { Menu as MenuIcon } from 'react-feather'
+import { Menu, Transition } from '@headlessui/react'
 
-import { clxs } from '~/helpers/classNames';
-import adminHooks from '~/hooks/admin/adminHooks';
+import { clxs } from '~/helpers/classNames'
+import adminHooks from '~/hooks/admin/adminHooks'
 
 type Props = {
   actions: {
-    handleOpen: () => void;
-  };
-};
+    handleToggleSidebar: () => void
+    handleToggleDrawer: () => void
+  }
+}
 
 const AdminHeader: React.FC<Props> = ({ actions }): JSX.Element => {
-  const { handleOpen } = actions;
-  const { logout } = adminHooks();
+  const { handleToggleSidebar, handleToggleDrawer } = actions
+  const { logout } = adminHooks()
 
   return (
     <header className="fixed z-30 w-full bg-[#083c76] text-white">
@@ -24,8 +25,15 @@ const AdminHeader: React.FC<Props> = ({ actions }): JSX.Element => {
         <section className="flex items-center">
           <button
             type="button"
-            onClick={handleOpen}
-            className="mr-2 cursor-pointer rounded p-2 active:scale-95"
+            onClick={handleToggleSidebar}
+            className="mr-2 hidden cursor-pointer rounded p-2 active:scale-95 md:block"
+          >
+            <MenuIcon className="h-6 w-6" />
+          </button>
+          <button
+            type="button"
+            onClick={handleToggleDrawer}
+            className="mr-2 block cursor-pointer rounded p-2 active:scale-95 md:hidden"
           >
             <MenuIcon className="h-6 w-6" />
           </button>
@@ -90,7 +98,7 @@ const AdminHeader: React.FC<Props> = ({ actions }): JSX.Element => {
         </section>
       </main>
     </header>
-  );
-};
+  )
+}
 
-export default AdminHeader;
+export default AdminHeader
