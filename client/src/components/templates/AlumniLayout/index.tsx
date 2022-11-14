@@ -1,9 +1,10 @@
 import Head from 'next/head'
+import userHooks from '~/hooks/user/userHooks'
 import React, { FC, useState, ReactNode } from 'react'
 
 import { alumniData } from '~/shared/data/alumniData'
 import AlumniHeader from '~/components/organisms/AlumniHeader'
-import SettingsModal from '~/components/organisms/SettingsDialog'
+import AlumniSettings from '~/components/molecules/AlumniSettings'
 
 type Props = {
   children: ReactNode
@@ -11,6 +12,7 @@ type Props = {
 }
 
 const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
+  const { data: alumni, error } = userHooks()
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const toggle = (): void => setIsOpen(!isOpen)
@@ -41,8 +43,8 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
               </div>
             </header>
             <main className="text-center">
-              <h1 className="text-normal mt-4 text-xl">Joshua Galit</h1>
-              <p className="text-xs">joshua.galit@sun-asterisk.com</p>
+              <h1 className="text-normal mt-4 text-xl line-clamp-1">{alumni?.name}</h1>
+              <p className="text-xs line-clamp-1">{alumni?.email}</p>
             </main>
           </section>
           <section className="relative mt-8 flex flex-col px-4 ">
@@ -53,7 +55,7 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
             >
               My Profile
             </button>
-            <SettingsModal isOpen={isOpen} toggle={toggle} />
+            <AlumniSettings isOpen={isOpen} toggle={toggle} />
           </section>
         </aside>
 
