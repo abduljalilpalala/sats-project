@@ -123,7 +123,7 @@ class User extends Authenticatable implements HasMedia
     public function updateAvatar($request)
     {
         if ($request->hasFile('avatar')) {
-            auth()->user()->addMedia($request->file('avatar'))
+            $this->addMedia($request->file('avatar'))
                 ->preservingOriginal()->toMediaCollection('avatar');
             return response()->noContent();
         }
@@ -132,9 +132,14 @@ class User extends Authenticatable implements HasMedia
 
     public function removeAvatar()
     {
-        auth()->user()->addMedia(public_path('assets/avatars/default.png'))
+        $this->addMedia(public_path('assets/avatars/default.png'))
             ->preservingOriginal()->toMediaCollection('avatar');
         return response()->noContent();
+    }
+
+    public function updateUserDetails($request)
+    {
+        $this->update($request->validated());
     }
 
     public static function boot()
