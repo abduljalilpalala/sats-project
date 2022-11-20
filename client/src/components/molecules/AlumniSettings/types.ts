@@ -12,5 +12,5 @@ export type Security = {
 export type About = {
   id_number: string | undefined | null
   birth_date: string
-  employment_status: string
+  employment_status_id: number
 }
