@@ -15,8 +15,8 @@ class AvatarResource extends JsonResource
   public function toArray($request)
   {
     return [
-      'fileName' => $this->first()->file_name,
-      'url' => $this->first()->getUrl(),
+      'fileName' => $this->first()->file_name ? $this->first()->file_name : '',
+      'url' => $this->first()->getUrl() ? $this->first()->getUrl() : '#',
     ];
   }
 }

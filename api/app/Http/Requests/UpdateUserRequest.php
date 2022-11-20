@@ -26,7 +26,10 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => ['required', 'max:255'],
             'email' => ['required', 'email', 'max:255', "unique:users,email," . $this->request->get('id') . ""],
-            'contact_number' => ['required'],
+            'contact_number' => ['required', 'min:11', 'max:11'],
+            'id_number' => ['nullable', 'max:255'],
+            'birth_date' => ['required', 'date', 'max:255'],
+            'employment_status_id' => ['required']
         ];
     }
 }
