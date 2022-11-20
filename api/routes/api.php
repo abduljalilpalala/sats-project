@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UpdatePasswordController;
+use App\Http\Controllers\UpdateUserController;
 use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,8 +34,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::put('change-password', [UpdatePasswordController::class, 'update']);
         Route::post('user-avatar', [UserAvatarController::class, 'store']);
         Route::delete('user-avatar', [UserAvatarController::class, 'destroy']);
+        Route::put('/', UpdateUserController::class);
     });
     
-    Route::apiResource('user', UserController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('user', UserController::class)->except(['show', 'update']);
     Route::apiResource('post', PostController::class)->except(['show']);
 });
