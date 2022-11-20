@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Symfony\Component\HttpFoundation\Response;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -103,7 +104,7 @@ class User extends Authenticatable implements HasMedia
     {
         return $query->where('employment_status_id', EmploymentStatusEnum::UNEMPLOYED);
     }
-    
+
     public function scopeSelfEmployed($query)
     {
         return $query->where('employment_status_id', EmploymentStatusEnum::SELF_EMPLOYED);
@@ -117,6 +118,23 @@ class User extends Authenticatable implements HasMedia
     public function rejectApplication()
     {
         return $this->deleteOrFail();
+    }
+
+    public function updateAvatar($request)
+    {
+        if ($request->hasFile('avatar')) {
+            auth()->user()->addMedia($request->file('avatar'))
+                ->preservingOriginal()->toMediaCollection('avatar');
+            return response()->noContent();
+        }
+        return response()->json(['Error: ' => 'Ooops, Something went wrong'], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    public function removeAvatar()
+    {
+        auth()->user()->addMedia(public_path('assets/avatars/default.png'))
+            ->preservingOriginal()->toMediaCollection('avatar');
+        return response()->noContent();
     }
 
     public static function boot()

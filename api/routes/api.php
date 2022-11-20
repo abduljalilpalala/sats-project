@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UpdatePasswordController;
+use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('change-sms-setting', [AdminSettingController::class, 'store']);
     });
 
-    Route::put('user/change-password', [UpdatePasswordController::class, 'update']);
+    Route::group(['prefix' => 'user'], function () {
+        Route::put('change-password', [UpdatePasswordController::class, 'update']);
+        Route::post('user-avatar', [UserAvatarController::class, 'store']);
+        Route::delete('user-avatar', [UserAvatarController::class, 'destroy']);
+    });
+    
     Route::apiResource('user', UserController::class)->only(['index', 'store', 'destroy']);
     Route::apiResource('post', PostController::class)->except(['show']);
 });
