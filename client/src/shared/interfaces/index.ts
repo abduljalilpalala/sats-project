@@ -24,4 +24,10 @@ export interface IAlumniData {
   email_verified?: null
   created_at: string
   updated_at: string
+  avatar: [
+    {
+      id: number
+      original_url: string
+    }
+  ]
 }
