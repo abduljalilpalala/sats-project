@@ -1,6 +1,7 @@
 export type Profile = {
   name: string
   email: string
+  contact_number: string | number
 }
 
 export type Security = {

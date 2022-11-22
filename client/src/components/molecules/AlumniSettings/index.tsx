@@ -22,11 +22,6 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
   const [active, setActive] = useState<string>('Profile')
   const { data: alumni, mutate } = userHooks()
 
-  const handleUpdateProfile = async (data: Profile): Promise<void> => {
-    const { name, email } = data
-    alert(JSON.stringify({ name, email }, null, 2))
-  }
-
   const menuList = ['Profile', 'Security', 'About']
 
   const onClick = (e: React.FormEvent<HTMLButtonElement>) => {
@@ -58,8 +53,38 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
           formState: { isSubmitting, errors }
         } = useForm<Profile>({
           mode: 'onTouched',
-          resolver: yupResolver(ProfileFormSchema)
+          resolver: yupResolver(ProfileFormSchema),
+          defaultValues: {
+            name: alumni?.name,
+            email: alumni?.email,
+            contact_number: alumni?.contact_number
+          }
         })
+
+        const handleUpdateProfile = async (data: Profile): Promise<void> => {
+          try {
+            const payload = {
+              id: alumni?.id,
+              name: data?.name,
+              email: data?.email,
+              contact_number: data?.contact_number,
+              id_number: alumni?.id_number,
+              birth_date: alumni?.birth_date,
+              employment_status_id: alumni?.employment_status_id
+            }
+
+            const response = await axios.put('/api/user', payload)
+
+            if (response.status === 200) {
+              mutate({ data: response.data, ...response.data })
+              toast.success('Successfully Updated!')
+            }
+          } catch (error: any) {
+            if (error?.response?.status !== 422) throw error
+            setFormError(Object.values(error?.response?.data?.message).flat())
+            toast.error(error?.response?.data?.message)
+          }
+        }
 
         return (
           <>
@@ -117,6 +142,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
                     className="form-control"
                     disabled={isSubmitting}
                     {...register('name')}
+                    defaultValue={alumni?.name}
                     placeholder="john doe"
                   />
                   {errors?.name && <span className="error">{`${errors?.name?.message}`}</span>}
@@ -131,13 +157,28 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
                     {...register('email')}
                     disabled={isSubmitting}
                     className="form-control"
+                    defaultValue={alumni?.email}
                     placeholder="name@company.com"
                   />
                   {errors?.email && <span className="error">{`${errors?.email?.message}`}</span>}
                 </div>
+                <div>
+                  <label htmlFor="contact-number" className="form-label float-left">
+                    Contact Number
+                  </label>
+                  <input
+                    type="text"
+                    id="contact-number"
+                    {...register('contact_number')}
+                    disabled={isSubmitting}
+                    className="form-control"
+                    defaultValue={alumni?.contact_number}
+                    placeholder="Your contact number"
+                  />
+                </div>
               </div>
-              <button type="submit" className="form-submit mt-8">
-                Save Changes
+              <button type="submit" className="form-submit mt-8" disabled={isSubmitting}>
+                {isSubmitting ? <Spinner className="h-5 w-5" /> : 'Save Changes'}
               </button>
             </form>
           </>
@@ -156,16 +197,17 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
         })
 
         // P.S.: This will handle Update the Security Password of the User
-        const handleUpdateSecurity = (data: Security): void => {
-          const { current_password, new_password, password_confirmation } = data
-          const payload = {
-            currentPassword: current_password,
-            newPassword: new_password,
-            newConfirmedPassword: password_confirmation
-          }
-          axios
-            .put('/api/user/change-password', payload)
-            .then(() => {
+        const handleUpdateSecurity = async (data: Security): Promise<void> => {
+          try {
+            const payload = {
+              currentPassword: data?.current_password,
+              newPassword: data?.new_password,
+              newConfirmedPassword: data?.password_confirmation
+            }
+
+            const response = await axios.put('/api/user/change-password', payload)
+
+            if (response?.status === 204) {
               reset({
                 current_password: '',
                 new_password: '',
@@ -173,11 +215,12 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
               })
               toast.success('Successfully Updated!')
               setFormError(null)
-            })
-            .catch((error) => {
-              if (error?.response?.status !== 422) throw error
-              setFormError(Object.values(error?.response?.data?.message).flat())
-            })
+            }
+          } catch (error: any) {
+            if (error?.response?.status !== 422) throw error
+            setFormError(Object.values(error?.response?.data?.message).flat())
+            toast.error(error?.response?.data?.message)
+          }
         }
 
         return (
@@ -352,6 +395,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
                   id="employment_status"
                   disabled={isSubmitting}
                   {...register('employment_status_id')}
+                  defaultValue={alumni?.employment_status_id}
                 >
                   {employmentStatus.map(({ id, name }) => (
                     <option key={id} value={id} selected={alumni?.employment_status_id === id}>

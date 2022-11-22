@@ -36,7 +36,8 @@ export const ProfileFormSchema = Yup.object().shape({
     .required('Name is required')
     .min(2, 'Should have atleast 2 characters')
     .max(30, 'Should have max length of 30 characters'),
-  email: Yup.string().email().required().label('Email')
+  email: Yup.string().email().required().label('Email'),
+  contact_number: Yup.string()
 })
 
 export const SecurityFormSchema = Yup.object().shape({
