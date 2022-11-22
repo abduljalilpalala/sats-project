@@ -55,5 +55,5 @@ export const SecurityFormSchema = Yup.object().shape({
 export const AboutFormSchema = Yup.object().shape({
   id_number: Yup.string(),
   birth_date: Yup.string().required('Birth date is required'),
-  employment_status: Yup.string().required('Employment Status is required')
+  employment_status_id: Yup.number().required('Employment Status is required')
 })

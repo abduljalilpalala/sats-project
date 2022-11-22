@@ -5,6 +5,7 @@ import React, { FC, useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import axios from '~/shared/lib/axios'
+import userHooks from '~/hooks/user/userHooks'
 import { About, Profile, Security } from './types'
 import { Spinner } from '~/shared/icons/SpinnerIcon'
 import DialogBox from '~/components/templates/DialogBox'
@@ -19,15 +20,11 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
   const { isOpen, toggle } = props
   const [formError, setFormError]: any = useState(null)
   const [active, setActive] = useState<string>('Profile')
+  const { data: alumni, mutate } = userHooks()
 
   const handleUpdateProfile = async (data: Profile): Promise<void> => {
     const { name, email } = data
     alert(JSON.stringify({ name, email }, null, 2))
-  }
-
-  const handleUpdateAbout = async (data: About): Promise<void> => {
-    const { id_number, birth_date, employment_status } = data
-    alert(JSON.stringify({ id_number, birth_date, employment_status }, null, 2))
   }
 
   const menuList = ['Profile', 'Security', 'About']
@@ -266,8 +263,51 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
           formState: { isSubmitting, errors }
         } = useForm<About>({
           mode: 'onTouched',
-          resolver: yupResolver(AboutFormSchema)
+          resolver: yupResolver(AboutFormSchema),
+          defaultValues: {
+            id_number: alumni?.id_number,
+            birth_date: alumni?.birth_date,
+            employment_status_id: alumni?.employment_status_id
+          }
         })
+
+        const handleUpdateAbout = async (data: About): Promise<void> => {
+          try {
+            const payload = {
+              id: alumni?.id,
+              name: alumni?.name,
+              email: alumni?.email,
+              contact_number: alumni?.contact_number,
+              id_number: data?.id_number,
+              birth_date: data?.birth_date,
+              employment_status_id: data?.employment_status_id
+            }
+
+            const response = await axios.put('/api/user', payload)
+
+            if (response.status === 200) {
+              mutate()
+              toast.success('Successfully Updated!')
+            }
+          } catch (error) {
+            toast.error(`${error}`)
+          }
+        }
+
+        const employmentStatus = [
+          {
+            id: 1,
+            name: 'Employed'
+          },
+          {
+            id: 2,
+            name: 'Self-Employed'
+          },
+          {
+            id: 3,
+            name: 'Unemployed'
+          }
+        ]
 
         return (
           <form className="flex flex-col gap-9" onSubmit={handleSubmit(handleUpdateAbout)}>
@@ -279,6 +319,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
                 <input
                   type="text"
                   id="id_number"
+                  defaultValue={alumni?.id_number}
                   className="form-control"
                   disabled={isSubmitting}
                   {...register('id_number')}
@@ -292,6 +333,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
                 <input
                   type="date"
                   id="birth_date"
+                  defaultValue={alumni?.birth_date}
                   disabled={isSubmitting}
                   {...register('birth_date')}
                   className="form-control"
@@ -309,20 +351,21 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
                   className="form-control"
                   id="employment_status"
                   disabled={isSubmitting}
-                  {...register('employment_status')}
+                  {...register('employment_status_id')}
                 >
-                  <option value={1}>2018-2019</option>
-                  <option value={2}>2019-2020</option>
-                  <option value={3}>2020-2021</option>
-                  <option value={3}>2021-2022</option>
+                  {employmentStatus.map(({ id, name }) => (
+                    <option key={id} value={id} selected={alumni?.employment_status_id === id}>
+                      {name}
+                    </option>
+                  ))}
                 </select>
-                {errors?.employment_status && (
-                  <span className="error">{`${errors?.employment_status?.message}`}</span>
+                {errors?.employment_status_id && (
+                  <span className="error">{`${errors?.employment_status_id?.message}`}</span>
                 )}
               </div>
             </div>
-            <button type="submit" className="form-submit mt-8">
-              Save Changes
+            <button type="submit" className="form-submit mt-8" disabled={isSubmitting}>
+              {isSubmitting ? <Spinner className="h-5 w-5" /> : 'Save Changes'}
             </button>
           </form>
         )

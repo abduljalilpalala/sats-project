@@ -55,7 +55,7 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
             >
               My Profile
             </button>
-            <AlumniSettings isOpen={isOpen} toggle={toggle} />
+            {isOpen && <AlumniSettings isOpen={isOpen} toggle={toggle} />}
           </section>
         </aside>
 
