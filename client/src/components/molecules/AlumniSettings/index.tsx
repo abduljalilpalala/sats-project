@@ -1,13 +1,14 @@
 import { X } from 'react-feather'
 import toast from 'react-hot-toast'
 import { useForm } from 'react-hook-form'
-import React, { FC, useState } from 'react'
 import { yupResolver } from '@hookform/resolvers/yup'
+import React, { ChangeEvent, FC, useState } from 'react'
 
 import axios from '~/shared/lib/axios'
 import userHooks from '~/hooks/user/userHooks'
 import { About, Profile, Security } from './types'
 import { Spinner } from '~/shared/icons/SpinnerIcon'
+import handleImageError from '~/utils/handleImageError'
 import DialogBox from '~/components/templates/DialogBox'
 import { AboutFormSchema, ProfileFormSchema, SecurityFormSchema } from '~/shared/validation'
 
@@ -76,12 +77,49 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
             const response = await axios.put('/api/user', payload)
 
             if (response.status === 200) {
-              mutate({ data: response.data, ...response.data })
+              mutate()
               toast.success('Successfully Updated!')
             }
           } catch (error: any) {
             if (error?.response?.status !== 422) throw error
-            setFormError(Object.values(error?.response?.data?.message).flat())
+            toast.error(error?.response?.data?.message)
+          }
+        }
+
+        const updateAvatar = async (e: ChangeEvent<HTMLInputElement | null>): Promise<void> => {
+          try {
+            if (!e.target.files) return
+
+            const files = e.target.files[0]
+            const formData = new FormData()
+            formData.append('avatar', files)
+            formData.append('_method', 'POST')
+
+            const response = await axios.post('/api/user/user-avatar', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+
+            if (response.status === 204) {
+              mutate()
+              toast.success('Successfully Updated!')
+            }
+          } catch (error: any) {
+            if (error?.response?.status !== 422) throw error
+            toast.error(error?.response?.data?.message)
+          }
+        }
+
+        const removeAvatar = async (): Promise<void> => {
+          try {
+            const response = await axios.delete('/api/user/user-avatar')
+            if (response.status === 204) {
+              mutate()
+              toast.success('Successfully Deleted!')
+            }
+          } catch (error: any) {
+            if (error?.response?.status !== 422) throw error
             toast.error(error?.response?.data?.message)
           }
         }
@@ -92,15 +130,17 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
               <p className="text-px-12 text-left text-slate-800">Your photo</p>
               <div className="flex flex-row items-center justify-between">
                 <img
-                  src="/images/animated-avatar.jpg"
-                  alt="team-icon"
+                  src={alumni?.avatar[0]?.original_url}
+                  onError={(e) => handleImageError(e, '/images/avatar.png')}
                   className="max-h-[88px] min-h-[88px] min-w-[88px] max-w-[88px] rounded-full"
+                  alt=""
                 />
                 <div className="flex flex-col gap-3">
                   <input
                     type="file"
                     className="hidden"
                     id="upload"
+                    onChange={updateAvatar}
                     accept="image/png, image/gif, image/jpeg"
                   />
                   <label
@@ -116,10 +156,13 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
                   <button
                     type="button"
                     data-tip="Under development"
+                    onClick={removeAvatar}
+                    disabled={alumni?.avatar[0]?.original_url ? false : true}
                     className={`
-                      h-px-36 w-px-170 cursor-not-allowed rounded-md border border-blue-600 bg-slate-500 tracking-tight 
+                      h-px-36 w-px-170 rounded-md border border-blue-600 bg-slate-500 tracking-tight 
                       text-slate-900 opacity-50 duration-150 ease-in-out hover:bg-slate-500 hover:text-slate-50 mobile:!max-w-[120px] 
                       mobile:!text-sm
+                      ${!alumni?.avatar[0]?.original_url ? 'cursor-not-allowed opacity-50' : ''}
                     `}
                   >
                     Remove photo

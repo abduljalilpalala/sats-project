@@ -3,6 +3,7 @@ import userHooks from '~/hooks/user/userHooks'
 import React, { FC, useState, ReactNode } from 'react'
 
 import { alumniData } from '~/shared/data/alumniData'
+import handleImageError from '~/utils/handleImageError'
 import AlumniHeader from '~/components/organisms/AlumniHeader'
 import AlumniSettings from '~/components/molecules/AlumniSettings'
 
@@ -24,7 +25,7 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
       </Head>
 
       {/* Alumni Header */}
-      <AlumniHeader actions={{ toggle }} />
+      <AlumniHeader avatar={alumni?.avatar[0]?.original_url} actions={{ toggle }} />
 
       <main className="mx-auto flex max-w-[90rem] pt-[60px] md:space-x-10 md:px-4">
         {/* The Profile Side */}
@@ -36,7 +37,8 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
             <header className="flex items-center justify-center">
               <div className="-mt-12 flex-shrink-0 overflow-hidden">
                 <img
-                  src="/images/animated-avatar.jpg"
+                  src={alumni?.avatar[0]?.original_url}
+                  onError={(e) => handleImageError(e, '/images/avatar.png')}
                   className="h-[110px] w-[110px] rounded-full shadow"
                   alt=""
                 />

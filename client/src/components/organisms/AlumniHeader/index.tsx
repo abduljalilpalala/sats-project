@@ -5,8 +5,10 @@ import { Menu, Transition } from '@headlessui/react'
 
 import { clxs } from '~/helpers/classNames'
 import userHooks from '~/hooks/user/userHooks'
+import handleImageError from '~/utils/handleImageError'
 
 type Props = {
+  avatar: string | undefined
   actions: {
     toggle: () => void
   }
@@ -35,7 +37,11 @@ const AlumniHeader: FC<Props> = (props): JSX.Element => {
                   'transition duration-150 ease-in-out active:scale-95'
                 )}
               >
-                <img src="/images/animated-avatar.jpg" className="h-8 w-8 rounded-full" />
+                <img
+                  src={props?.avatar}
+                  onError={(e) => handleImageError(e, '/images/avatar.png')}
+                  className="h-8 w-8 rounded-full"
+                />
               </Menu.Button>
               <Transition
                 as={Fragment}
