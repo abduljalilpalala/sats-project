@@ -41,7 +41,7 @@ const AdminLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
         <div className="relative h-full min-h-screen overflow-y-auto bg-white">
           <main
             className={`mx-auto min-h-[80vh] max-w-6xl p-5 pl-4 ${
-              isOpenSidebar ? 'pl-0 md:pl-60' : ''
+              isOpenSidebar ? 'pl-4 md:pl-60' : ''
             }`}
           >
             {children}

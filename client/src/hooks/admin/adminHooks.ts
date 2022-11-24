@@ -1,5 +1,7 @@
+import useSWR from 'swr'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { AxiosResponse } from 'axios'
 import { deleteCookie } from 'cookies-next'
 
 import axios from '~/shared/lib/axios'
@@ -156,7 +158,7 @@ const adminHooks = () => {
   const logout = async () => {
     try {
       await axios.post('/logout')
-      
+
       deleteCookie('XSRF-TOKEN')
 
       toast.success('Logout successfully!')

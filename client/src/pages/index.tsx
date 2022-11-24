@@ -1,8 +1,13 @@
+import moment from 'moment'
 import type { NextPage } from 'next'
 
+import useNewsFeed from '~/hooks/user/newsFeedHooks'
 import AlumniLayout from '~/components/templates/AlumniLayout'
+import NewsFeedPostSkeleton from '~/components/atoms/Skeletons/NewsFeedPostSkeleton'
 
 const Index: NextPage = (): JSX.Element => {
+  const { data, isLoading } = useNewsFeed()
+
   return (
     <AlumniLayout metaTitle="Home">
       <div className="boorder-slate-300 mx-auto mt-6 flex w-full max-w-xl items-center justify-between border-b-2">
@@ -31,30 +36,32 @@ const Index: NextPage = (): JSX.Element => {
           </a>
         </button>
       </div>
-      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((list) => (
-        <section
-          key={list}
-          className="mx-auto mt-6 w-full max-w-xl rounded-lg border bg-white px-6 py-5 shadow transition duration-150 ease-in-out hover:bg-slate-50 hover:shadow-lg"
-        >
-          <header className="flex items-center space-x-3">
-            <div className="flex-shrink-0">
-              <img src="/images/logo.png" alt="" className="h-8 w-8" />
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-sm font-bold">SLSU - Admin</h1>
-              <p className="text-xs">2 days ago</p>
-            </div>
-          </header>
-          <main className="mt-3 px-2">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore amet placeat corporis
-            cupiditate aperiam, quaerat fugiat quae nam beatae assumenda, reprehenderit quam rem
-            recusandae modi omnis quia at earum debitis.
-          </main>
-        </section>
-      ))}
+      {isLoading ? (
+        <NewsFeedPostSkeleton />
+      ) : (
+        <>
+          {data?.map(({ id, content, created_at }) => (
+            <section
+              key={id}
+              className="mx-auto mt-6 w-full max-w-xl rounded-lg border bg-white px-6 py-5 shadow transition duration-150 ease-in-out hover:bg-slate-50 hover:shadow-lg"
+            >
+              <header className="flex items-center space-x-3">
+                <div className="flex-shrink-0">
+                  <img src="/images/logo.png" alt="" className="h-8 w-8" />
+                </div>
+                <div className="flex flex-col">
+                  <h1 className="text-sm font-bold">SLSU - Admin</h1>
+                  <p className="text-xs">{moment(created_at).fromNow()}</p>
+                </div>
+              </header>
+              <main className="mt-3 px-2">{content}</main>
+            </section>
+          ))}
+        </>
+      )}
     </AlumniLayout>
   )
 }
 
-export { UserSignInOutAuthCheck as getServerSideProps } from '~/utils/getServerSideProps';
+export { UserSignInOutAuthCheck as getServerSideProps } from '~/utils/getServerSideProps'
 export default Index

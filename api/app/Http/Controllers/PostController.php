@@ -16,7 +16,7 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $post = new Post();
-        return $post->createPost($request);;
+        return $post->createPost($request);
     }
 
     public function update(PostRequest $request, Post $post)
