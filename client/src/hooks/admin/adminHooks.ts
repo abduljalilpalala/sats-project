@@ -42,6 +42,16 @@ const adminHooks = () => {
     }
   }
 
+  const getStudentNumbers = async () => {
+    try {
+      const response = await axios.get('/api/user/number')
+
+      return response?.data
+    } catch (err: any) {
+      return setErrorMessage(err)
+    }
+  }
+
   const getSmsStatus = async () => {
     try {
       const response = await axios.get('/api/admin/sms-status')
@@ -195,6 +205,7 @@ const adminHooks = () => {
     getAllApplicants,
     rejectApplicants,
     approveApplicants,
+    getStudentNumbers,
     changeAdminPassword
   }
 }

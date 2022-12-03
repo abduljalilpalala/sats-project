@@ -70,6 +70,13 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsTo(Role::class);
     }
 
+    public function number()
+    {
+        return $this
+            ->where('is_verified', ApplicationStatusEnum::APPROVED)
+            ->get('contact_number');
+    }
+
     public function scopeApplicants($query)
     {
         return $query->where('role_id', RoleEnum::USER);

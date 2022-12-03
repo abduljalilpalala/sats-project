@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::group(['prefix' => 'user'], function () {
         Route::put('change-password', [UpdatePasswordController::class, 'update']);
+        Route::get('number', [UpdatePasswordController::class, 'number']);
         Route::post('user-avatar', [UserAvatarController::class, 'store']);
         Route::delete('user-avatar', [UserAvatarController::class, 'destroy']);
         Route::put('/', UpdateUserController::class);
