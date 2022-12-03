@@ -9,14 +9,16 @@ import toast from 'react-hot-toast';
 import Loader from '~/components/atoms/Loader';
 import useIsLoading from '~/hooks/useIsLoading';
 import adminHooks from '~/hooks/admin/adminHooks';
+import useSendSms from '~/hooks/admin/useSendSms';
 import AdminPost from '~/components/molecules/AdminPost';
 import AdminLayout from '~/components/templates/AdminLayout';
 
 const ManagePost: NextPage = (): JSX.Element => {
   const {
     isLoading,
-    getAllPost,
+    getAllPost, 
     createNewPost,
+    getStudentNumbers,
     deletePost: callDeletePost,
   } = adminHooks();
   const [post, setPost] = useState<any>([]);
@@ -42,6 +44,16 @@ const ManagePost: NextPage = (): JSX.Element => {
     toast.promise(
       createNewPost(postValue).then((_) => {
         setPostValue("");
+        
+        getStudentNumbers().then((res: any) => {
+          if (res.smsStatus) { 
+            res.numbers.map(({contact_number}:{contact_number:string}, index:number)=>{
+              setTimeout(function timer() {
+                useSendSms(postValue, contact_number)
+              }, (index + 1) * 10000); 
+            })
+          }
+        })
       }),
       {
         loading: 'Creating post...',
@@ -97,13 +109,13 @@ const ManagePost: NextPage = (): JSX.Element => {
         <h1 className='w-full py-6 text-sats-30 font-bold text-medium'>All post</h1>
         <div className='flex flex-col gap-6'>
           {post?.length === 0 && <span className='text-center w-full text-slate-400'>No available post</span>}
-          {post?.map((user: { content: string, date: string, id: number; }, index: number) => {
-            const { content, date, id } = user;
+          {post?.map((user: { content: string, created_at: string, id: number; }, index: number) => {
+            const { content, created_at, id } = user;
 
             return <AdminPost
               key={index}
               isAdmin={true}
-              date={date}
+              date={created_at}
               post={content}
               onClick={() => deletePost(id)}
             />;

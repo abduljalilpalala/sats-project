@@ -54,7 +54,7 @@ const Index: NextPage = (): JSX.Element => {
                   <p className="text-xs">{moment(created_at).fromNow()}</p>
                 </div>
               </header>
-              <main className="mt-3 px-2">{content}</main>
+              <main className="mt-3 px-2"><p className="break-words">{content}</p></main>
             </section>
           ))}
         </>

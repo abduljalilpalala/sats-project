@@ -91,7 +91,9 @@ const AdminPost = (props: PostContent) => {
         )}
       </header>
       <main className="mt-3 px-2">
-        {post}
+        <p className="break-words">
+          {post}
+        </p>
       </main>
     </section>
   );
