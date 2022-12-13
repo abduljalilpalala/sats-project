@@ -4,11 +4,10 @@ import { NextPage } from 'next'
 import { AxiosResponse } from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Disclosure, Tab } from '@headlessui/react'
-import { ChevronUpIcon } from '@heroicons/react/20/solid'
+import { ChevronUpIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
 import axios from '~/shared/lib/axios'
-import Loader from '~/components/atoms/Loader'
-import useIsLoading from '~/hooks/useIsLoading'
+import Loader from '~/components/atoms/Loader' 
 import adminHooks from '~/hooks/admin/adminHooks'
 import handleImageError from '~/utils/handleImageError'
 import AdminLayout from '~/components/templates/AdminLayout'
@@ -32,16 +31,19 @@ const ManageUser: NextPage = (): JSX.Element => {
     All: studentForVerifications?.all,
     Approved: studentForVerifications?.approved,
     Pending: studentForVerifications?.pending
-  })
+  }) 
+
+  const [searchIn, setSearchIn] = useState<string>("All")
+  const [searchInput, setSearchInput] = useState<string>("")
 
   useEffect(() => {
-    if (alumniList) {
+    if (alumniList) { 
       setAlumniList({
         All: studentForVerifications?.all,
         Approved: studentForVerifications?.approved,
         Pending: studentForVerifications?.pending
       })
-    }
+    } 
   }, [studentForVerifications])
 
   const approve = (name: string, id: number) => {
@@ -80,6 +82,23 @@ const ManageUser: NextPage = (): JSX.Element => {
     })
   }
 
+  const searchFunction = (value: string) => { 
+    if (value === "") {
+      return setAlumniList({
+        All: studentForVerifications?.all,
+        Approved: studentForVerifications?.approved,
+        Pending: studentForVerifications?.pending
+      })
+    }
+
+    let filteredData = studentForVerifications[searchIn?.toLowerCase()]?.filter((data: any, index: number)=>{
+      if (data?.name?.toLowerCase().includes(value.toLowerCase())) {  
+        return data
+      }
+    })  
+    setAlumniList((prev: any) => ({...prev, [searchIn]: [...filteredData] }))
+  } 
+  
   const ManageUserApplication = (
     <div className="flex items-center justify-center">
       <div className="w-[525px]">
@@ -88,6 +107,7 @@ const ManageUser: NextPage = (): JSX.Element => {
             {Object.keys(alumniList).map((category) => (
               <Tab
                 key={category}
+                onClick={()=> setSearchIn(category) }
                 className={({ selected }) =>
                   classNames(
                     'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-slate-50',
@@ -102,6 +122,22 @@ const ManageUser: NextPage = (): JSX.Element => {
               </Tab>
             ))}
           </Tab.List>
+          <div className="w-full my-2 flex flex-row gap-3 p-2 border-2 border-slate-900 rounded-lg">
+            <MagnifyingGlassIcon
+              className="h-9 w-9"
+            />
+            <input 
+              type="text" 
+              className="w-full h-full border-none"
+              placeholder="Search by name"
+              onChange={(e: any)=>{
+                const value = e.target.value
+
+                searchFunction(value)
+                setSearchInput(value) 
+              }}
+            />
+          </div>
           <Tab.Panels className="mt-2">
             {Object.values(alumniList)?.map((users: any, categoryID: number) => (
               <Tab.Panel
