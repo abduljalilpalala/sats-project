@@ -78,10 +78,11 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
                   focus:border-[#3b83d1] focus:ring-0
                 `}
               >
-                <option value={1}>2018-2019</option>
-                <option value={2}>2019-2020</option>
-                <option value={3}>2020-2021</option>
-                <option value={4}>2021-2022</option>
+                <option value={1}>2017-2018</option>
+                <option value={2}>2018-2019</option>
+                <option value={3}>2019-2020</option>
+                <option value={4}>2020-2021</option>
+                <option value={5}>2021-2022</option>
               </select>
             </div>
             <div className="col-span-12">

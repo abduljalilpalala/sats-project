@@ -18,6 +18,10 @@ class BatchSeeder extends Seeder
   {
     $batches = [
       [
+        'id' => BatchEnum::BATCH_2017_TO_2018,
+        'batch' => BatchEnum::BATCH_2017_TO_2018->label()
+      ],
+      [
         'id' => BatchEnum::BATCH_2018_TO_2019,
         'batch' => BatchEnum::BATCH_2018_TO_2019->label()
       ],

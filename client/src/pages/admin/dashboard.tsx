@@ -25,6 +25,7 @@ type Dashboard = {
 };
 
 const years = [
+  '2017 - 2018',
   '2018 - 2019',
   '2019 - 2020',
   '2020 - 2021',
@@ -34,7 +35,7 @@ const years = [
 const Dashboard: NextPage = (): JSX.Element => {
   const { getDashboardData } = adminHooks();
   const [dashboardData, setDashboardData] = useState<Dashboard | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState<number>(3);
+  const [selectedIndex, setSelectedIndex] = useState<number>(years?.length - 1);
   const [selected, setSelected] = useState<string>(years[selectedIndex]);
 
   const { innerWidth } = useWindowDimensions() || {};
