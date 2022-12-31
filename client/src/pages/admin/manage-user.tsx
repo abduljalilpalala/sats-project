@@ -152,7 +152,7 @@ const ManageUser: NextPage = (): JSX.Element => {
                 ) : (
                   <ul className="flex flex-col gap-2">
                     {users?.map((user: any, index: number) => {
-                      const { name, avatar, is_verified, id, batch, email, number, id_number } = user
+                      const { name, avatar, is_verified, id, batch, email, number } = user
 
                       return (
                         <Disclosure key={index}>
@@ -178,7 +178,7 @@ const ManageUser: NextPage = (): JSX.Element => {
                               <Disclosure.Panel className="flex flex-row justify-between px-5 pt-4 pb-2 text-sm text-slate-900 mobile:flex-col mobile:gap-5 mobile:px-0">
                                 <div className="w-full">
                                   {[
-                                    { header: 'ID Number', value: id_number ?? '---' },
+                                    { header: 'ID Number', value: id },
                                     { header: 'Batch', value: batch?.name }
                                   ].map((data: any, index: number) => {
                                     const { header, value } = data
@@ -199,7 +199,7 @@ const ManageUser: NextPage = (): JSX.Element => {
                                     ? null
                                     : [
                                       { header: 'Email', value: email },
-                                      { header: 'Contact Number', value: number }
+                                      { header: 'Number', value: number }
                                     ].map((data: any, index: number) => {
                                       const { header, value } = data
                                       return (
