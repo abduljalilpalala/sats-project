@@ -6,8 +6,9 @@ export const AdminSignInOutAuthCheck = ({ req }: any) => {
   const dashboard = path.includes('dashboard')
   const manageUser = path.includes('manage-user')
   const managePost = path.includes('manage-post')
+  const employmentStatus = path.includes('employment-status')
 
-  if ((dashboard || manageUser || managePost) && !xsrfToken) {
+  if ((dashboard || manageUser || managePost || employmentStatus) && !xsrfToken) {
     return {
       redirect: {
         destination: '/admin',
@@ -22,7 +23,7 @@ export const AdminSignInOutAuthCheck = ({ req }: any) => {
     }
   }
 
-  if ((dashboard || manageUser || managePost) && xsrfToken) {
+  if ((dashboard || manageUser || managePost || employmentStatus) && xsrfToken) {
     return {
       props: {}
     }
