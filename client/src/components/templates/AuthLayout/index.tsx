@@ -18,7 +18,7 @@ const AuthLayout: FC<Props> = (props): JSX.Element => {
   return (
     <>
       <Head>
-        <title>SLSU Alumi | {props.metaTitle}</title>
+        <title>SLSU-TO Alumi | {props.metaTitle}</title>
       </Head>
       <main className="flex min-h-screen justify-center overflow-y-hidden bg-[#113053] text-white">
         <section
@@ -32,14 +32,19 @@ const AuthLayout: FC<Props> = (props): JSX.Element => {
           <div className="flex h-screen flex-col justify-between py-6">
             <div className="flex flex-shrink-0 items-center space-x-8 px-8">
               <img src="/images/logo.png" className="h-14 w-14" />
-              <h1 className="text-2xl font-medium uppercase text-white line-clamp-1">
-                Southern Leyte State University
-              </h1>
+              <div className="flex flex-col justify-start">
+                <h1 className="text-2xl font-medium uppercase text-white line-clamp-1">
+                  Southern Leyte State University
+                </h1>
+                <h1 className="text-2xl font-medium uppercase text-white line-clamp-1">
+                  Tomas Oppus
+                </h1>
+              </div>
             </div>
             <div className="flex-shrink-0">
               <ul className="flex flex-col space-y-1 px-24 md:text-6xl lg:text-7xl">
                 <li className="font-extrabold tracking-wider text-white text-opacity-80">
-                  <span className="text-[#05387b]">S</span>LSU
+                  <span className="text-[#05387b]">S</span>LSU-TO
                 </li>
                 <li className="ml-6 font-extrabold tracking-wider text-white text-opacity-80">
                   <span className="text-[#05387b]">A</span>lumni
@@ -68,6 +73,7 @@ const AuthLayout: FC<Props> = (props): JSX.Element => {
             <div className="flex flex-col text-sm font-medium">
               <span>SOUTHERN LEYTE</span>
               <span>STATE UNIVERSITY</span>
+              <span>TOMAS OPPUS</span>
             </div>
           </div>
           <div className="w-full max-w-md">
