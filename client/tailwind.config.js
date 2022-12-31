@@ -58,7 +58,7 @@ module.exports = {
       colors: {
         success: '#0EDE6E',
         failed: '#DC2626',
-        sats: {
+        sams: {
           10: '#4497EE',
           30: '#083C76',
           60: '#F9F9F9'

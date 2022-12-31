@@ -10,7 +10,7 @@ import { Password } from "~/shared/types";
 type AdminSettings = {
   isOpen: boolean,
   setIsOpen: () => void;
-}; 
+};
 
 const AdminSettings = ({ isOpen, setIsOpen }: AdminSettings) => {
   const {
@@ -47,7 +47,7 @@ const AdminSettings = ({ isOpen, setIsOpen }: AdminSettings) => {
       <button
         key={index}
         onClick={onClick}
-        className={`text-slate_400 outline-none ${active === menu && "border-b border-sats-30 text-sats-30"}`}
+        className={`text-slate_400 outline-none ${active === menu && "border-b border-sams-30 text-sams-30"}`}
       >
         {menu}
       </button>

@@ -25,7 +25,7 @@ const AlumniHeader: FC<Props> = (props): JSX.Element => {
       <section className="mx-auto flex max-w-[90rem] items-center justify-between">
         <nav className="flex flex-shrink-0 items-center space-x-3">
           <img src="/images/logo.png" className="h-9 w-9" />
-          <h1 className="text-md font-semibold">Alumni Tracking System</h1>
+          <h1 className="text-md font-semibold">Alumni Monitoring System</h1>
         </nav>
         <Menu as="div" className="relative inline-block text-left">
           {({ open }) => (

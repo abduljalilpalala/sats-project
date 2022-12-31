@@ -25,8 +25,8 @@ const AdminDrawer: FC<Props> = ({ isOpenDrawer, handleToggleDrawer }): JSX.Eleme
         `}
       >
         <div className="relative flex min-h-screen flex-col justify-between">
-          <div className="flex items-center justify-between bg-sats-30 px-5 py-4 text-white">
-            <h1 className="text-base font-bold">Alumni Tracking System</h1>
+          <div className="flex items-center justify-between bg-sams-30 px-5 py-4 text-white">
+            <h1 className="text-base font-bold">Alumni Monitoring System</h1>
             <button className="outline-none active:scale-95" onClick={handleToggleDrawer}>
               <X className="h-5 w-5" />
             </button>
@@ -41,11 +41,10 @@ const AdminDrawer: FC<Props> = ({ isOpenDrawer, handleToggleDrawer }): JSX.Eleme
                       flex w-full items-center space-x-4 px-6 py-3 text-base font-semibold
                       outline-none transition duration-150 ease-in-out
                       hover:cursor-pointer active:scale-95
-                      ${
-                        router.pathname.includes(href)
-                          ? 'bg-sats-10 text-white'
-                          : 'focus:bg-gray-100 hover:bg-gray-100 hover:text-sats-30'
-                      }
+                      ${router.pathname.includes(href)
+                          ? 'bg-sams-10 text-white'
+                          : 'focus:bg-gray-100 hover:bg-gray-100 hover:text-sams-30'
+                        }
                     `}
                     >
                       <Icon className="h-5 w-5 flex-shrink-0" />

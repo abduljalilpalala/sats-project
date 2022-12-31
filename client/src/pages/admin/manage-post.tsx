@@ -16,7 +16,7 @@ import AdminLayout from '~/components/templates/AdminLayout';
 const ManagePost: NextPage = (): JSX.Element => {
   const {
     isLoading,
-    getAllPost, 
+    getAllPost,
     createNewPost,
     getStudentNumbers,
     deletePost: callDeletePost,
@@ -44,13 +44,13 @@ const ManagePost: NextPage = (): JSX.Element => {
     toast.promise(
       createNewPost(postValue).then((_) => {
         setPostValue("");
-        
+
         getStudentNumbers().then((res: any) => {
-          if (res.smsStatus) { 
-            res.numbers.map(({contact_number}:{contact_number:string}, index:number)=>{
+          if (res.smsStatus) {
+            res.numbers.map(({ contact_number }: { contact_number: string }, index: number) => {
               setTimeout(function timer() {
                 useSendSms(postValue, contact_number)
-              }, (index + 1) * 10000); 
+              }, (index + 1) * 10000);
             })
           }
         })
@@ -77,7 +77,7 @@ const ManagePost: NextPage = (): JSX.Element => {
   const ManageAdminPost = (
     <div className='flex justify-center items-center'>
       <div className='w-[600px]'>
-        <div className='bg-slate-200 rounded-md border-0 border-t-8 border-sats-30 px-10 mobile:!px-5 py-5 w-full flex flex-col gap-5 justify-center items-end'>
+        <div className='bg-slate-200 rounded-md border-0 border-t-8 border-sams-30 px-10 mobile:!px-5 py-5 w-full flex flex-col gap-5 justify-center items-end'>
           <div className='flex gap-5 w-full'>
             <div className='max-h-[45px] max-w-[45px] min-h-[45px] min-w-[45px]'>
               <img
@@ -97,16 +97,16 @@ const ManagePost: NextPage = (): JSX.Element => {
           </div>
           <button
             className={`
-              ${isDisabled && "opacity-60 hover:bg-sats-10 cursor-not-allowed"}  
+              ${isDisabled && "opacity-60 hover:bg-sams-10 cursor-not-allowed"}  
               w-15 flex items-center justify-center
-              bg-sats-10 py-1 hover:bg-sats-30 transition ease-in-out px-10 rounded-md text-white`}
+              bg-sams-10 py-1 hover:bg-sams-30 transition ease-in-out px-10 rounded-md text-white`}
             onClick={createPost}
             disabled={isDisabled}
           >
             Post
           </button>
         </div>
-        <h1 className='w-full py-6 text-sats-30 font-bold text-medium'>All post</h1>
+        <h1 className='w-full py-6 text-sams-30 font-bold text-medium'>All post</h1>
         <div className='flex flex-col gap-6'>
           {post?.length === 0 && <span className='text-center w-full text-slate-400'>No available post</span>}
           {post?.map((user: { content: string, created_at: string, id: number; }, index: number) => {

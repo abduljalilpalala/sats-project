@@ -96,7 +96,7 @@ const Dashboard: NextPage = (): JSX.Element => {
         </div>
         <Card childClass={`${mobileView ? "px-0" : "px-10"}`}>
           <div className={`flex justify-between ${mobileView && 'flex-wrap gap-3'}`}>
-            <h1 className='text-sats-30 text-2xl font-semibold flex items-center'>Employment chart</h1>
+            <h1 className='text-sams-30 text-2xl font-semibold flex items-center'>Employment chart</h1>
             <div className="w-[200px]">
               <Listbox value={selected} onChange={setSelected}>
                 <div className="relative mt-1">
@@ -123,7 +123,7 @@ const Dashboard: NextPage = (): JSX.Element => {
                             setSelectedIndex(yearIdx);
                           }}
                           className={({ active }) =>
-                            `relative select-none py-2 pl-10 pr-4 ${active ? 'bg-sats-10 text-slate-50' : 'text-gray-900'
+                            `relative select-none py-2 pl-10 pr-4 ${active ? 'bg-sams-10 text-slate-50' : 'text-gray-900'
                             }`
                           }
                           value={year}

@@ -24,7 +24,7 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
   return (
     <>
       <Head>
-        <title>{`SATS | ${metaTitle}`}</title>
+        <title>{`sams | ${metaTitle}`}</title>
       </Head>
 
       {/* Alumni Header */}

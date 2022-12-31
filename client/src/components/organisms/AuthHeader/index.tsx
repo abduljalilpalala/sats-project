@@ -13,7 +13,7 @@ const AuthHeader: FC = (): JSX.Element => {
           <a className="flex items-center">
             <img src="/images/logo.png" className="mr-3 h-6 sm:h-9" alt="" />
             <span className="self-center whitespace-nowrap text-base font-bold">
-              Alumni Tracking System
+              Alumni Monitoring System
             </span>
           </a>
         </Link>
