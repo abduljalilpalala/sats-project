@@ -44,10 +44,9 @@ const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
                       flex w-full items-center space-x-4 px-6 py-3 text-base font-semibold
                       outline-none transition duration-150 ease-in-out
                       hover:cursor-pointer active:scale-95
-                      ${
-                        router.pathname.includes(href)
-                          ? 'bg-sats-10 text-white'
-                          : 'focus:bg-gray-100 hover:bg-gray-100 hover:text-sats-30'
+                      ${router.pathname.includes(href)
+                        ? 'bg-sams-10 text-white'
+                        : 'focus:bg-gray-100 hover:bg-gray-100 hover:text-sams-30'
                       }
                     `}
                   >
@@ -65,7 +64,7 @@ const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
               className={`
                 flex h-12 w-full items-center space-x-4 px-6 py-3 text-base font-semibold
                 outline-none transition duration-150 ease-in-out focus:bg-gray-100
-                hover:cursor-pointer hover:bg-gray-100 hover:text-sats-30 active:scale-95
+                hover:cursor-pointer hover:bg-gray-100 hover:text-sams-30 active:scale-95
               `}
             >
               <Settings className="h-5 w-5" />
@@ -77,7 +76,7 @@ const AdminSidebar: React.FC<Props> = (props): JSX.Element => {
               className={`
                 flex h-12 w-full items-center space-x-4 px-6 py-3 text-base font-semibold
                 outline-none transition duration-150 ease-in-out focus:bg-gray-100
-                hover:cursor-pointer hover:bg-gray-100 hover:text-sats-30 active:scale-95
+                hover:cursor-pointer hover:bg-gray-100 hover:text-sams-30 active:scale-95
               `}
             >
               <LogOut className="h-5 w-5" />

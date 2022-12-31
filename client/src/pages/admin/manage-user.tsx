@@ -7,7 +7,7 @@ import { Disclosure, Tab } from '@headlessui/react'
 import { ChevronUpIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
 import axios from '~/shared/lib/axios'
-import Loader from '~/components/atoms/Loader' 
+import Loader from '~/components/atoms/Loader'
 import adminHooks from '~/hooks/admin/adminHooks'
 import handleImageError from '~/utils/handleImageError'
 import AdminLayout from '~/components/templates/AdminLayout'
@@ -31,19 +31,19 @@ const ManageUser: NextPage = (): JSX.Element => {
     All: studentForVerifications?.all,
     Approved: studentForVerifications?.approved,
     Pending: studentForVerifications?.pending
-  }) 
+  })
 
   const [searchIn, setSearchIn] = useState<string>("All")
   const [searchInput, setSearchInput] = useState<string>("")
 
   useEffect(() => {
-    if (alumniList) { 
+    if (alumniList) {
       setAlumniList({
         All: studentForVerifications?.all,
         Approved: studentForVerifications?.approved,
         Pending: studentForVerifications?.pending
       })
-    } 
+    }
   }, [studentForVerifications])
 
   const approve = (name: string, id: number) => {
@@ -82,7 +82,7 @@ const ManageUser: NextPage = (): JSX.Element => {
     })
   }
 
-  const searchFunction = (value: string) => { 
+  const searchFunction = (value: string) => {
     if (value === "") {
       return setAlumniList({
         All: studentForVerifications?.all,
@@ -91,30 +91,30 @@ const ManageUser: NextPage = (): JSX.Element => {
       })
     }
 
-    let filteredData = studentForVerifications[searchIn?.toLowerCase()]?.filter((data: any, index: number)=>{
-      if (data?.name?.toLowerCase().includes(value.toLowerCase())) {  
+    let filteredData = studentForVerifications[searchIn?.toLowerCase()]?.filter((data: any, index: number) => {
+      if (data?.name?.toLowerCase().includes(value.toLowerCase())) {
         return data
       }
-    })  
-    setAlumniList((prev: any) => ({...prev, [searchIn]: [...filteredData] }))
-  } 
-  
+    })
+    setAlumniList((prev: any) => ({ ...prev, [searchIn]: [...filteredData] }))
+  }
+
   const ManageUserApplication = (
     <div className="flex items-center justify-center">
       <div className="w-[525px]">
         <Tab.Group>
-          <Tab.List className="flex space-x-1 rounded-xl bg-sats-10 p-1">
+          <Tab.List className="flex space-x-1 rounded-xl bg-sams-10 p-1">
             {Object.keys(alumniList).map((category) => (
               <Tab
                 key={category}
-                onClick={()=> setSearchIn(category) }
+                onClick={() => setSearchIn(category)}
                 className={({ selected }) =>
                   classNames(
                     'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-slate-50',
-                    'ring-white ring-opacity-60 ring-offset-2 ring-offset-sats-10 focus:outline-none focus:ring-2',
+                    'ring-white ring-opacity-60 ring-offset-2 ring-offset-sams-10 focus:outline-none focus:ring-2',
                     selected
-                      ? 'bg-sats-30 shadow'
-                      : 'bg-sats-30 bg-opacity-30 text-white text-opacity-100 hover:bg-opacity-100'
+                      ? 'bg-sams-30 shadow'
+                      : 'bg-sams-30 bg-opacity-30 text-white text-opacity-100 hover:bg-opacity-100'
                   )
                 }
               >
@@ -126,15 +126,15 @@ const ManageUser: NextPage = (): JSX.Element => {
             <MagnifyingGlassIcon
               className="h-9 w-9"
             />
-            <input 
-              type="text" 
+            <input
+              type="text"
               className="w-full h-full border-none"
               placeholder="Search by name"
-              onChange={(e: any)=>{
+              onChange={(e: any) => {
                 const value = e.target.value
 
                 searchFunction(value)
-                setSearchInput(value) 
+                setSearchInput(value)
               }}
             />
           </div>
@@ -158,7 +158,7 @@ const ManageUser: NextPage = (): JSX.Element => {
                         <Disclosure key={index}>
                           {({ open }) => (
                             <>
-                              <Disclosure.Button className="flex w-full items-center justify-between rounded-lg bg-[#2563EB] bg-opacity-30 px-4 py-2 text-left text-sm font-medium text-slate-900 focus:outline-none focus-visible:ring focus-visible:ring-slate-900 focus-visible:ring-opacity-75 hover:bg-sats-10 hover:text-white">
+                              <Disclosure.Button className="flex w-full items-center justify-between rounded-lg bg-[#2563EB] bg-opacity-30 px-4 py-2 text-left text-sm font-medium text-slate-900 focus:outline-none focus-visible:ring focus-visible:ring-slate-900 focus-visible:ring-opacity-75 hover:bg-sams-10 hover:text-white">
                                 <div className="flex items-center justify-center gap-3">
                                   <img
                                     src={avatar?.url}
@@ -198,25 +198,25 @@ const ManageUser: NextPage = (): JSX.Element => {
                                   {!is_verified
                                     ? null
                                     : [
-                                        { header: 'Email', value: email },
-                                        { header: 'Number', value: number }
-                                      ].map((data: any, index: number) => {
-                                        const { header, value } = data
-                                        return (
-                                          <div
-                                            key={index}
-                                            className="flex flex-row justify-between"
-                                          >
-                                            <div className="flex w-[150px] flex-row justify-between mobile:w-[100px]">
-                                              <span>{header}</span>
-                                              <span className="ml-5">:</span>
-                                            </div>
-                                            <div className="text-right mobile:max-w-[150px] mobile:truncate">
-                                              <span>{value}</span>
-                                            </div>
+                                      { header: 'Email', value: email },
+                                      { header: 'Number', value: number }
+                                    ].map((data: any, index: number) => {
+                                      const { header, value } = data
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-row justify-between"
+                                        >
+                                          <div className="flex w-[150px] flex-row justify-between mobile:w-[100px]">
+                                            <span>{header}</span>
+                                            <span className="ml-5">:</span>
                                           </div>
-                                        )
-                                      })}
+                                          <div className="text-right mobile:max-w-[150px] mobile:truncate">
+                                            <span>{value}</span>
+                                          </div>
+                                        </div>
+                                      )
+                                    })}
                                 </div>
                                 {is_verified ? null : (
                                   <div className="flex flex-col gap-2 pl-10 mobile:flex-row mobile:!p-0">

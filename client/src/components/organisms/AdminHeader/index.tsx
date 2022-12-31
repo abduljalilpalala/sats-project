@@ -39,7 +39,7 @@ const AdminHeader: React.FC<Props> = ({ actions }): JSX.Element => {
           </button>
           <Link href="/admin/dashboard">
             <a className="ml-1.5 text-xl font-medium lg:ml-2.5">
-              <h1 className="self-center whitespace-nowrap">Alumni Tracking System</h1>
+              <h1 className="self-center whitespace-nowrap">Alumni Monitoring System</h1>
             </a>
           </Link>
         </section>

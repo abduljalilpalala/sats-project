@@ -50,14 +50,14 @@ const AuthLayout: FC<Props> = (props): JSX.Element => {
                   <span className="text-[#05387b]">A</span>lumni
                 </li>
                 <li className="ml-14 font-extrabold tracking-wider text-white text-opacity-80">
-                  <span className="text-[#05387b]">T</span>racking
+                  <span className="text-[#05387b]">M</span>onitoring
                 </li>
                 <li className="font-extrabold tracking-wider text-white text-opacity-80">
                   <span className="ml-20 text-[#05387b]">S</span>ystem
                 </li>
               </ul>
             </div>
-            <p className="mb-4 text-center">@sats-2022</p>
+            <p className="mb-4 text-center">@sams-2022</p>
           </div>
         </section>
         <section
