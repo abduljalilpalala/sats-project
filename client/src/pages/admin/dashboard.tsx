@@ -74,6 +74,35 @@ const Dashboard: NextPage = (): JSX.Element => {
     chartArea: { 'width': mobileView ? "100%" : '' },
   };
 
+  const pieChartData = [
+    ["Task", "Hours per Day"],
+    ["BSIT - Employed", 12],
+    ["BSIT - Unemployed", 1],
+    ["BSED - Employed", 3],
+    ["BSED - Unemployed", 2],
+    ["BEED - Employed", 6],
+    ["BEED - Unemployed", 3],
+    ["BPED - Employed", 9],
+    ["BPED - Unemployed", 6],
+  ]; 
+
+  const pieChartOptions = {
+    legend: { position: "none" },
+    backgroundColor: 'transparent',
+    chartArea: { 'width': mobileView ? "100%" : '' },
+    is3D: true,
+    slices: {
+      0: { color: "#2E8BC0" }, 
+      1: { color: "#002147" }, 
+      2: { color: "#2E8BC0" }, 
+      3: { color: "#002147" }, 
+      4: { color: "#2E8BC0" }, 
+      5: { color: "#002147" }, 
+      6: { color: "#2E8BC0" }, 
+      7: { color: "#002147" }, 
+    },
+  };
+
   const DashboardContent = () => {
     return (
       <div className={`z-0 ${mobileView ? 'px-5' : 'px-20'}`}>
@@ -94,6 +123,7 @@ const Dashboard: NextPage = (): JSX.Element => {
             <h1 className='text-4xl font-bold'>{total_posts}</h1>
           </Card>
         </div>
+
         <Card childClass={`${mobileView ? "px-0" : "px-10"}`}>
           <div className={`flex justify-between ${mobileView && 'flex-wrap gap-3'}`}>
             <h1 className='text-sams-30 text-2xl font-semibold flex items-center'>Employment chart</h1>
@@ -158,6 +188,40 @@ const Dashboard: NextPage = (): JSX.Element => {
             data={data}
             options={options}
           />
+        </Card>
+        <br />
+        <Card childClass={`${mobileView ? "px-0" : "px-10 py-5"}`}>
+          <div className={`flex justify-between ${mobileView && 'flex-wrap gap-3'}`}>
+            <h1 className='text-sams-30 text-2xl font-semibold flex items-center'>List of Graduated</h1>
+          </div>
+          <div className={`w-full flex ${mobileView && 'flex-col gap-5'}`}>
+            <div className="w-full">
+              <Chart
+                chartType="PieChart"
+                width="100%"
+                height="100%"
+                data={pieChartData}
+                options={pieChartOptions}
+              />
+            </div>
+            <div className="w-full p-5 text-start">
+              <ul className="flex flex-col gap-3">
+                {pieChartData.map((data: any, index: number)=>{
+                  if (index === 0) return null
+
+                  return (
+                    <li className="flex justify-start items-center gap-1" key={index}>
+                      <div className={`${index % 2 === 0 ? 'bg-[#002147]' : 'bg-[#2E8BC0]'} rounded-full !h-[10px] !w-[10px]`}></div>
+                      <div className="w-full flex justify-between items-center">
+                        <div>{data[0]}</div>
+                        <div className="text-md font-medium">{data[1]}</div>
+                      </div> 
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          </div>
         </Card>
       </div>
     );

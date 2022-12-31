@@ -26,7 +26,7 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
         work_place: 'Lorem',
         company_name: 'Ipsum Dolor',
         position: 'Sit Amet',
-        employment_id: '/images/avatar.png',
+        employment_id: '/images/id_dummy.png',
       },
       {
         name: 'Jane Doe Employed',
@@ -39,7 +39,7 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
         work_place: 'Lorem',
         company_name: 'Ipsum Dolor',
         position: 'Sit Amet',
-        employment_id: '/images/avatar.png',
+        employment_id: '/images/id_dummy.png',
       },
       {
         name: 'Joan Doe Employed',
@@ -52,7 +52,7 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
         work_place: 'Lorem',
         company_name: 'Ipsum Dolor',
         position: 'Sit Amet',
-        employment_id: '/images/avatar.png',
+        employment_id: 'no-image',
       }
     ],
     unemployed: [
@@ -176,7 +176,16 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
                         { header: "Work Place", value: work_place },
                         { header: "Company Name", value: company_name },
                         { header: "Position", value: position },
-                        { header: "Employment ID", value: employment_id }
+                        { header: "Employment ID", value: (
+                          <a href={employment_id} target="_new">
+                            <img 
+                              src={employment_id} 
+                              onError={(e) => handleImageError(e, '/images/id_dummy.png')}
+                              alt="id_card"
+                              className="max-w-[200px] max-h-[100px] min-w-[200px] min-h-[100px] rounded-md"
+                            />
+                          </a>
+                        ) }
                       ]
 
                       return (
@@ -209,10 +218,10 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
                                         return (
                                           value && (
                                             <tr key={index}>
-                                              <td className='w-[40%]'>
+                                              <td className='w-[40%] align-top'>
                                                 <span>{header}</span>
                                               </td>
-                                              <td className='w-[10%]'>
+                                              <td className='w-[10%] align-top'>
                                                 <span>:</span>
                                               </td>
                                               <td className='flex justify-end items-end !w-full'>
