@@ -50,7 +50,7 @@ const Index: NextPage = (): JSX.Element => {
                   <img src="/images/logo.png" alt="" className="h-8 w-8" />
                 </div>
                 <div className="flex flex-col">
-                  <h1 className="text-sm font-bold">SLSU - Admin</h1>
+                  <h1 className="text-sm font-bold">SLSU-TO - Admin</h1>
                   <p className="text-xs">{moment(created_at).fromNow()}</p>
                 </div>
               </header>
