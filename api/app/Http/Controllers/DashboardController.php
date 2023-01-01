@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\BatchEmploymentStatusResource;
 use App\Models\Post;
 use App\Models\User;
+use App\Enums\ApplicationStatusEnum;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $employed = User::applicants()->filterBatch(request('batch'))->employed()->count();
-        $unemployed = User::applicants()->filterBatch(request('batch'))->unEmployed()->count();
-        $selfEmployed = User::applicants()->filterBatch(request('batch'))->selfEmployed()->count();
+        $employed = User::applicants()->where('is_verified', ApplicationStatusEnum::APPROVED)->filterBatch(request('batch'))->employed()->count();
+        $unemployed = User::applicants()->where('is_verified', ApplicationStatusEnum::APPROVED)->filterBatch(request('batch'))->unEmployed()->count();
+        $selfEmployed = User::applicants()->where('is_verified', ApplicationStatusEnum::APPROVED)->filterBatch(request('batch'))->selfEmployed()->count();
 
         return response()->json([
             'batch' => [
