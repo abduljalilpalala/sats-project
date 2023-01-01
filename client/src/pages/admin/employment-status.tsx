@@ -176,7 +176,7 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
                         { header: "Work Place", value: work_place },
                         { header: "Company Name", value: company_name },
                         { header: "Position", value: position },
-                        { header: "Employment ID", value: (
+                        { header: "Employment ID", value: employment_id && (
                           <a href={employment_id} target="_new">
                             <img 
                               src={employment_id} 

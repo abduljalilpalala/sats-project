@@ -1,36 +1,38 @@
-import Link from 'next/link'
-import React, { FC, useState } from 'react'
-import { EyeOff, Eye } from 'react-feather'
-import ReactDatePicker from 'react-datepicker'
-import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import Link from 'next/link';
+import React, { FC, useState } from 'react';
+import { EyeOff, Eye } from 'react-feather';
+import ReactDatePicker from 'react-datepicker';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-import useAxiosError from '~/hooks/axiosError'
-import { Spinner } from '~/shared/icons/SpinnerIcon'
-import { SignInFormSchema, SignUpFormSchema } from '~/shared/validation'
-import { AxiosResponseError, User } from '~/shared/types'
+import useAxiosError from '~/hooks/axiosError';
+import { Spinner } from '~/shared/icons/SpinnerIcon';
+import { SignInFormSchema, SignUpFormSchema } from '~/shared/validation';
+import { AxiosResponseError, User } from '~/shared/types';
 
 type Props = {
-  type?: string | 'alumni'
-  isLogin?: boolean | false
+  type?: string | 'alumni';
+  isLogin?: boolean | false;
   actions: {
-    handleAuthSubmit: (data: User) => Promise<void>
-  }
+    handleAuthSubmit: (data: User) => Promise<void>;
+  };
   axiosErrors: {
-    error: AxiosResponseError
-    isError: boolean
-  }
-}
+    error: AxiosResponseError;
+    isError: boolean;
+  };
+};
 
-const AuthForm: FC<Props> = (props): JSX.Element => {
-  const [showPass, setShowPass] = useState(false)
+const AuthForm: FC<Props> = (props): JSX.Element =>
+{
+  const [showPass, setShowPass] = useState(false);
+  const [isEmployed, setIsEmployed] = useState(false);
 
   const {
     type,
     isLogin,
     actions: { handleAuthSubmit },
     axiosErrors: { isError, error }
-  } = props
+  } = props;
 
   const {
     register,
@@ -41,11 +43,11 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
   } = useForm<User>({
     mode: 'onTouched',
     resolver: yupResolver(isLogin ? SignInFormSchema : SignUpFormSchema)
-  })
+  });
 
-  useAxiosError(isError, error, setError)
+  useAxiosError(isError, error, setError);
 
-  const handleShowPasswordToggle = (): void => setShowPass(!showPass)
+  const handleShowPasswordToggle = (): void => setShowPass(!showPass);
 
   return (
     <form onSubmit={handleSubmit(handleAuthSubmit)}>
@@ -86,6 +88,25 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
               </select>
             </div>
             <div className="col-span-12">
+              <label className="block text-sm font-medium">
+                <small className="text-rose-600">*</small> Course
+              </label>
+              <select
+                disabled={isSubmitting}
+                {...register('course')}
+                className={`
+                  block w-full rounded-sm border-[3px] border-[#4497ee] py-0.5 text-slate-900 outline-none 
+                  focus:border-[#3b83d1] focus:ring-0
+                `}
+              >
+                <option value={1}>BSIT</option>
+                <option value={2}>BSED</option>
+                <option value={3}>BEED</option>
+                <option value={4}>BPED</option>
+                <option value={5}>BSBA</option>
+              </select>
+            </div>
+            <div className="col-span-12">
               <label htmlFor="name" className="block text-sm font-medium">
                 <small className="text-rose-600">*</small> Name
               </label>
@@ -95,10 +116,9 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
                 {...register('name')}
                 className={`
                   block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
-                  ${
-                    errors?.name
-                      ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
-                      : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
+                  ${errors?.name
+                    ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
+                    : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
                   }
                 `}
               />
@@ -117,10 +137,9 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
             {...register('email')}
             className={`
               block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
-              ${
-                errors?.email
-                  ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
-                  : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
+              ${errors?.email
+                ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
+                : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
               }
             `}
           />
@@ -142,10 +161,9 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
                     onChange={(date: Date) => field.onChange(date)}
                     className={`
                       block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
-                      ${
-                        errors?.birth_date
-                          ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
-                          : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
+                      ${errors?.birth_date
+                        ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
+                        : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
                       }
                     `}
                     disabled={isSubmitting}
@@ -166,10 +184,9 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
                 {...register('contact_number')}
                 className={`
                   block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
-                  ${
-                    errors?.contact_number
-                      ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
-                      : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
+                  ${errors?.contact_number
+                    ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
+                    : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
                   }
                 `}
               />
@@ -182,22 +199,116 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
                 <small className="text-rose-600">*</small> Employment Status
               </label>
               <select
+                onClick={(e: any) =>
+                {
+                  const value = e.target.value;
+
+                  if (value === '2') return setIsEmployed(true);
+                  setIsEmployed(false);
+                }}
                 disabled={isSubmitting}
                 {...register('employment_status')}
                 className={`
                   block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
-                  ${
-                    errors?.employment_status
-                      ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
-                      : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
+                  ${errors?.employment_status
+                    ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
+                    : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
                   }
                 `}
               >
-                <option value={1}>Unemployed</option>
-                <option value={2}>Employed</option>
-                <option value={3}>Self-Employed</option>
+                <option value={1} >Unemployed</option>
+                <option value={2} >Employed</option>
+                <option value={3} >Self-Employed</option>
               </select>
             </div>
+            {isEmployed && (
+              <>
+                <div className="col-span-12">
+                  <label className="block text-sm font-medium">
+                    <small className="text-rose-600">*</small> Work Place
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    disabled={isSubmitting}
+                    {...register('work_place')}
+                    className={`
+                block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
+                ${errors?.work_place
+                        ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
+                        : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
+                      }
+              `}
+                  />
+                  {errors?.work_place && (
+                    <span className="error">{`${errors?.work_place?.message}`}</span>
+                  )}
+                </div>
+                <div className="col-span-12">
+                  <label className="block text-sm font-medium">
+                    <small className="text-rose-600">*</small> Company Name
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    disabled={isSubmitting}
+                    {...register('company_name')}
+                    className={`
+                  block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
+                  ${errors?.company_name
+                        ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
+                        : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
+                      }
+                `}
+                  />
+                  {errors?.company_name && (
+                    <span className="error">{`${errors?.company_name?.message}`}</span>
+                  )}
+                </div>
+                <div className="col-span-12">
+                  <label className="block text-sm font-medium">
+                    <small className="text-rose-600">*</small> Position
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    disabled={isSubmitting}
+                    {...register('position')}
+                    className={`
+                  block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
+                  ${errors?.position
+                        ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
+                        : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
+                      }
+                `}
+                  />
+                  {errors?.position && (
+                    <span className="error">{`${errors?.position?.message}`}</span>
+                  )}
+                </div>
+                <div className="col-span-12">
+                  <label className="block text-sm font-medium">
+                    <small className="text-rose-600">*</small> Upload Work ID
+                  </label>
+                  <input
+                    required
+                    type="file"
+                    disabled={isSubmitting}
+                    {...register('work_id')}
+                    className={`
+                  block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
+                  ${errors?.work_id
+                        ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
+                        : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
+                      }
+                `}
+                  />
+                  {errors?.work_id && (
+                    <span className="error">{`${errors?.work_id?.message}`}</span>
+                  )}
+                </div>
+              </>
+            )}
           </>
         )}
         <div className="col-span-12">
@@ -211,11 +322,10 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
               {...register('password')}
               className={`
               block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
-              ${
-                errors?.password
+              ${errors?.password
                   ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
                   : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
-              }
+                }
             `}
             />
             <button
@@ -257,10 +367,9 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
               autoComplete="password"
               className={`
                 block w-full rounded-sm border-[3px] py-0.5 text-slate-900 outline-none focus:ring-0
-                ${
-                  errors?.password_confirmation
-                    ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
-                    : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
+                ${errors?.password_confirmation
+                  ? 'border-rose-500 bg-rose-50 focus:border-rose-500'
+                  : 'border-[#4497ee] bg-white focus:border-[#3b83d1]'
                 }
               `}
             />
@@ -301,7 +410,7 @@ const AuthForm: FC<Props> = (props): JSX.Element => {
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default AuthForm
+export default AuthForm;

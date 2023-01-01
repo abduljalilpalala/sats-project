@@ -15,6 +15,11 @@ export interface IAlumniData {
   id_number: string
   name: string
   email: string
+  course: string
+  work_place: string
+  company_name: string
+  position: string
+  work_id: string
   birth_date: string
   contact_number: string
   is_verified: number | boolean

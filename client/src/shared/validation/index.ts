@@ -20,6 +20,11 @@ export const SignUpFormSchema = Yup.object().shape({
     .max(11),
   employment_status: Yup.string().required().label('Employment Status'),
   batch: Yup.string().required().label('Batch'),
+  course: Yup.string().required().label('Course'),
+  work_place: Yup.string().label('Work Place'),
+  company_name: Yup.string().label('Company Name'),
+  position: Yup.string().label('Position'),
+  work_id: Yup.mixed(),
   password: Yup.string()
     .required('Password is required')
     .min(4, 'Password length should be at least 4 characters')
@@ -55,6 +60,11 @@ export const SecurityFormSchema = Yup.object().shape({
 
 export const AboutFormSchema = Yup.object().shape({
   id_number: Yup.string(),
+  course: Yup.string(),
+  work_place: Yup.string(),
+  company_name: Yup.string(),
+  position: Yup.string(),
+  work_id: Yup.mixed(),
   birth_date: Yup.string().required('Birth date is required'),
   employment_status_id: Yup.number().required('Employment Status is required')
 })
