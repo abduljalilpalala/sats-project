@@ -1,11 +1,16 @@
 export type User = {
   id_number?: string
   batch: string
+  course: string
   name: string
   email: string
   birth_date: string
   contact_number: string
   employment_status: string
+  work_place: string
+  company_name: string
+  position: string
+  work_id: any
   role?: number
   is_verified?: boolean | number
   password: string

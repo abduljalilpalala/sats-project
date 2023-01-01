@@ -1,36 +1,40 @@
-import { X } from 'react-feather'
-import toast from 'react-hot-toast'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import React, { ChangeEvent, FC, useState } from 'react'
+import { X } from 'react-feather';
+import toast from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { ChangeEvent, FC, useState } from 'react';
 
-import axios from '~/shared/lib/axios'
-import userHooks from '~/hooks/user/userHooks'
-import { About, Profile, Security } from './types'
-import { Spinner } from '~/shared/icons/SpinnerIcon'
-import handleImageError from '~/utils/handleImageError'
-import DialogBox from '~/components/templates/DialogBox'
-import { AboutFormSchema, ProfileFormSchema, SecurityFormSchema } from '~/shared/validation'
+import axios from '~/shared/lib/axios';
+import userHooks from '~/hooks/user/userHooks';
+import { About, Profile, Security } from './types';
+import { Spinner } from '~/shared/icons/SpinnerIcon';
+import handleImageError from '~/utils/handleImageError';
+import DialogBox from '~/components/templates/DialogBox';
+import { AboutFormSchema, ProfileFormSchema, SecurityFormSchema } from '~/shared/validation';
 
 type Props = {
-  isOpen: boolean
-  toggle: () => void
-}
+  isOpen: boolean;
+  toggle: () => void;
+};
 
-const AlumniSettings: FC<Props> = (props): JSX.Element => {
-  const { isOpen, toggle } = props
-  const [formError, setFormError]: any = useState(null)
-  const [active, setActive] = useState<string>('Profile')
-  const { data: alumni, mutate } = userHooks()
+const AlumniSettings: FC<Props> = (props): JSX.Element =>
+{
+  const { isOpen, toggle } = props;
+  const [formError, setFormError]: any = useState(null);
+  const [active, setActive] = useState<string>('Profile');
+  const [isEmployed, setIsEmployed] = useState(false);
+  const { data: alumni, mutate } = userHooks();
 
-  const menuList = ['Profile', 'Security', 'About']
+  const menuList = ['Profile', 'Security', 'About'];
 
-  const onClick = (e: React.FormEvent<HTMLButtonElement>) => {
-    const value = (e.target as HTMLElement).innerText
-    setActive(value)
-  }
+  const onClick = (e: React.FormEvent<HTMLButtonElement>) =>
+  {
+    const value = (e.target as HTMLElement).innerText;
+    setActive(value);
+  };
 
-  const modalMenu = menuList.map((menu: string, index: number) => {
+  const modalMenu = menuList.map((menu: string, index: number) =>
+  {
     return (
       <button
         key={index}
@@ -42,11 +46,13 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
       >
         {menu}
       </button>
-    )
-  })
+    );
+  });
 
-  const activeComponent = (tab: string) => {
-    switch (tab) {
+  const activeComponent = (tab: string) =>
+  {
+    switch (tab)
+    {
       case 'Profile': {
         const {
           register,
@@ -60,10 +66,12 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
             email: alumni?.email,
             contact_number: alumni?.contact_number
           }
-        })
+        });
 
-        const handleUpdateProfile = async (data: Profile): Promise<void> => {
-          try {
+        const handleUpdateProfile = async (data: Profile): Promise<void> =>
+        {
+          try
+          {
             const payload = {
               id: alumni?.id,
               name: data?.name,
@@ -72,57 +80,67 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
               id_number: alumni?.id_number,
               birth_date: alumni?.birth_date,
               employment_status_id: alumni?.employment_status_id
-            }
+            };
 
-            const response = await axios.put('/api/user', payload)
+            const response = await axios.put('/api/user', payload);
 
-            if (response.status === 200) {
-              mutate()
-              toast.success('Successfully Updated!')
+            if (response.status === 200)
+            {
+              mutate();
+              toast.success('Successfully Updated!');
             }
-          } catch (error: any) {
-            if (error?.response?.status !== 422) throw error
-            toast.error(error?.response?.data?.message)
+          } catch (error: any)
+          {
+            if (error?.response?.status !== 422) throw error;
+            toast.error(error?.response?.data?.message);
           }
-        }
+        };
 
-        const updateAvatar = async (e: ChangeEvent<HTMLInputElement | null>): Promise<void> => {
-          try {
-            if (!e.target.files) return
+        const updateAvatar = async (e: ChangeEvent<HTMLInputElement | null>): Promise<void> =>
+        {
+          try
+          {
+            if (!e.target.files) return;
 
-            const files = e.target.files[0]
-            const formData = new FormData()
-            formData.append('avatar', files)
-            formData.append('_method', 'POST')
+            const files = e.target.files[0];
+            const formData = new FormData();
+            formData.append('avatar', files);
+            formData.append('_method', 'POST');
 
             const response = await axios.post('/api/user/user-avatar', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
-            })
+            });
 
-            if (response.status === 204) {
-              mutate()
-              toast.success('Successfully Updated!')
+            if (response.status === 204)
+            {
+              mutate();
+              toast.success('Successfully Updated!');
             }
-          } catch (error: any) {
-            if (error?.response?.status !== 422) throw error
-            toast.error(error?.response?.data?.message)
+          } catch (error: any)
+          {
+            if (error?.response?.status !== 422) throw error;
+            toast.error(error?.response?.data?.message);
           }
-        }
+        };
 
-        const removeAvatar = async (): Promise<void> => {
-          try {
-            const response = await axios.delete('/api/user/user-avatar')
-            if (response.status === 204) {
-              mutate()
-              toast.success('Successfully Deleted!')
+        const removeAvatar = async (): Promise<void> =>
+        {
+          try
+          {
+            const response = await axios.delete('/api/user/user-avatar');
+            if (response.status === 204)
+            {
+              mutate();
+              toast.success('Successfully Deleted!');
             }
-          } catch (error: any) {
-            if (error?.response?.status !== 422) throw error
-            toast.error(error?.response?.data?.message)
+          } catch (error: any)
+          {
+            if (error?.response?.status !== 422) throw error;
+            toast.error(error?.response?.data?.message);
           }
-        }
+        };
 
         return (
           <>
@@ -225,7 +243,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
               </button>
             </form>
           </>
-        )
+        );
       }
 
       case 'Security': {
@@ -237,34 +255,38 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
         } = useForm<Security>({
           mode: 'onTouched',
           resolver: yupResolver(SecurityFormSchema)
-        })
+        });
 
         // P.S.: This will handle Update the Security Password of the User
-        const handleUpdateSecurity = async (data: Security): Promise<void> => {
-          try {
+        const handleUpdateSecurity = async (data: Security): Promise<void> =>
+        {
+          try
+          {
             const payload = {
               currentPassword: data?.current_password,
               newPassword: data?.new_password,
               newConfirmedPassword: data?.password_confirmation
-            }
+            };
 
-            const response = await axios.put('/api/user/change-password', payload)
+            const response = await axios.put('/api/user/change-password', payload);
 
-            if (response?.status === 204) {
+            if (response?.status === 204)
+            {
               reset({
                 current_password: '',
                 new_password: '',
                 password_confirmation: ''
-              })
-              toast.success('Successfully Updated!')
-              setFormError(null)
+              });
+              toast.success('Successfully Updated!');
+              setFormError(null);
             }
-          } catch (error: any) {
-            if (error?.response?.status !== 422) throw error
-            setFormError(Object.values(error?.response?.data?.message).flat())
-            toast.error(error?.response?.data?.message)
+          } catch (error: any)
+          {
+            if (error?.response?.status !== 422) throw error;
+            setFormError(Object.values(error?.response?.data?.message).flat());
+            toast.error(error?.response?.data?.message);
           }
-        }
+        };
 
         return (
           <form className="flex flex-col gap-9" onSubmit={handleSubmit(handleUpdateSecurity)}>
@@ -339,7 +361,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
               {isSubmitting ? <Spinner className="h-5 w-5" /> : 'Save Changes'}
             </button>
           </form>
-        )
+        );
       }
 
       case 'About': {
@@ -355,10 +377,12 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
             birth_date: alumni?.birth_date,
             employment_status_id: alumni?.employment_status_id
           }
-        })
+        });
 
-        const handleUpdateAbout = async (data: About): Promise<void> => {
-          try {
+        const handleUpdateAbout = async (data: About): Promise<void> =>
+        {
+          try
+          {
             const payload = {
               id: alumni?.id,
               name: alumni?.name,
@@ -367,18 +391,20 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
               id_number: data?.id_number,
               birth_date: data?.birth_date,
               employment_status_id: data?.employment_status_id
-            }
+            };
 
-            const response = await axios.put('/api/user', payload)
+            const response = await axios.put('/api/user', payload);
 
-            if (response.status === 200) {
-              mutate()
-              toast.success('Successfully Updated!')
+            if (response.status === 200)
+            {
+              mutate();
+              toast.success('Successfully Updated!');
             }
-          } catch (error) {
-            toast.error(`${error}`)
+          } catch (error)
+          {
+            toast.error(`${error}`);
           }
-        }
+        };
 
         const employmentStatus = [
           {
@@ -393,7 +419,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
             id: 3,
             name: 'Unemployed'
           }
-        ]
+        ];
 
         return (
           <form className="flex flex-col gap-9" onSubmit={handleSubmit(handleUpdateAbout)}>
@@ -410,6 +436,18 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
                   disabled={isSubmitting}
                   {...register('id_number')}
                   placeholder="00000000000"
+                />
+              </div>
+              <div>
+                <label htmlFor="course" className="form-label float-left">
+                  Course
+                </label>
+                <input
+                  type="text"
+                  id="course"
+                  defaultValue={alumni?.course ?? '---'}
+                  className="form-control"
+                  disabled={true}
                 />
               </div>
               <div>
@@ -439,9 +477,16 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
                   disabled={isSubmitting}
                   {...register('employment_status_id')}
                   defaultValue={alumni?.employment_status_id}
+                  onClick={(e: any) =>
+                  {
+                    const value = e.target.value;
+
+                    if (value === '1') return setIsEmployed(true);
+                    setIsEmployed(false);
+                  }}
                 >
                   {employmentStatus.map(({ id, name }) => (
-                    <option key={id} value={id} selected={alumni?.employment_status_id === id}>
+                    <option key={id} value={id}>
                       {name}
                     </option>
                   ))}
@@ -451,18 +496,70 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
                 )}
               </div>
             </div>
+            {isEmployed && (
+              <div className="flex flex-col gap-3">
+                <div>
+                  <label htmlFor="work_place" className="form-label float-left">
+                    Work Place
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    id="work_place" 
+                    className="form-control"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="company_name" className="form-label float-left">
+                    Company Name
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    id="company_name" 
+                    className="form-control"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="position" className="form-label float-left">
+                    Position
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    id="position" 
+                    className="form-control"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="work_id" className="form-label float-left">
+                    Upload Work ID
+                  </label>
+                  <input
+                    required
+                    type="file"
+                    id="work_id" 
+                    className="form-control"
+                    disabled={isSubmitting}
+                  />
+                </div>
+              </div>
+            )}
             <button type="submit" className="form-submit mt-8" disabled={isSubmitting}>
               {isSubmitting ? <Spinner className="h-5 w-5" /> : 'Save Changes'}
             </button>
           </form>
-        )
+        );
       }
 
       default: {
-        return <h1 className="text-px-18 text-rose-600">404 Error!</h1>
+        return <h1 className="text-px-18 text-rose-600">404 Error!</h1>;
       }
     }
-  }
+  };
 
   return (
     <DialogBox
@@ -475,7 +572,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element => {
     >
       {activeComponent(active)}
     </DialogBox>
-  )
-}
+  );
+};
 
-export default AlumniSettings
+export default AlumniSettings;

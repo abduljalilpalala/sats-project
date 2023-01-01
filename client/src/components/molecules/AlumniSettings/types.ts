@@ -12,6 +12,7 @@ export type Security = {
 
 export type About = {
   id_number: string | undefined | null
+  course: string | undefined | null
   birth_date: string
   employment_status_id: number
 }

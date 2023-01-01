@@ -84,6 +84,8 @@ const Dashboard: NextPage = (): JSX.Element => {
     ["BEED - Unemployed", 3],
     ["BPED - Employed", 9],
     ["BPED - Unemployed", 6],
+    ["BSBA - Employed", 12],
+    ["BSBA - Unemployed", 11],
   ]; 
 
   const pieChartOptions = {
@@ -100,6 +102,8 @@ const Dashboard: NextPage = (): JSX.Element => {
       5: { color: "#002147" }, 
       6: { color: "#2E8BC0" }, 
       7: { color: "#002147" }, 
+      8: { color: "#2E8BC0" }, 
+      9: { color: "#002147" }, 
     },
   };
 
@@ -205,21 +209,21 @@ const Dashboard: NextPage = (): JSX.Element => {
               />
             </div>
             <div className="w-full p-5 text-start">
-              <ul className="flex flex-col gap-3">
+              <div className="flex flex-col">
                 {pieChartData.map((data: any, index: number)=>{
                   if (index === 0) return null
 
                   return (
-                    <li className="flex justify-start items-center gap-1" key={index}>
+                    <div className={`flex justify-start items-center gap-1 ${index % 2 === 0 || "mt-6"}`} key={index}>
                       <div className={`${index % 2 === 0 ? 'bg-[#002147]' : 'bg-[#2E8BC0]'} rounded-full !h-[10px] !w-[10px]`}></div>
                       <div className="w-full flex justify-between items-center">
                         <div>{data[0]}</div>
                         <div className="text-md font-medium">{data[1]}</div>
                       </div> 
-                    </li>
+                    </div>
                   )
                 })}
-              </ul>
+              </div>
             </div>
           </div>
         </Card>
