@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
       EmployeeStatusSeeder::class,
       AdminSettingSeeder::class,
       BatchSeeder::class,
-      AdminSeeder::class,
       CourseSeeder::class,
+      AdminSeeder::class,
     ]);
   }
 }

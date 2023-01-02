@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CourseAlumniCountController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmploymentStatusController;
@@ -46,4 +47,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('alumni', AlumniController::class);
     Route::get('course', CourseController::class);
     Route::get('employment-status', EmploymentStatusController::class);
+    Route::get('course-count', CourseAlumniCountController::class);
 });

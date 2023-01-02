@@ -113,6 +113,11 @@ class User extends Authenticatable implements HasMedia
         return $query->where('batch_id', $batch);
     }
 
+    public function scopeFilterCourse($query, $course)
+    {
+        return $query->where('course_id', $course);
+    }
+
     public function scopeEmployed($query)
     {
         return $query->where('employment_status_id', EmploymentStatusEnum::EMPLOYED);
