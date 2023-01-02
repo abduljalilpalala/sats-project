@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
-use Illuminate\Http\Request;
 
 class UpdateUserController extends Controller
 {
