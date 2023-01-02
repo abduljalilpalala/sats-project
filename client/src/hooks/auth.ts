@@ -24,11 +24,13 @@ const useAuth = () => {
       await csrf()
       const response = await axios.post('register', data)
       if (response.status === 204) {
-        toast.error('Account currently not yet verified please wait to the admin for approval.', {
+        deleteCookie('XSRF-TOKEN')
+        toast.success('Account is now registered, please wait to the admin for approval.', {
           position: 'top-right'
         })
-        deleteCookie('XSRF-TOKEN')
-        window.location.href = 'login'
+        setTimeout(() => {
+          window.location.href = 'login'
+        }, 3000)
         return
       }
     } catch (err: any) {

@@ -1,6 +1,12 @@
-export const AdminSignInOutAuthCheck = ({ req }: any) => {
+import { setCookie } from "cookies-next";
+
+export const AdminSignInOutAuthCheck = ({ req, res }: any) => {  
   const xsrfToken = req?.cookies['XSRF-TOKEN']
+  const laravelSession = req?.cookies['laravel_session']
   const path = req?.url
+
+  setCookie('XSRF-TOKEN', xsrfToken, { req, res });
+  setCookie('laravel_session', laravelSession, { req, res });
 
   const admin = path.includes('admin')
   const dashboard = path.includes('dashboard')
@@ -52,12 +58,16 @@ export const AdminSignInOutAuthCheck = ({ req }: any) => {
   }
 }
 
-export const UserSignInOutAuthCheck = async ({ req }: any) => {
+export const UserSignInOutAuthCheck = async ({ req, res }: any) => {
   const xsrfToken = req?.cookies['XSRF-TOKEN']
+  const laravelSession = req?.cookies['laravel_session']
   const path = req?.url
 
   const login = path.includes('login')
   const register = path.includes('register')
+
+  setCookie('XSRF-TOKEN', xsrfToken, { req, res });
+  setCookie('laravel_session', laravelSession, { req, res }); 
 
   if ((login || register) && !xsrfToken) {
     return {
