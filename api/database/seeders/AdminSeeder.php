@@ -27,7 +27,8 @@ class AdminSeeder extends Seeder
         'is_verified' => true,
         'employment_status_id' => EmploymentStatusEnum::EMPLOYED->value,
         'batch_id' => 1,
-        'role_id' => RoleEnum::ADMIN->value
+        'role_id' => RoleEnum::ADMIN->value,
+        'course_id' => 1,
       ]
     );
   }
