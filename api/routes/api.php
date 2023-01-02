@@ -5,6 +5,7 @@ use App\Http\Controllers\AlumniController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EmploymentStatusController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UpdatePasswordController;
 use App\Http\Controllers\UpdateUserController;
@@ -43,6 +44,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('user', UserController::class)->except(['show', 'update']);
     Route::apiResource('post', PostController::class)->except(['show']);
     Route::get('alumni', AlumniController::class);
-
     Route::get('course', CourseController::class);
+    Route::get('employment-status', EmploymentStatusController::class);
 });
