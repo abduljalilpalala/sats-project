@@ -12,6 +12,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -73,6 +74,11 @@ class User extends Authenticatable implements HasMedia
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function job()
+    {
+        return $this->hasOne(Job::class);
     }
 
     public function number()
@@ -147,6 +153,44 @@ class User extends Authenticatable implements HasMedia
         $this->addMedia(public_path('assets/avatars/default.png'))
             ->preservingOriginal()->toMediaCollection('avatar');
         return response()->noContent();
+    }
+
+    static public function registerApplicant($request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $user = User::create([
+                'id_number' => $request->id_number,
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'birth_date' => $request->birth_date,
+                'contact_number' => $request->contact_number,
+                'batch_id' => $request->batch,
+                'employment_status_id' => $request->employment_status,
+                'course_id' => $request->course,
+            ]);
+
+            if (intval($request->employment_status) === EmploymentStatusEnum::EMPLOYED->value) {
+                $job = $user->job()->create([
+                    'work_place' => $request->work_place,
+                    'company_name' => $request->company_name,
+                    'position' => $request->position
+                ]);
+
+                $job->addMedia($request->file('work_id'))
+                ->preservingOriginal()->toMediaCollection('work_id');
+            }
+
+            DB::commit();
+            return response()->noContent();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function updateUserDetails($request)
