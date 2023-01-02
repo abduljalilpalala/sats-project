@@ -20,6 +20,7 @@ class RegisterUserController extends Controller
       'contact_number' => $request->contact_number,
       'batch_id' => $request->batch,
       'employment_status_id' => $request->employment_status,
+      'course_id' => $request->course,
     ]);
 
     Auth::login($user);

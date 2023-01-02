@@ -11,9 +11,9 @@ class UserController extends Controller
 {
   public function index()
   {
-    $all = User::with(['avatar', 'batch'])->applicants()->get();
-    $pending = User::with(['avatar', 'batch'])->applicants()->pending()->get();
-    $approved = User::with(['avatar', 'batch'])->applicants()->approved()->get();
+    $all = User::with(['avatar', 'batch', 'course'])->applicants()->get();
+    $pending = User::with(['avatar', 'batch', 'course'])->applicants()->pending()->get();
+    $approved = User::with(['avatar', 'batch', 'course'])->applicants()->approved()->get();
 
     return response()->json([
       'all' => UserResource::collection($all),

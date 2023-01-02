@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
       AdminSettingSeeder::class,
       BatchSeeder::class,
       AdminSeeder::class,
+      CourseSeeder::class,
     ]);
   }
 }

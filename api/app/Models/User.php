@@ -70,6 +70,11 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsTo(Role::class);
     }
 
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
     public function number()
     {
         return $this
