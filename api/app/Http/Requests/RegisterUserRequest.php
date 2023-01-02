@@ -25,6 +25,7 @@ class RegisterUserRequest extends FormRequest
   public function rules()
   {
     return [
+      'id_number' => ['nullable', 'max:255'],
       'name' => ['required', 'string', 'max:255'],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
       'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -32,6 +33,10 @@ class RegisterUserRequest extends FormRequest
       'batch' => ['required'],
       'contact_number' => ['required', 'min:11', 'max:11'],
       'employment_status' => ['required'],
+      'work_place' => ['nullable', 'max:255'],
+      'company_name' => ['nullable', 'max:255'],
+      'position' => ['nullable', 'max:255'],
+      'work_id' => ['mimes:jpeg,jpg,png', 'max:2048']
     ];
   }
 }
