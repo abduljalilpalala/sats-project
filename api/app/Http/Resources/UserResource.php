@@ -19,6 +19,7 @@ class UserResource extends JsonResource
           'id_number' => $this->id_number,
           'name' => $this->name,
           'batch' => new BatchResource($this->whenLoaded('batch')),
+          'course' => new CourseResource($this->whenLoaded('course')),
           'avatar' => new AvatarResource($this->whenLoaded('avatar')),
           'is_verified' => $this->is_verified,
           'email' => $this->email,
