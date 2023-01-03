@@ -19,23 +19,20 @@ class AuthController extends Controller
   {
     $request->authenticate();
 
-    $request->session()->regenerate();
     $user = User::email($request->email)->first();
+    $token = $user->is_verified ? $user->createToken('access-token')->plainTextToken : '';
 
     return response()->json([
       'role' => $user->role_id,
-      'is_verified' => $user->is_verified
+      'is_verified' => $user->is_verified,
+      'token' => $token
     ]);
   }
 
   public function destroy(Request $request)
   {
-    Auth::guard('web')->logout();
-
-    $request->session()->invalidate();
-
-    $request->session()->regenerateToken();
-
+    auth()->user()->currentAccessToken()->delete();
+    
     return response()->noContent();
   }
 }
