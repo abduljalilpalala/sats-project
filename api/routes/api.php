@@ -49,3 +49,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('employment-status', EmploymentStatusController::class);
     Route::get('course-count', CourseAlumniCountController::class);
 });
+
+require __DIR__ . '/auth.php';
