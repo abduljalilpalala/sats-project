@@ -16,9 +16,28 @@ const useAuth = () => {
 
   const register = async (data: User) => {
     try {
-      setIsError(false) 
+      setIsError(false)
+        
+      const form = new FormData();
+      form.append("name", data.name);
+      form.append("email", data.email);
+      form.append("birth_date", data.birth_date);
+      form.append("contact_number", data.contact_number);
+      form.append("employment_status", data.employment_status);
+      form.append("batch", data.batch);
+      form.append("course_id", data.course_id);
+      form.append("password", data.password);
+      form.append("password_confirmation", data.password_confirmation);
+      form.append("work_place", data.work_place);
+      form.append("company_name", data.company_name);
+      form.append("position", data.position);
+      form.append("work_id", data.work_id[0]); 
 
-      const response = await axios.post('/api/register', data)
+      const response = await axios.post('/api/register', form, {
+        headers: {
+          'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001'
+        }
+      })
       if (response.status === 204) {
         toast.error('Account currently not yet verified please wait to the admin for approval.', {
           position: 'top-right'
