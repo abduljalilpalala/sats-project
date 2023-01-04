@@ -22,9 +22,9 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
   const { isOpen, toggle } = props;
   const [formError, setFormError]: any = useState(null);
   const [active, setActive] = useState<string>('Profile');
-  const [isEmployed, setIsEmployed] = useState(false);
   const { data: alumni, mutate } = userHooks();
-
+  const [isEmployed, setIsEmployed] = useState(alumni?.employment_status_id === 2);
+  
   const menuList = ['Profile', 'Security', 'About'];
 
   const onClick = (e: React.FormEvent<HTMLButtonElement>) =>
@@ -76,6 +76,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
               id: alumni?.id,
               name: data?.name,
               email: data?.email,
+              course_id: alumni?.course_id,
               contact_number: data?.contact_number,
               id_number: alumni?.id_number,
               birth_date: alumni?.birth_date,
@@ -379,14 +380,24 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
           }
         });
 
+        const courses = [
+            'BSIT - Bachelor of Science in Information Technology',
+            'BSED - Bachelor of Science in Secondary Education' ,
+            'BEED - Bachelor of Science in Elementary Education' ,
+            'BPED - Bachelor of Education in Physical Education' ,
+            'BSBA - Bachelor of Science in Business Administration'
+        ]
+
         const handleUpdateAbout = async (data: About): Promise<void> =>
         {
           try
           {
+            console.log(data)
             const payload = {
               id: alumni?.id,
               name: alumni?.name,
               email: alumni?.email,
+              course_id: alumni?.course_id,
               contact_number: alumni?.contact_number,
               id_number: data?.id_number,
               birth_date: data?.birth_date,
@@ -409,15 +420,15 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
         const employmentStatus = [
           {
             id: 1,
-            name: 'Employed'
+            name: 'Unemployed'
           },
           {
             id: 2,
-            name: 'Self-Employed'
+            name: 'Employed'
           },
           {
             id: 3,
-            name: 'Unemployed'
+            name: 'Self-Employed'
           }
         ];
 
@@ -439,13 +450,13 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                 />
               </div>
               <div>
-                <label htmlFor="course" className="form-label float-left">
+                <label htmlFor="course_id" className="form-label float-left">
                   Course
                 </label>
                 <input
                   type="text"
-                  id="course"
-                  defaultValue={alumni?.course ?? '---'}
+                  id="course_id"
+                  defaultValue={courses[alumni?.course_id] ?? '---'}
                   className="form-control"
                   disabled={true}
                 />
@@ -481,7 +492,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                   {
                     const value = e.target.value;
 
-                    if (value === '1') return setIsEmployed(true);
+                    if (value === '2') return setIsEmployed(true);
                     setIsEmployed(false);
                   }}
                 >
@@ -506,6 +517,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                     required
                     type="text"
                     id="work_place" 
+                    defaultValue={alumni?.work_place}
                     className="form-control"
                     disabled={isSubmitting}
                   />
@@ -518,6 +530,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                     required
                     type="text"
                     id="company_name" 
+                    defaultValue={alumni?.company_name}
                     className="form-control"
                     disabled={isSubmitting}
                   />
@@ -530,6 +543,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                     required
                     type="text"
                     id="position" 
+                    defaultValue={alumni?.position}
                     className="form-control"
                     disabled={isSubmitting}
                   />
@@ -542,6 +556,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                     required
                     type="file"
                     id="work_id" 
+                    defaultValue={alumni?.work_id}
                     className="form-control"
                     disabled={isSubmitting}
                   />
