@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import { setCookie } from 'cookies-next'
+import { deleteCookie, setCookie } from 'cookies-next'
 
 import { axios, setBearerToken } from '~/shared/lib/axios'
 import { Roles } from '~/shared/data/roleConstant'
@@ -59,19 +59,20 @@ const useAuth = () => {
       const token = response.data.token
       setCookie('token', token)
       setBearerToken(token)
-
-      if (response.status < 300) {
-        if (response?.data?.role === Roles.ADMIN) {
+      
+      if (response?.status === 200) { 
+        if (Number(response?.data?.role) === Roles.ADMIN) { 
           toast.success('You have successfully logged in!', { position: 'top-right' })
           window.location.href = '/admin/dashboard'
           return
         }
 
-        if (!response?.data?.is_verified) {
-          toast.error('Account currently not yet verified', { position: 'top-right' })
-        } else {
-          window.location.href = '/'
-        }
+        if (!Number(response?.data?.is_verified)) { 
+          deleteCookie('token')
+          return toast.error('Account currently not yet verified', { position: 'top-right' })
+        }   
+
+        window.location.href = '/'
       }
     } catch (err: any) {
       setIsError(true)

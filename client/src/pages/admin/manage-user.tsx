@@ -153,7 +153,7 @@ const ManageUser: NextPage = (): JSX.Element => {
                   <ul className="flex flex-col gap-2">
                     {users?.map((user: any, index: number) => {
                       const { name, avatar, is_verified, id, id_number, batch, email, number } = user
-                      console.log(id_number, user)
+                      
                       return (
                         <Disclosure key={index}>
                           {({ open }) => (
@@ -169,7 +169,7 @@ const ManageUser: NextPage = (): JSX.Element => {
                                   <span>{name}</span>
                                 </div>
                                 <div className="flex gap-3">
-                                  {getApplicationStatus(is_verified)}
+                                  {getApplicationStatus(Number(is_verified))}
                                   <ChevronUpIcon
                                     className={`${open ? 'rotate-180 transform' : ''} h-9 w-9 `}
                                   />
@@ -195,7 +195,7 @@ const ManageUser: NextPage = (): JSX.Element => {
                                       </div>
                                     )
                                   })}
-                                  {!is_verified
+                                  {!Number(is_verified)
                                     ? null
                                     : [
                                       { header: 'Email', value: email },
@@ -218,7 +218,7 @@ const ManageUser: NextPage = (): JSX.Element => {
                                       )
                                     })}
                                 </div>
-                                {is_verified ? null : (
+                                {Number(is_verified) ? null : (
                                   <div className="flex flex-col gap-2 pl-10 mobile:flex-row mobile:!p-0">
                                     <button
                                       onClick={() => approve(name, id)}
