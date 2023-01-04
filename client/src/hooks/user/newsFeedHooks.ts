@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import { AxiosResponse } from 'axios'
 
-import axios from '~/shared/lib/axios'
+import { axios } from '~/shared/lib/axios'
 import { IPost } from '~/shared/interfaces'
 
 const useNewsFeed = () => {

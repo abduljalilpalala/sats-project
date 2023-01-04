@@ -1,15 +1,17 @@
 import Axios from 'axios'
+import { getCookie } from 'cookies-next'
 
-const axios = Axios.create({
+const token = getCookie('token')
+
+export const axios = Axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
   headers: {
-    mode: 'no-cors',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': '*',
-    'Content-Type': 'application/json',
-    'X-Requested-With': 'XMLHttpRequest'
-  },
-  withCredentials: true
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+    "Access-Control-Allow-Origin": "*"
+  }
 })
 
-export default axios
+export const setBearerToken = (token: string) => {
+  axios.defaults.headers.Authorization = `Bearer ${token}`
+}

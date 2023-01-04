@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { ChangeEvent, FC, useState } from 'react';
 
-import axios from '~/shared/lib/axios';
+import { axios } from '~/shared/lib/axios';
 import userHooks from '~/hooks/user/userHooks';
 import { About, Profile, Security } from './types';
 import { Spinner } from '~/shared/icons/SpinnerIcon';

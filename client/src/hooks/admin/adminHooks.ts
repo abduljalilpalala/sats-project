@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import { AxiosResponse } from 'axios'
 import { deleteCookie } from 'cookies-next'
 
-import axios from '~/shared/lib/axios'
+import { axios } from '~/shared/lib/axios'
 import redirect from '~/utils/redirect'
 import { setData } from '~/utils/setData'
 import { Password } from '~/shared/types'
@@ -167,12 +167,14 @@ const adminHooks = () => {
 
   const logout = async () => {
     try {
-      await axios.post('/logout')
+      const response = await axios.post('/api/logout')
 
-      deleteCookie('XSRF-TOKEN')
+      if (response.status === 204) {
+        deleteCookie('token')
+        toast.success('Logout successfully!')
+        redirect('/admin')
+      }
 
-      toast.success('Logout successfully!')
-      redirect('/admin')
     } catch (err: any) {
       return setErrorMessage(err)
     }

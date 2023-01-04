@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react'
 import { Disclosure, Tab } from '@headlessui/react'
 import { ChevronUpIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
-import axios from '~/shared/lib/axios'
+import { axios } from '~/shared/lib/axios'
 import Loader from '~/components/atoms/Loader'
 import adminHooks from '~/hooks/admin/adminHooks'
 import handleImageError from '~/utils/handleImageError'

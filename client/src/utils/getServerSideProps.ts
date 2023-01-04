@@ -1,5 +1,5 @@
 export const AdminSignInOutAuthCheck = ({ req }: any) => {
-  const xsrfToken = req?.cookies['XSRF-TOKEN']
+  const token = req?.cookies['token']
   const path = req?.url
 
   const admin = path.includes('admin')
@@ -8,7 +8,7 @@ export const AdminSignInOutAuthCheck = ({ req }: any) => {
   const managePost = path.includes('manage-post')
   const employmentStatus = path.includes('employment-status')
 
-  if ((dashboard || manageUser || managePost || employmentStatus) && !xsrfToken) {
+  if ((dashboard || manageUser || managePost || employmentStatus) && !token) {
     return {
       redirect: {
         destination: '/admin',
@@ -17,19 +17,19 @@ export const AdminSignInOutAuthCheck = ({ req }: any) => {
     }
   }
 
-  if (admin && !xsrfToken) {
+  if (admin && !token) {
     return {
       props: {}
     }
   }
 
-  if ((dashboard || manageUser || managePost || employmentStatus) && xsrfToken) {
+  if ((dashboard || manageUser || managePost || employmentStatus) && token) {
     return {
       props: {}
     }
   }
 
-  if (admin && xsrfToken) {
+  if (admin && token) {
     return {
       redirect: {
         destination: '/admin/dashboard',
@@ -38,7 +38,7 @@ export const AdminSignInOutAuthCheck = ({ req }: any) => {
     }
   }
 
-  if (!xsrfToken) {
+  if (!token) {
     return {
       redirect: {
         destination: '/admin',
@@ -53,19 +53,19 @@ export const AdminSignInOutAuthCheck = ({ req }: any) => {
 }
 
 export const UserSignInOutAuthCheck = async ({ req }: any) => {
-  const xsrfToken = req?.cookies['XSRF-TOKEN']
+  const token = req?.cookies['token']
   const path = req?.url
 
   const login = path.includes('login')
   const register = path.includes('register')
 
-  if ((login || register) && !xsrfToken) {
+  if ((login || register) && !token) {
     return {
       props: {}
     }
   }
 
-  if (!xsrfToken) {
+  if (!token) {
     return {
       redirect: {
         destination: '/login',
@@ -74,7 +74,7 @@ export const UserSignInOutAuthCheck = async ({ req }: any) => {
     }
   }
 
-  if ((login || register) && xsrfToken) {
+  if ((login || register) && token) {
     return {
       redirect: {
         destination: '/',
