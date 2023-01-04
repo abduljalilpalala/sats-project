@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 import useNewsFeed from '~/hooks/user/newsFeedHooks'
 import AlumniLayout from '~/components/templates/AlumniLayout'
 import NewsFeedPostSkeleton from '~/components/atoms/Skeletons/NewsFeedPostSkeleton'
+import handleImageError from '~/utils/handleImageError';
 
 const Index: NextPage = (): JSX.Element => {
   const { data, isLoading } = useNewsFeed()
@@ -15,16 +16,19 @@ const Index: NextPage = (): JSX.Element => {
         <button className="flex -space-x-4 opacity-100 active:scale-95 lg:opacity-0">
           <img
             className="h-8 w-8 rounded-full border-2 border-white"
+            onError={(e) => handleImageError(e, '/images/avatar.png')} 
             src="https://ca.slack-edge.com/E028JVBUY4F-U03N2F2SHV2-39c1dcf42b67-512"
             alt=""
           />
           <img
             className="h-8 w-8 rounded-full border-2 border-white"
+            onError={(e) => handleImageError(e, '/images/avatar.png')} 
             src="https://ca.slack-edge.com/E028JVBUY4F-U03N1UNTGAY-5ef1b06f109b-512"
             alt=""
           />
           <img
             className="h-8 w-8 rounded-full border-2 border-white"
+            onError={(e) => handleImageError(e, '/images/avatar.png')} 
             src="https://ca.slack-edge.com/E028JVBUY4F-U03DUBE2G9W-974bff0bc22c-512"
             alt=""
           />

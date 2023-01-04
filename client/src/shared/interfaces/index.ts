@@ -24,7 +24,7 @@ export interface IAlumniData {
   contact_number: string
   is_verified: number | boolean
   role_id: number
-  employment_status_id: number
+  employment_status_id: any
   batch_id: number
   email_verified?: null
   created_at: string
