@@ -391,8 +391,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
         const handleUpdateAbout = async (data: About): Promise<void> =>
         {
           try
-          {
-            console.log(data)
+          { 
             const payload = {
               id: alumni?.id,
               name: alumni?.name,
