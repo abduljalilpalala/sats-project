@@ -16,8 +16,8 @@ const useAuth = () => {
 
   const register = async (data: User) => {
     try {
-      setIsError(false)
-        
+      setIsError(false) 
+      
       const form = new FormData();
       form.append("name", data.name);
       form.append("email", data.email);
@@ -25,13 +25,14 @@ const useAuth = () => {
       form.append("contact_number", data.contact_number);
       form.append("employment_status", data.employment_status);
       form.append("batch", data.batch);
+      form.append("id_number", data.id_number);
       form.append("course_id", data.course_id);
       form.append("password", data.password);
       form.append("password_confirmation", data.password_confirmation);
       form.append("work_place", data.work_place);
       form.append("company_name", data.company_name);
       form.append("position", data.position);
-      form.append("work_id", data.work_id[0]); 
+      data.work_id ? form.append("work_id", data.work_id[0]) : '/images/id_dummy.png'
 
       const response = await axios.post('/api/register', form, {
         headers: {

@@ -99,11 +99,11 @@ const AuthForm: FC<Props> = (props): JSX.Element =>
                   focus:border-[#3b83d1] focus:ring-0
                 `}
               >
-                <option value={0}>BSIT</option>
-                <option value={1}>BSED</option>
-                <option value={2}>BEED</option>
-                <option value={3}>BPED</option>
-                <option value={4}>BSBA</option>
+                <option value={1}>BSIT</option>
+                <option value={2}>BSED</option>
+                <option value={3}>BEED</option>
+                <option value={4}>BPED</option>
+                <option value={5}>BSBA</option>
               </select>
             </div>
             <div className="col-span-12">
