@@ -157,9 +157,10 @@ const adminHooks = () => {
   const getDashboardData = async (id: number) => {
     try {
       const response = await axios.get(`/api/admin/dashboard?batch=${id}`)
+      const responseList = await axios.get('/api/course-count')
       setFetchStatus(setData(fetchStatus, { isLoading: false }))
-
-      return response.data
+      
+      return {...response.data, listOfGraduated: responseList.data}
     } catch (err: any) {
       return setErrorMessage(err)
     }

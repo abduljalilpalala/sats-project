@@ -34,22 +34,27 @@ const years = [
 
 const Dashboard: NextPage = (): JSX.Element => {
   const { getDashboardData } = adminHooks();
-  const [dashboardData, setDashboardData] = useState<Dashboard | null>(null);
+  const [dashboardData, setDashboardData] = useState<any>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(years?.length - 1);
   const [selected, setSelected] = useState<string>(years[selectedIndex]);
 
   const { innerWidth } = useWindowDimensions() || {};
   const mobileView = innerWidth <= 1000;
 
-  const { batch, total_posts, total_users } = dashboardData || {};
-  const { employed, selfEmployed, unemployed } = batch || {};
+  const { batch, total_posts, total_users, listOfGraduated } = dashboardData || {};
+  const { employed, selfEmployed, unemployed } = batch || {}; 
+  const bsit = listOfGraduated && listOfGraduated[0]?.BSIT
+  const bsed = listOfGraduated && listOfGraduated[1]?.BSED
+  const beed = listOfGraduated && listOfGraduated[2]?.BEED
+  const bped = listOfGraduated && listOfGraduated[3]?.BPED
+  const bsba = listOfGraduated && listOfGraduated[4]?.BSBA
 
   useEffect(() => {
     getDashboardData(selectedIndex + 1).then((res) => {
       setDashboardData(res);
     });
   }, [selectedIndex]);
-
+  
   const data = [
     [
       "Employment Status",
@@ -76,35 +81,37 @@ const Dashboard: NextPage = (): JSX.Element => {
 
   const pieChartData = [
     ["Task", "Hours per Day"],
-    ["BSIT - Employed", 12],
-    ["BSIT - Unemployed", 1],
-    ["BSED - Employed", 3],
-    ["BSED - Unemployed", 2],
-    ["BEED - Employed", 6],
-    ["BEED - Unemployed", 3],
-    ["BPED - Employed", 9],
-    ["BPED - Unemployed", 6],
-    ["BSBA - Employed", 12],
-    ["BSBA - Unemployed", 11],
+    ["BSIT - Employed", bsit?.employed],
+    ["BSIT - Unemployed", bsit?.unemployed],
+    ["BSED - Employed", bsed?.employed],
+    ["BSED - Unemployed", bsed?.unemployed],
+    ["BEED - Employed", beed?.employed],
+    ["BEED - Unemployed", beed?.unemployed],
+    ["BPED - Employed", bped?.employed],
+    ["BPED - Unemployed", bped?.unemployed],
+    ["BSBA - Employed", bsba?.employed],
+    ["BSBA - Unemployed", bsba?.unemployed],
   ]; 
+
+  const slices: any =  {
+    0: { color: "#ab00ff" }, 
+    1: { color: "#31004a" }, 
+    2: { color: "#a6754a" }, 
+    3: { color: "#582205" }, 
+    4: { color: "#ffcf40" }, 
+    5: { color: "#a67c00" }, 
+    6: { color: "#e50000" }, 
+    7: { color: "#820000" }, 
+    8: { color: "#283198" }, 
+    9: { color: "#0c136d" }, 
+  }
 
   const pieChartOptions = {
     legend: { position: "none" },
     backgroundColor: 'transparent',
     chartArea: { 'width': mobileView ? "100%" : '' },
     is3D: true,
-    slices: {
-      0: { color: "#2E8BC0" }, 
-      1: { color: "#002147" }, 
-      2: { color: "#2E8BC0" }, 
-      3: { color: "#002147" }, 
-      4: { color: "#2E8BC0" }, 
-      5: { color: "#002147" }, 
-      6: { color: "#2E8BC0" }, 
-      7: { color: "#002147" }, 
-      8: { color: "#2E8BC0" }, 
-      9: { color: "#002147" }, 
-    },
+    slices
   };
 
   const DashboardContent = () => {
@@ -210,12 +217,11 @@ const Dashboard: NextPage = (): JSX.Element => {
             </div>
             <div className="w-full p-5 text-start">
               <div className="flex flex-col">
-                {pieChartData.map((data: any, index: number)=>{
-                  if (index === 0) return null
-
+                {pieChartData.map((data: any, index: number)=>{ 
+                  if ( index === 0 ) return null
                   return (
                     <div className={`flex justify-start items-center gap-1 ${index % 2 === 0 || "mt-6"}`} key={index}>
-                      <div className={`${index % 2 === 0 ? 'bg-[#002147]' : 'bg-[#2E8BC0]'} rounded-full !h-[10px] !w-[10px]`}></div>
+                      <div className="rounded-full !h-[10px] !w-[10px]" style={{'backgroundColor': slices[index - 1]?.color}}></div>
                       <div className="w-full flex justify-between items-center">
                         <div>{data[0]}</div>
                         <div className="text-md font-medium">{data[1]}</div>
