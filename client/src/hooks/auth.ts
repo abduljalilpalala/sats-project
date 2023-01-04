@@ -60,7 +60,7 @@ const useAuth = () => {
       setCookie('token', token)
       setBearerToken(token)
 
-      if (response.statusText === 'OK') {
+      if (response.status < 300) {
         if (response?.data?.role === Roles.ADMIN) {
           toast.success('You have successfully logged in!', { position: 'top-right' })
           window.location.href = '/admin/dashboard'
