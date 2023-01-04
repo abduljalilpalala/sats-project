@@ -169,6 +169,7 @@ const adminHooks = () => {
   const logout = async () => {
     try {
       const response = await axios.post('/api/logout')
+      deleteCookie('token')
 
       if (response.status === 204) {
         deleteCookie('token')
