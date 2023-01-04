@@ -21,7 +21,7 @@ const fetcher = (url: string) => axios.get(url).then((res: AxiosResponse) => res
 
 const ManageUser: NextPage = (): JSX.Element => {
   const { data: studentForVerifications, mutate } = useSWR('/api/user', fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: 3000,
     revalidateOnMount: true
   })
 

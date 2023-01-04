@@ -1,107 +1,51 @@
 import Swal from 'sweetalert2'
 import { NextPage } from 'next'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Disclosure, Tab } from '@headlessui/react'
 import { ChevronUpIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
 import Loader from '~/components/atoms/Loader'
 import handleImageError from '~/utils/handleImageError'
-import AdminLayout from '~/components/templates/AdminLayout'
+import AdminLayout from '~/components/templates/AdminLayout' 
+import useSWR from 'swr';
+import { axios } from '~/shared/lib/axios';
+import { AxiosResponse } from 'axios';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-const EmploymentStatus: NextPage = (): JSX.Element => {
-  const allEmployment: any = {
-    employed: [
-      {
-        name: 'John Doe Employed',
-        avatar: '/images/avatar.png',
-        id_number: 1,
-        batch: '1',
-        course: 'BSIT',
-        email: 'email@gmail.com',
-        number: '12312312312',
-        work_place: 'Lorem',
-        company_name: 'Ipsum Dolor',
-        position: 'Sit Amet',
-        employment_id: '/images/id_dummy.png',
-      },
-      {
-        name: 'Jane Doe Employed',
-        avatar: '/images/avatar.png',
-        id_number: 1,
-        batch: '1',
-        course: 'BSIT',
-        email: 'email@gmail.com',
-        number: '12312312312',
-        work_place: 'Lorem',
-        company_name: 'Ipsum Dolor',
-        position: 'Sit Amet',
-        employment_id: '/images/id_dummy.png',
-      },
-      {
-        name: 'Joan Doe Employed',
-        avatar: '/images/avatar.png',
-        id_number: 1,
-        batch: '1',
-        course: 'BSIT',
-        email: 'email@gmail.com',
-        number: '12312312312',
-        work_place: 'Lorem',
-        company_name: 'Ipsum Dolor',
-        position: 'Sit Amet',
-        employment_id: 'no-image',
-      }
-    ],
-    unemployed: [
-      {
-        name: 'John Doe Unemployed',
-        avatar: '/images/avatar.png',
-        id_number: 1,
-        batch: '1',
-        course: 'BSIT',
-        email: 'email@gmail.com',
-        number: '12312312312',
-      },
-      {
-        name: 'John Doe Unemployed',
-        avatar: '/images/avatar.png',
-        id_number: 1,
-        batch: '1',
-        course: 'BSIT',
-        email: 'email@gmail.com',
-        number: '12312312312',
-      }
-    ],
-    self_employed: [
-      {
-        name: 'John Doe Self Employed',
-        avatar: '/images/avatar.png',
-        id_number: 1,
-        batch: '1',
-        course: 'BSIT',
-        email: 'email@gmail.com',
-        number: '12312312312',
-      }
-    ]
-  }
+const fetcher = (url: string) => axios.get(url).then((res: AxiosResponse) => res.data)
 
-  const [employmentList, setEmploymentList] = useState({
-    Employed: [...allEmployment.employed],
-    Unemployed: [...allEmployment.unemployed],
-    Self_Employed: [...allEmployment.self_employed],
+const EmploymentStatus: NextPage = (): JSX.Element => {  
+  const { data: alumniEmploymentStatus } = useSWR('/api/employment-status', fetcher, {
+    refreshInterval: 3000,
+    revalidateOnMount: true
   })
+
+  const allEmployment: any = {...alumniEmploymentStatus}
+
+  const [employmentList, setEmploymentList] = useState<any>()
+  
+  useEffect(()=>{ 
+    if (allEmployment?.employed) { 
+      setEmploymentList({
+        Employed: [...allEmployment?.employed],
+        Unemployed: [...allEmployment?.unemployed],
+        Selfemployed: [...allEmployment?.selfemployed],
+      })
+    }
+  }, [alumniEmploymentStatus]) 
+ 
   const [searchIn, setSearchIn] = useState<string>("Employed")
   const [searchInput, setSearchInput] = useState<string>("")
 
   const searchFunction = (value: string) => {
     if (value === "") {
       return setEmploymentList({
-        Employed: [...allEmployment.employed],
-        Unemployed: [...allEmployment.unemployed],
-        Self_Employed: [...allEmployment.self_employed]
+        Employed: [...allEmployment?.employed],
+        Unemployed: [...allEmployment?.unemployed],
+        Selfemployed: [...allEmployment?.selfemployed]
       })
     }
 
@@ -118,7 +62,7 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
       <div className='w-[525px]'>
         <Tab.Group>
           <Tab.List className="flex space-x-1 rounded-xl bg-sams-10 p-1">
-            {Object.keys(employmentList).map((category) => (
+            {['Employed', 'Unemployed', 'Selfemployed']?.map((category) => (
               <Tab
                 key={category}
                 onClick={() => setSearchIn(category)}
@@ -153,7 +97,7 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
             />
           </div>
           <Tab.Panels className="mt-2">
-            {Object.values(employmentList).map((lists, idx) => (
+            {employmentList && Object.values(employmentList).map((lists:any, idx) => (
               <Tab.Panel
                 key={idx}
                 className={classNames(
@@ -161,32 +105,33 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
                   'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2'
                 )}
               >
-                {lists?.length === 0 ? (
+                {employmentList[searchIn]?.length === 0 ? (
                   <h1 className="text-center text-slate-400">No available data</h1>
                 ) : (
-                  <ul className="flex flex-col gap-2">
-                    {lists.map((list: any, index: number) => {
-                      const { name, avatar, id_number, batch, course, email, number, work_place, company_name, position, employment_id } = list || {};
+                  <ul className="flex flex-col gap-2">   
+                    {employmentList[searchIn]?.map((list: any, index: number) => {
+                      const { name, avatar, id_number, batch, course, email, number, job } = list || {};
+                      const { company_name, work_place, work_id_image, position } = job || {}
                       const tableRows = [
                         { header: "ID Number", value: id_number ?? "---" },
-                        { header: "Batch", value: batch },
-                        { header: "Course", value: course },
+                        { header: "Batch", value: batch?.name },
+                        { header: "Course", value: course?.name },
                         { header: "Email", value: email },
                         { header: "Contact Number", value: number },
                         { header: "Work Place", value: work_place },
                         { header: "Company Name", value: company_name },
                         { header: "Position", value: position },
-                        { header: "Employment ID", value: employment_id && (
-                          <a href={employment_id} target="_new">
+                        { header: "Employment ID", value: work_id_image?.url && (
+                          <a href={work_id_image?.url} target="_new">
                             <img 
-                              src={employment_id} 
+                              src={work_id_image?.url} 
                               onError={(e) => handleImageError(e, '/images/id_dummy.png')}
                               alt="id_card"
                               className="max-w-[200px] max-h-[100px] min-w-[200px] min-h-[100px] rounded-md"
                             />
                           </a>
                         ) }
-                      ]
+                      ]  
 
                       return (
                         <Disclosure key={index}>
@@ -195,7 +140,7 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
                               <Disclosure.Button className="flex items-center w-full justify-between rounded-lg bg-[#2563EB] bg-opacity-30 px-4 py-2 text-left text-sm font-medium text-slate-900 hover:bg-sams-10 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-slate-900 focus-visible:ring-opacity-75">
                                 <div className="flex gap-3 justify-center items-center">
                                   <img
-                                    src={avatar}
+                                    src={avatar?.url}
                                     onError={(e) => handleImageError(e, '/images/avatar.png')}
                                     alt="profile"
                                     className="rounded-full max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px]"
@@ -212,7 +157,7 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
                                 <table className='w-full'>
                                   <tbody>
                                     {
-                                      tableRows.map((data: any, index: number) => {
+                                      tableRows?.map((data: any, index: number) => {
                                         const { header, value } = data;
 
                                         return (
@@ -253,7 +198,7 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
 
   return (
     <AdminLayout metaTitle="Administrator | Employment Status">
-      {!allEmployment ? <Loader /> : EmploymentStatusData}
+      {!alumniEmploymentStatus ? <Loader /> : EmploymentStatusData}
     </AdminLayout>
   )
 }
