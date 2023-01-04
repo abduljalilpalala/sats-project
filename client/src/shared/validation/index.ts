@@ -20,7 +20,7 @@ export const SignUpFormSchema = Yup.object().shape({
     .max(11),
   employment_status: Yup.string().required().label('Employment Status'),
   batch: Yup.string().required().label('Batch'),
-  course: Yup.string().required().label('Course'),
+  course_id: Yup.string().required().label('Course'),
   work_place: Yup.string().label('Work Place'),
   company_name: Yup.string().label('Company Name'),
   position: Yup.string().label('Position'),

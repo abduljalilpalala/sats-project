@@ -1,7 +1,7 @@
 export type User = {
   id_number?: string
   batch: string
-  course: string
+  course_id: string
   name: string
   email: string
   birth_date: string

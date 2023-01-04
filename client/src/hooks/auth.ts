@@ -16,7 +16,7 @@ const useAuth = () => {
 
   const register = async (data: User) => {
     try {
-      setIsError(false)
+      setIsError(false) 
 
       const response = await axios.post('/api/register', data)
       if (response.status === 204) {

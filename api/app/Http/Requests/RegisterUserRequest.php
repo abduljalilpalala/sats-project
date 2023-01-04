@@ -31,12 +31,12 @@ class RegisterUserRequest extends FormRequest
       'password' => ['required', 'confirmed', Rules\Password::defaults()],
       'birth_date' => ['date', 'required'],
       'batch' => ['required'],
+      'course_id' => ['required'],
       'contact_number' => ['required', 'min:11', 'max:11'],
       'employment_status' => ['required'],
       'work_place' => ['nullable', 'max:255'],
       'company_name' => ['nullable', 'max:255'],
       'position' => ['nullable', 'max:255'],
-      'work_id' => ['mimes:jpeg,jpg,png', 'max:2048']
     ];
   }
 }
