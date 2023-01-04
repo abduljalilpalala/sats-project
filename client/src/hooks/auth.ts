@@ -55,14 +55,14 @@ const useAuth = () => {
       setIsError(false)
 
       const response = await axios.post('/api/login', data)
+      const token = response.data.token
+      setCookie('token', token)
+      setBearerToken(token)
 
       if (response.statusText === 'OK') {
-        const token = response.data.token
         if (response?.data?.role === Roles.ADMIN) {
           toast.success('You have successfully logged in!', { position: 'top-right' })
           window.location.href = '/admin/dashboard'
-          setCookie('token', token)
-          setBearerToken(token)
           return
         }
 
