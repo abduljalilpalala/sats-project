@@ -174,7 +174,7 @@ class User extends Authenticatable implements HasMedia
                 'contact_number' => $request->contact_number,
                 'batch_id' => $request->batch,
                 'employment_status_id' => $request->employment_status,
-                'course_id' => $request->course,
+                'course_id' => $request->course_id,
             ]);
 
             if (intval($request->employment_status) === EmploymentStatusEnum::EMPLOYED->value) {
