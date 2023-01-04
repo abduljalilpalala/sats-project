@@ -1,5 +1,5 @@
 export type User = {
-  id_number?: string
+  id_number?: any
   batch: string
   course_id: string
   name: string
