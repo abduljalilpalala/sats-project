@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import { AxiosResponse } from 'axios'
 import { deleteCookie } from 'cookies-next'
 
-import axios from '~/shared/lib/axios'
+import { axios } from '~/shared/lib/axios'
 import redirect from '~/utils/redirect'
 import { IAlumniList } from '~/shared/interfaces'
 import { AxiosResponseError } from '~/shared/types'

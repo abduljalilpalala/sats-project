@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import { AxiosResponse } from 'axios'
 import { deleteCookie } from 'cookies-next'
 
-import axios from '~/shared/lib/axios'
+import { axios } from '~/shared/lib/axios'
 import redirect from '~/utils/redirect'
 import { IAlumniData } from '~/shared/interfaces'
 import { AxiosResponseError } from '~/shared/types'
@@ -35,8 +35,8 @@ const userHooks = () => {
 
   const logout = async () => {
     try {
-      await axios.post('/logout')
-      deleteCookie('XSRF-TOKEN')
+      await axios.post('/api/logout')
+      deleteCookie('token')
       toast.success('Logout successfully!')
       location.reload()
       redirect('/login')
