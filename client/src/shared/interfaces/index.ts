@@ -15,7 +15,7 @@ export interface IAlumniData {
   id_number: string
   name: string
   email: string
-  course_id: string
+  course_id: any
   work_place: string
   company_name: string
   position: string
