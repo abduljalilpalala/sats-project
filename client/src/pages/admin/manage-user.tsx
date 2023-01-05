@@ -12,6 +12,7 @@ import adminHooks from '~/hooks/admin/adminHooks'
 import handleImageError from '~/utils/handleImageError'
 import AdminLayout from '~/components/templates/AdminLayout'
 import getApplicationStatus from '~/utils/getApplicationStatus'
+import image from '~/utils/image';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -161,7 +162,7 @@ const ManageUser: NextPage = (): JSX.Element => {
                               <Disclosure.Button className="flex w-full items-center justify-between rounded-lg bg-[#2563EB] bg-opacity-30 px-4 py-2 text-left text-sm font-medium text-slate-900 focus:outline-none focus-visible:ring focus-visible:ring-slate-900 focus-visible:ring-opacity-75 hover:bg-sams-10 hover:text-white">
                                 <div className="flex items-center justify-center gap-3">
                                   <img
-                                    src={avatar?.url}
+                                    src={image(avatar?.url)}
                                     onError={(e) => handleImageError(e, '/images/avatar.png')}
                                     alt="profile"
                                     className="max-h-[36px] min-h-[36px] min-w-[36px] max-w-[36px] rounded-full"

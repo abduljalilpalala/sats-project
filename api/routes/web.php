@@ -20,6 +20,12 @@ Route::get('/', function () {
 
 Route::get('/cleareverything', function () {
     
+    $clearroute = Artisan::call('route:clear');
+    echo "Route clear<br>";
+    
+    $cacheroute = Artisan::call('route:cache');
+    echo "Route cache<br>";
+    
     $clearcache = Artisan::call('cache:clear');
     echo "Cache cleared<br>";
 
@@ -28,5 +34,8 @@ Route::get('/cleareverything', function () {
 
     $clearconfig = Artisan::call('config:cache');
     echo "Config cleared<br>";
+
+    $storagelink = Artisan::call('storage:link');
+    echo "Storage link<br>";
 
 });

@@ -22,8 +22,10 @@ const useAlumni = () => {
         .catch((error) => {
           if (error.response.status !== 409) throw error?.response?.statusText
           toast.error(error?.response?.statusText)
-        }),
+        }), 
     {
+      refreshInterval: 3000,
+      revalidateOnMount: true,
       revalidateIfStale: false,
       revalidateOnFocus: false,
       revalidateOnReconnect: false

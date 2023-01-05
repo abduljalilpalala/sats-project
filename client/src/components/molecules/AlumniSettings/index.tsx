@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { ChangeEvent, FC, useState } from 'react';
 
+import image from '~/utils/image'
 import { axios } from '~/shared/lib/axios';
 import userHooks from '~/hooks/user/userHooks';
 import { About, Profile, Security } from './types';
@@ -24,7 +25,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
   const [active, setActive] = useState<string>('Profile');
   const { data: alumni, mutate } = userHooks();
   const [isEmployed, setIsEmployed] = useState(alumni?.employment_status_id === 2);
-  
+
   const menuList = ['Profile', 'Security', 'About'];
 
   const onClick = (e: React.FormEvent<HTMLButtonElement>) =>
@@ -149,7 +150,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
               <p className="text-px-12 text-left text-slate-800">Your photo</p>
               <div className="flex flex-row items-center justify-between">
                 <img
-                  src={alumni?.avatar[0]?.original_url}
+                  src={image(alumni?.avatar[0]?.original_url)}
                   onError={(e) => handleImageError(e, '/images/avatar.png')}
                   className="max-h-[88px] min-h-[88px] min-w-[88px] max-w-[88px] rounded-full"
                   alt=""
@@ -176,12 +177,12 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                     type="button"
                     data-tip="Under development"
                     onClick={removeAvatar}
-                    disabled={alumni?.avatar[0]?.original_url ? false : true}
+                    disabled={image(alumni?.avatar[0]?.original_url) ? false : true}
                     className={`
                       h-px-36 w-px-170 rounded-md border border-blue-600 bg-slate-500 tracking-tight 
                       text-slate-900 opacity-50 duration-150 ease-in-out hover:bg-slate-500 hover:text-slate-50 mobile:!max-w-[120px] 
                       mobile:!text-sm
-                      ${!alumni?.avatar[0]?.original_url ? 'cursor-not-allowed opacity-50' : ''}
+                      ${!image(alumni?.avatar[0]?.original_url) ? 'cursor-not-allowed opacity-50' : ''}
                     `}
                   >
                     Remove photo
@@ -455,7 +456,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                 <input
                   type="text"
                   id="course_id"
-                  defaultValue={courses[alumni?.course_id] ?? '---'}
+                  defaultValue={courses[Number(alumni?.course_id) - 1] ?? '---'}
                   className="form-control"
                   disabled={true}
                 />
@@ -480,8 +481,15 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
               <div>
                 <label htmlFor="employment_status" className="form-label float-left">
                   Employment Status <span>*</span>
-                </label>
-                <select
+                </label> 
+                <input
+                  type="text"
+                  id="employment_status"
+                  defaultValue={employmentStatus[alumni?.employment_status_id - 1]?.name}
+                  className="form-control"
+                  disabled={true}
+                />
+                {/* <select
                   className="form-control"
                   id="employment_status"
                   disabled={isSubmitting}
@@ -500,13 +508,13 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                       {name}
                     </option>
                   ))}
-                </select>
+                </select> */}
                 {errors?.employment_status_id && (
                   <span className="error">{`${errors?.employment_status_id?.message}`}</span>
                 )}
               </div>
             </div>
-            {isEmployed && (
+            {/* {isEmployed && (
               <div className="flex flex-col gap-3">
                 <div>
                   <label htmlFor="work_place" className="form-label float-left">
@@ -561,7 +569,7 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                   />
                 </div>
               </div>
-            )}
+            )} */}
             <button type="submit" className="form-submit mt-8" disabled={isSubmitting}>
               {isSubmitting ? <Spinner className="h-5 w-5" /> : 'Save Changes'}
             </button>

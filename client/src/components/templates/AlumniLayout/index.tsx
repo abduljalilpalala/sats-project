@@ -3,6 +3,7 @@ import userHooks from '~/hooks/user/userHooks'
 import alumniHooks from '~/hooks/user/alumniHooks'
 import React, { FC, useState, ReactNode } from 'react'
 
+import image from '~/utils/image'
 import useAlumni from '~/hooks/user/alumniHooks'
 import handleImageError from '~/utils/handleImageError'
 import AlumniHeader from '~/components/organisms/AlumniHeader'
@@ -18,7 +19,7 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
   const { data: alumni, error } = userHooks()
   const { alumniDataList } = useAlumni()
   const [isOpen, setIsOpen] = useState<boolean>(false)
-
+  
   const toggle = (): void => setIsOpen(!isOpen)
 
   return (
@@ -28,7 +29,7 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
       </Head>
 
       {/* Alumni Header */}
-      <AlumniHeader avatar={alumni?.avatar[0]?.original_url} actions={{ toggle }} />
+      <AlumniHeader avatar={image(alumni?.avatar[0]?.original_url)} actions={{ toggle }} />
 
       <main className="mx-auto flex max-w-[90rem] pt-[60px] md:space-x-10 md:px-4">
         {/* The Profile Side */}
@@ -43,7 +44,7 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
               <header className="flex items-center justify-center">
                 <div className="-mt-12 flex-shrink-0 overflow-hidden">
                   <img
-                    src={alumni?.avatar[0].original_url}
+                    src={image(alumni?.avatar[0]?.original_url)}
                     className="h-[110px] w-[110px] rounded-full shadow"
                     onError={(e) => handleImageError(e, '/images/avatar.png')}
                     alt=""
@@ -83,7 +84,12 @@ const AlumniLayout: FC<Props> = ({ metaTitle, children }): JSX.Element => {
               {alumniDataList ? (
                 alumniDataList?.map((alumni) => (
                   <li key={alumni.id} className="flex items-center space-x-3 py-2.5">
-                    <img src={alumni.avatar.url} className="h-9 w-9 rounded-full" alt="" />
+                    <img 
+                        src={image(alumni?.avatar?.url)} 
+                        onError={(e) => handleImageError(e, '/images/avatar.png')} 
+                        className="h-9 w-9 rounded-full" 
+                        alt="" 
+                    /> 
                     <div className="flex flex-col">
                       <h3 className="text-sm font-normal text-gray-900">{alumni.name}</h3>
                       <p className="text-xs font-light text-gray-500">{alumni?.batch.name}</p>

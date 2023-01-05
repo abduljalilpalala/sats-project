@@ -10,6 +10,7 @@ import AdminLayout from '~/components/templates/AdminLayout'
 import useSWR from 'swr';
 import { axios } from '~/shared/lib/axios';
 import { AxiosResponse } from 'axios';
+import image from '~/utils/image';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -122,9 +123,9 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
                         { header: "Company Name", value: company_name },
                         { header: "Position", value: position },
                         { header: "Employment ID", value: work_id_image?.url && (
-                          <a href={work_id_image?.url} target="_new">
+                          <a href={image(work_id_image?.url)} target="_new">
                             <img 
-                              src={work_id_image?.url} 
+                              src={image(work_id_image?.url)} 
                               onError={(e) => handleImageError(e, '/images/id_dummy.png')}
                               alt="id_card"
                               className="max-w-[200px] max-h-[100px] min-w-[200px] min-h-[100px] rounded-md"
@@ -140,7 +141,7 @@ const EmploymentStatus: NextPage = (): JSX.Element => {
                               <Disclosure.Button className="flex items-center w-full justify-between rounded-lg bg-[#2563EB] bg-opacity-30 px-4 py-2 text-left text-sm font-medium text-slate-900 hover:bg-sams-10 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-slate-900 focus-visible:ring-opacity-75">
                                 <div className="flex gap-3 justify-center items-center">
                                   <img
-                                    src={avatar?.url}
+                                    src={image(avatar?.url)}
                                     onError={(e) => handleImageError(e, '/images/avatar.png')}
                                     alt="profile"
                                     className="rounded-full max-w-[36px] max-h-[36px] min-w-[36px] min-h-[36px]"
