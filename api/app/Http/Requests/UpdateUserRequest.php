@@ -29,8 +29,8 @@ class UpdateUserRequest extends FormRequest
             'contact_number' => ['required', 'min:11', 'max:11'],
             'id_number' => ['nullable', 'max:255'],
             'birth_date' => ['required', 'date', 'max:255'],
-            'employment_status_id' => ['required'],
-            'course_id' => ['required']
+            'employment_status_id' => ['nullable'],
+            'course_id' => ['nullable']
         ];
     }
 }

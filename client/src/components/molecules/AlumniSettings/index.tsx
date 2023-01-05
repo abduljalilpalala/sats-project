@@ -485,6 +485,14 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                 <input
                   type="text"
                   id="employment_status"
+                  {...register('employment_status_id')}
+                  defaultValue={alumni?.employment_status_id}
+                  className="form-control hidden"
+                  disabled={true}
+                />
+                <input
+                  type="text"
+                  id="display"
                   defaultValue={employmentStatus[alumni?.employment_status_id - 1]?.name}
                   className="form-control"
                   disabled={true}
