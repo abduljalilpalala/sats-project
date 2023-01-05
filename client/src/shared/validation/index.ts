@@ -66,5 +66,5 @@ export const AboutFormSchema = Yup.object().shape({
   position: Yup.string(),
   work_id: Yup.mixed(),
   birth_date: Yup.string().required('Birth date is required'),
-  employment_status_id: Yup.number().required('Employment Status is required')
+  employment_status_id: Yup.mixed()
 })
