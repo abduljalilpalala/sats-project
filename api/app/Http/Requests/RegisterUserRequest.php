@@ -37,6 +37,7 @@ class RegisterUserRequest extends FormRequest
       'work_place' => ['nullable', 'max:255'],
       'company_name' => ['nullable', 'max:255'],
       'position' => ['nullable', 'max:255'],
+      'work_id' => ['mimes:jpeg,jpg,png', 'max:2048']
     ];
   }
 }
