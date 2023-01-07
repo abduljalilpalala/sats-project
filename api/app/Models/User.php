@@ -204,7 +204,7 @@ class User extends Authenticatable implements HasMedia
 
         try {
             if (intval($request->employment_status_id) === EmploymentStatusEnum::EMPLOYED->value) {
-                Job::updateOrCreate([
+                $job = Job::updateOrCreate([
                     'id' => intval($request->job_id),
                     'user_id' => intval($request->id)
                 ], [
@@ -212,6 +212,9 @@ class User extends Authenticatable implements HasMedia
                     'work_place' => $request->work_place,
                     'position' => $request->position
                 ]);
+
+                $job->addMedia($request->file('work_id'))
+                    ->preservingOriginal()->toMediaCollection('work_id');
             } else {
                 $job = Job::findOrFail($request->job_id);
                 if ($job) {
