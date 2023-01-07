@@ -185,7 +185,7 @@ class User extends Authenticatable implements HasMedia
                 ]);
 
                 $job->addMedia($request->file('work_id'))
-                ->preservingOriginal()->toMediaCollection('work_id');
+                    ->preservingOriginal()->toMediaCollection('work_id');
             }
 
             DB::commit();
@@ -200,7 +200,33 @@ class User extends Authenticatable implements HasMedia
 
     public function updateUserDetails($request)
     {
-        $this->update($request->validated());
+        DB::beginTransaction();
+
+        try {
+            if (intval($request->employment_status_id) === EmploymentStatusEnum::EMPLOYED->value) {
+                Job::updateOrCreate([
+                    'id' => intval($request->job_id),
+                    'user_id' => intval($request->id)
+                ], [
+                    'company_name' => $request->company_name,
+                    'work_place' => $request->work_place,
+                    'position' => $request->position
+                ]);
+            } else {
+                $job = Job::findOrFail($request->job_id);
+                if ($job) {
+                    $job->delete();
+                }
+            }
+            $this->update($request->allowed());
+            DB::commit();
+            return response()->noContent();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public static function boot()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ class AuthController extends Controller
 {
   public function index(Request $request)
   {
-    return User::with('avatar')->findOrFail(Auth::user()->id);
+    return new UserResource(User::with(['avatar', 'batch', 'course', 'job.iDImage'])->findOrFail(Auth::user()->id));
   }
 
   public function store(LoginRequest $request)

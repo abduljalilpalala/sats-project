@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\EmploymentStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
 
@@ -33,10 +34,11 @@ class RegisterUserRequest extends FormRequest
       'batch' => ['required'],
       'course_id' => ['required'],
       'contact_number' => ['required', 'min:11', 'max:11'],
-      'employment_status' => ['required'],
+      'employment_status' => ['required', "in:" . EmploymentStatusEnum::EMPLOYED->value . "," . EmploymentStatusEnum::UNEMPLOYED->value . "," . EmploymentStatusEnum::SELF_EMPLOYED->value . ""],
       'work_place' => ['nullable', 'max:255'],
       'company_name' => ['nullable', 'max:255'],
       'position' => ['nullable', 'max:255'],
+      'work_id' => ['mimes:jpeg,jpg,png', 'max:2048']
     ];
   }
 }
