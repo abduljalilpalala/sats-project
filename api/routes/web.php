@@ -17,25 +17,11 @@ use Illuminate\Support\Facades\Artisan;
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
-
-Route::get('/cleareverything', function () {
-    
-    $clearroute = Artisan::call('route:clear');
-    echo "Route clear<br>";
-    
-    $cacheroute = Artisan::call('route:cache');
-    echo "Route cache<br>";
-    
-    $clearcache = Artisan::call('cache:clear');
-    echo "Cache cleared<br>";
-
-    $clearview = Artisan::call('view:clear');
-    echo "View cleared<br>";
-
-    $clearconfig = Artisan::call('config:cache');
-    echo "Config cleared<br>";
-
-    $storagelink = Artisan::call('storage:link');
-    echo "Storage link<br>";
-
+ 
+Route::get('/clean-backend', function () {
+    return view('clean-backend');
+});
+ 
+Route::get('/clean-database', function () {
+    return view('clean-database');
 });
