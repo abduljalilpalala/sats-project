@@ -232,6 +232,47 @@ class User extends Authenticatable implements HasMedia
         }
     }
 
+    public function updateUserAboutDetails($request)
+    {
+        DB::beginTransaction();
+        $auth_user = auth('sanctum')->user()->id;
+
+        try {
+            User::findOrFail($auth_user)->update([
+                'id_number' => $request->id_number,
+                'birth_date' => $request->birth_date,
+                'employment_status_id' => $request->employment_status_id,
+            ]);
+
+            if (intval($request->employment_status_id) === EmploymentStatusEnum::EMPLOYED->value) {
+                $job = Job::updateOrCreate([
+                    'id' => intval($request->job_id),
+                    'user_id' => $auth_user
+                ], [
+                    'company_name' => $request->company_name,
+                    'work_place' => $request->work_place,
+                    'position' => $request->position
+                ]);
+
+                $job->addMedia($request->file('work_id'))
+                    ->preservingOriginal()->toMediaCollection('work_id');
+            } else {
+                $job = Job::findOrFail($request->job_id);
+                if ($job) {
+                    $job->delete();
+                }
+            }
+
+            DB::commit();
+            return response()->noContent();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public static function boot()
     {
         parent::boot();

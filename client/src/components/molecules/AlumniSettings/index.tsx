@@ -389,32 +389,36 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
             'BSBA - Bachelor of Science in Business Administration'
         ]
 
-        const handleUpdateAbout = async (data: About): Promise<void> =>
+        const handleUpdateAbout = async (data: any): Promise<void> =>
         {
+            
           try
-          { 
-            const payload = {
-              id: alumni?.id,
-              name: alumni?.name,
-              email: alumni?.email,
-              course_id: alumni?.course_id,
-              contact_number: alumni?.contact_number,
-              id_number: data?.id_number,
-              birth_date: data?.birth_date,
-              employment_status_id: data?.employment_status_id
-            };
+            { 
+                const form = new FormData();
+                form.append("job_id", alumni?.job?.id);
+                form.append("id_number", data?.id_number);
+                form.append("birth_date", data?.birth_date);
+                form.append("employment_status_id", data?.employment_status_id);
+                form.append("work_place", data?.work_place);
+                form.append("company_name", data?.company_name);
+                form.append("position", data?.position);
+                data.work_id ? form.append("work_id", data.work_id[0]) : '/images/id_dummy.png'
 
-            const response = await axios.put('/api/user', payload);
+                const response = await axios.post('/api/user/user-about', form, {
+                    headers: {
+                    'Content-Type': 'multipart/form-data; boundary=---011000010111000001101001'
+                    }
+                });
 
-            if (response.status === 200)
-            {
-              mutate();
-              toast.success('Successfully Updated!');
-            }
-          } catch (error)
-          {
-            toast.error(`${error}`);
-          }
+                if (response.status === 200)
+                {
+                mutate();
+                toast.success('Successfully Updated!');
+                }
+            } catch (error)
+                {
+                    toast.error(`${error}`);
+                }
         };
 
         const employmentStatus = [
@@ -481,23 +485,8 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
               <div>
                 <label htmlFor="employment_status" className="form-label float-left">
                   Employment Status <span>*</span>
-                </label> 
-                <input
-                  type="text"
-                  id="employment_status"
-                  {...register('employment_status_id')}
-                  defaultValue={alumni?.employment_status_id}
-                  className="form-control hidden"
-                  disabled={true}
-                />
-                <input
-                  type="text"
-                  id="display"
-                  defaultValue={employmentStatus[alumni?.employment_status_id - 1]?.name}
-                  className="form-control"
-                  disabled={true}
-                />
-                {/* <select
+                </label>  
+                <select
                   className="form-control"
                   id="employment_status"
                   disabled={isSubmitting}
@@ -516,13 +505,13 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                       {name}
                     </option>
                   ))}
-                </select> */}
+                </select>
                 {errors?.employment_status_id && (
                   <span className="error">{`${errors?.employment_status_id?.message}`}</span>
                 )}
               </div>
             </div>
-            {/* {isEmployed && (
+            {isEmployed && (
               <div className="flex flex-col gap-3">
                 <div>
                   <label htmlFor="work_place" className="form-label float-left">
@@ -532,9 +521,10 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                     required
                     type="text"
                     id="work_place" 
-                    defaultValue={alumni?.work_place}
+                    defaultValue={alumni?.job?.work_place}
                     className="form-control"
                     disabled={isSubmitting}
+                    {...register('work_place')}
                   />
                 </div>
                 <div>
@@ -545,9 +535,10 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                     required
                     type="text"
                     id="company_name" 
-                    defaultValue={alumni?.company_name}
+                    defaultValue={alumni?.job?.company_name}
                     className="form-control"
                     disabled={isSubmitting}
+                    {...register('company_name')}
                   />
                 </div>
                 <div>
@@ -558,9 +549,10 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                     required
                     type="text"
                     id="position" 
-                    defaultValue={alumni?.position}
+                    defaultValue={alumni?.job?.position}
                     className="form-control"
                     disabled={isSubmitting}
+                    {...register('position')}
                   />
                 </div>
                 <div>
@@ -570,14 +562,21 @@ const AlumniSettings: FC<Props> = (props): JSX.Element =>
                   <input
                     required
                     type="file"
-                    id="work_id" 
-                    defaultValue={alumni?.work_id}
+                    id="work_id"  
                     className="form-control"
                     disabled={isSubmitting}
+                    {...register('work_id')}
                   />
                 </div>
+                
+                <img
+                  src={image(alumni?.job?.i_d_image[0]?.original_url)}
+                  onError={(e) => handleImageError(e, '/images/avatar.png')}
+                  className="max-h-[150px] w-full rounded-lg"
+                  alt=""
+                />
               </div>
-            )} */}
+            )}
             <button type="submit" className="form-submit mt-8" disabled={isSubmitting}>
               {isSubmitting ? <Spinner className="h-5 w-5" /> : 'Save Changes'}
             </button>

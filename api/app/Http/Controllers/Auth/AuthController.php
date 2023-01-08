@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-  public function index(Request $request)
+  public function index()
   {
-    return new UserResource(User::with(['avatar', 'batch', 'course', 'job.iDImage'])->findOrFail(Auth::user()->id));
+    return User::with(['avatar', 'job.iDImage'])->findOrFail(Auth::user()->id);
   }
 
   public function store(LoginRequest $request)
@@ -30,10 +30,10 @@ class AuthController extends Controller
     ]);
   }
 
-  public function destroy(Request $request)
+  public function destroy()
   {
     auth()->user()->currentAccessToken()->delete();
-    
+
     return response()->noContent();
   }
 }
