@@ -17,4 +17,8 @@ export type About = {
   course_id: number
   birth_date: string
   employment_status_id: number
+  work_place: string
+  company_name: string
+  position: string
+  work_id: any
 }

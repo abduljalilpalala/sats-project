@@ -1,18 +1,19 @@
 <?php
 
-use App\Http\Controllers\AdminSettingController;
-use App\Http\Controllers\AlumniController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\CourseAlumniCountController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EmploymentStatusController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\UpdatePasswordController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AlumniController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UpdateUserController;
 use App\Http\Controllers\UserAvatarController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminSettingController;
+use App\Http\Controllers\UpdatePasswordController;
+use App\Http\Controllers\UpdateUserAboutController;
+use App\Http\Controllers\EmploymentStatusController;
+use App\Http\Controllers\CourseAlumniCountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     });
 
     Route::group(['prefix' => 'user'], function () {
+        Route::post('user-about', UpdateUserAboutController::class);
         Route::put('change-password', [UpdatePasswordController::class, 'update']);
         Route::get('number', [UpdatePasswordController::class, 'number']);
         Route::post('user-avatar', [UserAvatarController::class, 'store']);
