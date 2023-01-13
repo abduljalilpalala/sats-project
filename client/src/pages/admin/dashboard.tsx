@@ -32,11 +32,23 @@ const years = [
   '2021 - 2022',
 ];
 
+const courses = [
+  'All Courses',
+  'BSIT',
+  'BSED',
+  'BEED',
+  'BPED',
+  'BSBA',
+];
+
 const Dashboard: NextPage = (): JSX.Element => {
   const { getDashboardData } = adminHooks();
   const [dashboardData, setDashboardData] = useState<any>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(years?.length - 1);
   const [selected, setSelected] = useState<string>(years[selectedIndex]);
+
+  const [selectedCourseIndex, setSelectedCourseIndex] = useState<number>(0);
+  const [selectedCourse, setSelectedCourse] = useState<string>(courses[selectedCourseIndex]);
 
   const { innerWidth } = useWindowDimensions() || {};
   const mobileView = innerWidth <= 1000;
@@ -79,8 +91,7 @@ const Dashboard: NextPage = (): JSX.Element => {
     chartArea: { 'width': mobileView ? "100%" : '' },
   };
 
-  const pieChartData = [
-    ["Task", "Hours per Day"],
+  const allCourses: any = [
     ["BSIT - Employed", bsit?.employed],
     ["BSIT - Unemployed", bsit?.unemployed],
     ["BSED - Employed", bsed?.employed],
@@ -90,20 +101,30 @@ const Dashboard: NextPage = (): JSX.Element => {
     ["BPED - Employed", bped?.employed],
     ["BPED - Unemployed", bped?.unemployed],
     ["BSBA - Employed", bsba?.employed],
-    ["BSBA - Unemployed", bsba?.unemployed],
+    ["BSBA - Unemployed", bsba?.unemployed]
+  ]
+  
+  const filterPieChartData = [...allCourses.filter((each:any)=>{
+    return each[0].includes(selectedCourse)
+  })] 
+  const filterResult = filterPieChartData.length >= 1 ? [...filterPieChartData] : [...allCourses];
+
+  const pieChartData = [
+    ["Task", "Hours per Day"],
+    ...filterResult
   ]; 
 
   const slices: any =  {
-    0: { color: "#ab00ff" }, 
-    1: { color: "#31004a" }, 
-    2: { color: "#a6754a" }, 
-    3: { color: "#582205" }, 
-    4: { color: "#ffcf40" }, 
-    5: { color: "#a67c00" }, 
-    6: { color: "#e50000" }, 
-    7: { color: "#820000" }, 
-    8: { color: "#283198" }, 
-    9: { color: "#0c136d" }, 
+    0: { color: "#87ceeb" }, 
+    1: { color: "#000080" }, 
+    2: { color: "#87ceeb" }, 
+    3: { color: "#000080" }, 
+    4: { color: "#87ceeb" }, 
+    5: { color: "#000080" }, 
+    6: { color: "#87ceeb" }, 
+    7: { color: "#000080" }, 
+    8: { color: "#87ceeb" }, 
+    9: { color: "#000080" }, 
   }
 
   const pieChartOptions = {
@@ -204,9 +225,62 @@ const Dashboard: NextPage = (): JSX.Element => {
         <Card childClass={`${mobileView ? "px-0" : "px-10 py-5"}`}>
           <div className={`flex justify-between ${mobileView && 'flex-wrap gap-3'}`}>
             <h1 className='text-sams-30 text-2xl font-semibold flex items-center'>List of Graduated</h1>
+            <div className="w-[200px]">
+              <Listbox value={selectedCourse} onChange={setSelectedCourse}>
+                <div className="relative mt-1">
+                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-1 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                    <span className="block truncate cursor-pointer">{selectedCourse}</span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <ChevronUpDownIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </Listbox.Button>
+                  <Transition
+                    as={Fragment}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <Listbox.Options className="z-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                      {courses.map((course, courseIdx) => (
+                        <Listbox.Option
+                          key={courseIdx}
+                          onClick={() => {
+                            setSelectedCourseIndex(courseIdx);
+                          }}
+                          className={({ active }) =>
+                            `relative select-none py-2 pl-10 pr-4 ${active ? 'bg-sams-10 text-slate-50' : 'text-gray-900'
+                            }`
+                          }
+                          value={course}
+                        >
+                          {({ selected }) => (
+                            <div>
+                              <span
+                                className={`block text-left truncate ${selectedCourse ? 'font-medium' : 'font-normal'
+                                  }`}
+                              >
+                                {course}
+                              </span>
+                              {selected ? (
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 slate-10">
+                                  <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                </span>
+                              ) : null}
+                            </div>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </Listbox>
+            </div>
           </div>
           <div className={`w-full flex ${mobileView && 'flex-col gap-5'}`}>
-            <div className="w-full">
+            <div className={`w-full ${!mobileView && 'min-h-[400px]'}`}>
               <Chart
                 chartType="PieChart"
                 width="100%"
